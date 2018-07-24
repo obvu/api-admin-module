@@ -38,8 +38,6 @@ class BaseAdminController extends BaseApiController
             'class' => HttpBearerAuth::class,
         ];
 
-        $array_merge = array_merge($old, $behaviors);
-
-        return $array_merge;
+        return array_merge($old, $behaviors);
     }
 }

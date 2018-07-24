@@ -22,11 +22,11 @@ class ApiAdminDwyContentModule extends ApiAdminDwyModule
     public function bootstrap($app)
     {
         $app->urlManager->addRules([
-            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/text-block'],
-            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/blog/post'],
-            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/blog/post-category'],
-            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/page'],
-            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/widget'],
+            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/text-block'],
+            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/blog/post'],
+            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/blog/post-category'],
+            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/page'],
+            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/widget'],
         ]);
     }
 

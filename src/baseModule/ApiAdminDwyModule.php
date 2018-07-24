@@ -41,13 +41,16 @@ class ApiAdminDwyModule extends ApiModule implements BootstrapInterface
         $this->docsScanPaths[] = \dirname((new ReflectionClass(AdminApiVendorModule::class))->getFileName());
 
         $this->controllerMap = [
-            'content' => [
-                'class'         => ApiAdminDwyContentModule::class,
-                'docsScanPaths' => $this->docsScanPaths,
-            ],
             'docs'    => [
                 'class'     => ApiDocsSwaggerController::class,
                 'scanPaths' => $this->docsScanPaths,
+            ],
+        ];
+
+        $this->modules = [
+            'content' => [
+                'class'         => ApiAdminDwyContentModule::class,
+                'docsScanPaths' => $this->docsScanPaths,
             ],
         ];
         parent::init();

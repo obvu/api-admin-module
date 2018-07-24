@@ -11,7 +11,7 @@ namespace Obvu\Modules\Api\AdminSubmodules\Content\components\textBlock\handler;
 
 use Obvu\Modules\Api\AdminSubmodules\Content\actions\base\BaseAdminContentRequest;
 use Obvu\Modules\Api\AdminSubmodules\Content\actions\base\BaseAdminContentResponse;
-use Obvu\Modules\Api\Admin\submodules\content\interfaces\action\ActionHandlerInterface;
+use Obvu\Modules\Api\AdminSubmodules\content\interfaces\action\ActionHandlerInterface;
 
 class TextBlockViewHandler implements ActionHandlerInterface
 {

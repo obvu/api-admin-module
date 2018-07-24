@@ -6,11 +6,11 @@
  * Time: 13:44
  */
 
-namespace Obvu\Modules\Api\Admin\submodules\content\models\page\property;
+namespace Obvu\Modules\Api\AdminSubmodules\content\models\page\property;
 
 /**
  * Class TemplateModel
- * @package Obvu\Modules\Api\Admin\submodules\content\models\page\property
+ * @package Obvu\Modules\Api\AdminSubmodules\content\models\page\property
  * @SWG\Definition()
  */
 class TemplateModel

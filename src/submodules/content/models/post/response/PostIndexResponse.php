@@ -6,13 +6,13 @@
  * Time: 0:02
  */
 
-namespace Obvu\Modules\Api\Admin\submodules\content\models\post\response;
+namespace Obvu\Modules\Api\AdminSubmodules\content\models\post\response;
 
-use Obvu\Modules\Api\Admin\submodules\content\models\post\AdminPostModel;
+use Obvu\Modules\Api\AdminSubmodules\content\models\post\AdminPostModel;
 
 /**
  * Class PostListResponse
- * @package Obvu\Modules\Api\Admin\submodules\content\models\post\response
+ * @package Obvu\Modules\Api\AdminSubmodules\content\models\post\response
  * @SWG\Definition()
  */
 class PostIndexResponse

@@ -10,9 +10,11 @@ namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content;
 
 
 use app\components\database\repository\post\PostRepository;
-use Obvu\Modules\Api\Admin\ApiAdminDwyModule;
 use Obvu\Modules\Api\Admin\AdminSubmodules\Content\components\textBlock\AdminTextBlockRepository;
 use Obvu\Modules\Api\Admin\AdminSubmodules\Content\interfaces\blog\post\PostAdminRepositoryInterface;
+use Obvu\Modules\Api\Admin\ApiAdminDwyModule;
+use yii\base\BootstrapInterface;
+use yii\base\Module;
 
 /**
  * Class ApiAdminDwyContentModule
@@ -20,8 +22,19 @@ use Obvu\Modules\Api\Admin\AdminSubmodules\Content\interfaces\blog\post\PostAdmi
  *
  * @property AdminTextBlockRepository textBlock
  */
-class ApiAdminDwyContentModule extends ApiAdminDwyModule
+class ApiAdminDwyContentModule extends Module implements BootstrapInterface
 {
+    public function bootstrap($app)
+    {
+        $app->urlManager->addRules([
+            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/text-block'],
+            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/blog/post'],
+            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/blog/post-category'],
+            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/page'],
+            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/widget'],
+        ]);
+    }
+
     public function init()
     {
         $this->components = [

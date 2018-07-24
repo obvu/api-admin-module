@@ -22,8 +22,6 @@ use Zvinger\BaseClasses\app\modules\api\ApiModule;
  */
 class ApiAdminDwyModule extends ApiModule implements BootstrapInterface
 {
-    public $submodulesRules = [];
-
     public $docsScanPaths = [];
 
     /**
@@ -32,11 +30,6 @@ class ApiAdminDwyModule extends ApiModule implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-        $rules = array_map(function ($key, $value) {
-            return ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . $key,  'pluralize' => $value];
-        }, array_keys($this->submodulesRules), $this->submodulesRules);
-
-        $app->urlManager->addRules($rules);
     }
 
     /**

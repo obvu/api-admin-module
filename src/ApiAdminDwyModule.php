@@ -33,7 +33,11 @@ class ApiAdminDwyModule extends ApiModule implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-        $app->urlManager->addRules(array_merge($this->submodulesRouts, [
+        $rules = array_map(function ($value) {
+            return ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . $value,  'pluralize' => false];
+        },$this->submodulesRouts);
+
+        $app->urlManager->addRules(array_merge($rules, [
             ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/text-block'],
             ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/blog/post'],
             ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/blog/post-category'],

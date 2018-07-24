@@ -49,12 +49,6 @@ class ApiAdminDwyModule extends ApiModule implements BootstrapInterface
             ],
         ];
 
-        $this->modules = [
-            'content' => [
-                'class'         => ApiAdminDwyContentModule::class,
-                'docsScanPaths' => $this->docsScanPaths,
-            ],
-        ];
         parent::init();
     }
 }

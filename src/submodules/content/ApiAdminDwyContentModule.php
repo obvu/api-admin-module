@@ -9,8 +9,7 @@
 namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content;
 
 use Obvu\Modules\Api\Admin\AdminSubmodules\Content\components\textBlock\AdminTextBlockRepository;
-use yii\base\BootstrapInterface;
-use yii\base\Module;
+use Obvu\Modules\Api\Admin\ApiAdminDwyModule;
 
 /**
  * Class ApiAdminDwyContentModule
@@ -18,7 +17,7 @@ use yii\base\Module;
  *
  * @property AdminTextBlockRepository textBlock
  */
-class ApiAdminDwyContentModule extends Module implements BootstrapInterface
+class ApiAdminDwyContentModule extends ApiAdminDwyModule
 {
     public function bootstrap($app)
     {

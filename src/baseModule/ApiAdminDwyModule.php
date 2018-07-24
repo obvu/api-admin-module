@@ -9,7 +9,6 @@
 namespace Obvu\Modules\Api\Admin;
 
 use Obvu\Modules\Api\Admin\AdminSubmodules\Content\ApiAdminDwyContentModule;
-use Obvu\Modules\Api\AdminSubmodules\Crud\CrudModule;
 use ReflectionClass;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
@@ -35,7 +34,7 @@ class ApiAdminDwyModule extends ApiModule implements BootstrapInterface
     {
         $rules = array_map(function ($key, $value) {
             return ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . $key,  'pluralize' => $value];
-        }, $this->submodulesRules);
+        }, array_keys($this->submodulesRules), $this->submodulesRules);
 
         $app->urlManager->addRules($rules);
     }
@@ -49,7 +48,11 @@ class ApiAdminDwyModule extends ApiModule implements BootstrapInterface
         $this->docsScanPaths[] = \dirname((new ReflectionClass(AdminApiVendorModule::class))->getFileName());
 
         $this->controllerMap = [
-            'docs' => [
+            'content' => [
+                'class'         => ApiAdminDwyContentModule::class,
+                'docsScanPaths' => $this->docsScanPaths,
+            ],
+            'docs'    => [
                 'class'     => ApiDocsSwaggerController::class,
                 'scanPaths' => $this->docsScanPaths,
             ],

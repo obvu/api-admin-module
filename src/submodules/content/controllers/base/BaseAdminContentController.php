@@ -6,11 +6,11 @@
  * Time: 15:58
  */
 
-namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\controllers\base;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\controllers\base;
 
 
 use Obvu\Modules\Api\Admin\controllers\base\BaseAdminController;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\ApiAdminDwyContentModule;
+use Obvu\Modules\Api\AdminSubmodules\Content\ApiAdminDwyContentModule;
 
 class BaseAdminContentController extends BaseAdminController
 {

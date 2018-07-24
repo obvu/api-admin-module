@@ -6,14 +6,14 @@
  * Time: 0:00
  */
 
-namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\components\post\object;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\components\post\object;
 
 
 use app\components\database\repository\post\models\object\PostObject;
 use app\components\database\repository\post\PostRepository;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\components\post\category\PostCategoryAdminRepository;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\post\AdminPostModel;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\post\request\AdminPostInfoRequest;
+use Obvu\Modules\Api\AdminSubmodules\Content\components\post\category\PostCategoryAdminRepository;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\post\AdminPostModel;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\post\request\AdminPostInfoRequest;
 use Zvinger\BaseClasses\app\components\database\repository\BaseApiRepository;
 
 class PostAdminRepository extends BaseApiRepository

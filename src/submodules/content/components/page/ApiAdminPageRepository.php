@@ -6,14 +6,14 @@
  * Time: 13:26
  */
 
-namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\components\page;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\components\page;
 
 
 use app\components\database\repository\content\page\models\object\PageObject;
 use app\components\database\repository\content\page\PageRepository;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\page\PageModel;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\page\property\TemplateModel;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\page\request\PageInfoRequest;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\page\PageModel;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\page\property\TemplateModel;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\page\request\PageInfoRequest;
 use Zvinger\BaseClasses\app\components\database\repository\BaseApiRepository;
 
 class ApiAdminPageRepository extends BaseApiRepository

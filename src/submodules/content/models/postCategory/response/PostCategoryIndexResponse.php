@@ -6,13 +6,13 @@
  * Time: 0:02
  */
 
-namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\postCategory\response;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\models\postCategory\response;
 
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\postCategory\PostCategoryModel;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\postCategory\PostCategoryModel;
 
 /**
  * Class PostListResponse
- * @package Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\postCategory\response
+ * @package Obvu\Modules\Api\AdminSubmodules\Content\models\postCategory\response
  * @SWG\Definition()
  */
 class PostCategoryIndexResponse

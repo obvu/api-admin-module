@@ -6,7 +6,7 @@
  * Time: 13:29
  */
 
-namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\controllers;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\controllers;
 
 
 use yii\rest\Controller;

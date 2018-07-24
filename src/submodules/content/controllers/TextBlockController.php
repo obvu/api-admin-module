@@ -6,13 +6,13 @@
  * Time: 14:53
  */
 
-namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\controllers;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\controllers;
 
 
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\components\textBlock\AdminTextBlockRepository;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\controllers\base\BaseAdminContentController;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\textBlock\request\TextBlockInfoRequest;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\textBlock\response\TextBlockIndexResponse;
+use Obvu\Modules\Api\AdminSubmodules\Content\components\textBlock\AdminTextBlockRepository;
+use Obvu\Modules\Api\AdminSubmodules\Content\controllers\base\BaseAdminContentController;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\textBlock\request\TextBlockInfoRequest;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\textBlock\response\TextBlockIndexResponse;
 
 class TextBlockController extends BaseAdminContentController
 {

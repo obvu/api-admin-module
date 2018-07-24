@@ -6,14 +6,14 @@
  * Time: 13:27
  */
 
-namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content;
+namespace Obvu\Modules\Api\AdminSubmodules\Content;
 
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\components\textBlock\AdminTextBlockRepository;
+use Obvu\Modules\Api\AdminSubmodules\Content\components\textBlock\AdminTextBlockRepository;
 use Obvu\Modules\Api\Admin\ApiAdminDwyModule;
 
 /**
  * Class ApiAdminDwyContentModule
- * @package Obvu\Modules\Api\Admin\AdminSubmodules\Content
+ * @package Obvu\Modules\Api\AdminSubmodules\Content
  *
  * @property AdminTextBlockRepository textBlock
  */

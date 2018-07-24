@@ -6,17 +6,17 @@
  * Time: 14:53
  */
 
-namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\controllers;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\controllers;
 
 
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\components\page\ApiAdminPageRepository;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\components\widget\ApiAdminWidgetRepository;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\controllers\base\BaseAdminContentController;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\page\request\PageInfoRequest;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\page\response\PageIndexResponse;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\widget\request\WidgetInfoRequest;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\widget\WidgetModel;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\widget\WidgetsInfo;
+use Obvu\Modules\Api\AdminSubmodules\Content\components\page\ApiAdminPageRepository;
+use Obvu\Modules\Api\AdminSubmodules\Content\components\widget\ApiAdminWidgetRepository;
+use Obvu\Modules\Api\AdminSubmodules\Content\controllers\base\BaseAdminContentController;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\page\request\PageInfoRequest;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\page\response\PageIndexResponse;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\widget\request\WidgetInfoRequest;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\widget\WidgetModel;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\widget\WidgetsInfo;
 
 class WidgetController extends BaseAdminContentController
 {

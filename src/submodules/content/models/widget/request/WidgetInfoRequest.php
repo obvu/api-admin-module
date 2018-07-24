@@ -6,15 +6,15 @@
  * Time: 0:08
  */
 
-namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\widget\request;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\models\widget\request;
 
 
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\widget\WidgetsInfo;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\widget\WidgetsInfo;
 use Zvinger\BaseClasses\api\request\BaseApiRequest;
 
 /**
  * Class PostInfoRequest
- * @package Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\widget\request
+ * @package Obvu\Modules\Api\AdminSubmodules\Content\models\widget\request
  * @SWG\Definition()
  */
 class WidgetInfoRequest extends BaseApiRequest

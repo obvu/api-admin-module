@@ -6,15 +6,15 @@
  * Time: 0:03
  */
 
-namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\post;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\models\post;
 
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\postCategory\PostCategoryModel;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\postCategory\PostCategoryModel;
 use Zvinger\BaseClasses\app\helpers\fakeData\DataFakerGenerator;
 use Zvinger\BaseClasses\app\helpers\fakeData\FakeFilledInterface;
 
 /**
  * Class PostModel
- * @package Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\post
+ * @package Obvu\Modules\Api\AdminSubmodules\Content\models\post
  * @SWG\Definition()
  */
 class AdminPostModel implements FakeFilledInterface

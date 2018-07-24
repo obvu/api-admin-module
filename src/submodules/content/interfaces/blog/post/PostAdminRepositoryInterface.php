@@ -6,7 +6,7 @@
  * Time: 14:19
  */
 
-namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\interfaces\blog\post;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\interfaces\blog\post;
 
 
 interface PostAdminRepositoryInterface

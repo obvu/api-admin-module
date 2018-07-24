@@ -6,14 +6,14 @@
  * Time: 0:08
  */
 
-namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\postCategory\request;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\models\postCategory\request;
 
 
 use Zvinger\BaseClasses\api\request\BaseApiRequest;
 
 /**
  * Class PostInfoRequest
- * @package Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\postCategory\request
+ * @package Obvu\Modules\Api\AdminSubmodules\Content\models\postCategory\request
  * @SWG\Definition()
  */
 class PostCategoryInfoRequest extends BaseApiRequest

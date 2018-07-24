@@ -6,13 +6,13 @@
  * Time: 14:27
  */
 
-namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\components\widget;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\components\widget;
 
 
 use app\components\database\repository\content\widget\models\object\WidgetObject;
 use app\components\database\repository\content\widget\WidgetRepository;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\widget\WidgetModel;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\widget\WidgetsInfo;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\widget\WidgetModel;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\widget\WidgetsInfo;
 use Zvinger\BaseClasses\app\components\database\repository\BaseApiRepository;
 
 class ApiAdminWidgetRepository extends BaseApiRepository

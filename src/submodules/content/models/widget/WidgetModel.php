@@ -6,15 +6,15 @@
  * Time: 0:03
  */
 
-namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\widget;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\models\widget;
 
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\widget\property\TemplateModel;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\widget\property\TemplateModel;
 use Zvinger\BaseClasses\app\helpers\fakeData\DataFakerGenerator;
 use Zvinger\BaseClasses\app\helpers\fakeData\FakeFilledInterface;
 
 /**
  * Class PostModel
- * @package Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\textBlock
+ * @package Obvu\Modules\Api\AdminSubmodules\Content\models\textBlock
  * @SWG\Definition()
  */
 class WidgetModel

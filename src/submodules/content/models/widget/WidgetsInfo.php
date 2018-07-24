@@ -6,12 +6,12 @@
  * Time: 7:33
  */
 
-namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\widget;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\models\widget;
 
 
 /**
  * Class WidgetsInfo
- * @package Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\widget
+ * @package Obvu\Modules\Api\AdminSubmodules\Content\models\widget
  * @SWG\Definition()
  */
 class WidgetsInfo

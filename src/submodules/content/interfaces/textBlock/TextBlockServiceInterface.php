@@ -6,11 +6,11 @@
  * Time: 14:54
  */
 
-namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\interfaces\textBlock;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\interfaces\textBlock;
 
 
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\components\textBlock\filter\TextBlockFilter;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\textBlock\SingleTextBlockModel;
+use Obvu\Modules\Api\AdminSubmodules\Content\components\textBlock\filter\TextBlockFilter;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\textBlock\SingleTextBlockModel;
 
 interface TextBlockServiceInterface
 {

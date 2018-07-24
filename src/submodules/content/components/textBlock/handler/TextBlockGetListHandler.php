@@ -6,14 +6,14 @@
  * Time: 15:56
  */
 
-namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\components\textBlock\handler;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\components\textBlock\handler;
 
 
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\actions\base\BaseAdminContentRequest;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\actions\base\BaseAdminContentResponse;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\actions\textBlock\index\TextBlockIndexResponse;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\actions\textBlock\index\TextBlockViewResponse;
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\interfaces\action\ActionHandlerInterface;
+use Obvu\Modules\Api\AdminSubmodules\Content\actions\base\BaseAdminContentRequest;
+use Obvu\Modules\Api\AdminSubmodules\Content\actions\base\BaseAdminContentResponse;
+use Obvu\Modules\Api\AdminSubmodules\Content\actions\textBlock\index\TextBlockIndexResponse;
+use Obvu\Modules\Api\AdminSubmodules\Content\actions\textBlock\index\TextBlockViewResponse;
+use Obvu\Modules\Api\AdminSubmodules\Content\interfaces\action\ActionHandlerInterface;
 
 class TextBlockGetListHandler implements ActionHandlerInterface
 {

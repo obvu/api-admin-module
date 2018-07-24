@@ -6,7 +6,7 @@
  * Time: 15:52
  */
 
-namespace Obvu\Modules\Api\Admin\submodules\content\components\textBlock\filter;
+namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\components\textBlock\filter;
 
 
 class TextBlockFilter

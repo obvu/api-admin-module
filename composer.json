@@ -19,7 +19,8 @@
   },
   "autoload" : {
     "psr-4" : {
-      "Obvu\\Modules\\Api\\Admin\\" : "src/",
+      "Obvu\\Modules\\Api\\Admin\\" : "src/baseModule",
+      "Obvu\\Modules\\Api\\AdminSubmodules\\Content\\" : "src/submodules/content/",
       "Obvu\\Modules\\Api\\AdminSubmodules\\Crud\\" : "src/submodules/crud/"
     }
   }

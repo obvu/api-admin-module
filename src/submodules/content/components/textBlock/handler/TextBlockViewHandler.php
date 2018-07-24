@@ -6,11 +6,11 @@
  * Time: 17:06
  */
 
-namespace Obvu\Modules\Api\Admin\submodules\content\components\textBlock\handler;
+namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\components\textBlock\handler;
 
 
-use Obvu\Modules\Api\Admin\submodules\content\actions\base\BaseAdminContentRequest;
-use Obvu\Modules\Api\Admin\submodules\content\actions\base\BaseAdminContentResponse;
+use Obvu\Modules\Api\Admin\AdminSubmodules\Content\actions\base\BaseAdminContentRequest;
+use Obvu\Modules\Api\Admin\AdminSubmodules\Content\actions\base\BaseAdminContentResponse;
 use Obvu\Modules\Api\Admin\submodules\content\interfaces\action\ActionHandlerInterface;
 
 class TextBlockViewHandler implements ActionHandlerInterface

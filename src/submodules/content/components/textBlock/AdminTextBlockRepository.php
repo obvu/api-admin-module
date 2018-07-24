@@ -6,12 +6,12 @@
  * Time: 15:57
  */
 
-namespace Obvu\Modules\Api\Admin\submodules\content\components\textBlock;
+namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\components\textBlock;
 
 use app\components\database\repository\content\textBlock\models\object\TextBlock;
 use app\components\database\repository\content\textBlock\TextBlockRepository;
-use Obvu\Modules\Api\Admin\submodules\content\models\textBlock\request\TextBlockInfoRequest;
-use Obvu\Modules\Api\Admin\submodules\content\models\textBlock\TextBlockModel;
+use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\textBlock\request\TextBlockInfoRequest;
+use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\textBlock\TextBlockModel;
 use Zvinger\BaseClasses\app\components\database\repository\BaseApiRepository;
 
 class AdminTextBlockRepository extends BaseApiRepository

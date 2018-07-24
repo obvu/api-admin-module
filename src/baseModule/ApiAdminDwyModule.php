@@ -8,7 +8,7 @@
 
 namespace Obvu\Modules\Api\Admin;
 
-use Obvu\Modules\Api\Admin\submodules\content\ApiAdminDwyContentModule;
+use Obvu\Modules\Api\Admin\AdminSubmodules\Content\ApiAdminDwyContentModule;
 use Obvu\Modules\Api\AdminSubmodules\Crud\CrudModule;
 use ReflectionClass;
 use yii\base\Application;
@@ -23,7 +23,7 @@ use Zvinger\BaseClasses\app\modules\api\ApiModule;
  */
 class ApiAdminDwyModule extends ApiModule implements BootstrapInterface
 {
-    public $submodulesRouts = [];
+    public $submodulesRules = [];
 
     public $docsScanPaths = [];
 
@@ -33,17 +33,11 @@ class ApiAdminDwyModule extends ApiModule implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-        $rules = array_map(function ($value) {
-            return ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . $value,  'pluralize' => false];
-        },$this->submodulesRouts);
+        $rules = array_map(function ($key, $value) {
+            return ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . $key,  'pluralize' => $value];
+        }, $this->submodulesRules);
 
-        $app->urlManager->addRules(array_merge($rules, [
-            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/text-block'],
-            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/blog/post'],
-            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/blog/post-category'],
-            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/page'],
-            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/widget'],
-        ]));
+        $app->urlManager->addRules($rules);
     }
 
     /**
@@ -58,15 +52,6 @@ class ApiAdminDwyModule extends ApiModule implements BootstrapInterface
             'docs' => [
                 'class'     => ApiDocsSwaggerController::class,
                 'scanPaths' => $this->docsScanPaths,
-            ],
-        ];
-        $this->modules = [
-            'content' => [
-                'class'         => ApiAdminDwyContentModule::class,
-                'docsScanPaths' => $this->docsScanPaths,
-            ],
-            'crud'    => [
-                'class' => CrudModule::class,
             ],
         ];
         parent::init();

@@ -6,17 +6,17 @@
  * Time: 13:27
  */
 
-namespace Obvu\Modules\Api\Admin\submodules\content;
+namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content;
 
 
 use app\components\database\repository\post\PostRepository;
 use Obvu\Modules\Api\Admin\ApiAdminDwyModule;
-use Obvu\Modules\Api\Admin\submodules\content\components\textBlock\AdminTextBlockRepository;
-use Obvu\Modules\Api\Admin\submodules\content\interfaces\blog\post\PostAdminRepositoryInterface;
+use Obvu\Modules\Api\Admin\AdminSubmodules\Content\components\textBlock\AdminTextBlockRepository;
+use Obvu\Modules\Api\Admin\AdminSubmodules\Content\interfaces\blog\post\PostAdminRepositoryInterface;
 
 /**
  * Class ApiAdminDwyContentModule
- * @package Obvu\Modules\Api\Admin\submodules\content
+ * @package Obvu\Modules\Api\Admin\AdminSubmodules\Content
  *
  * @property AdminTextBlockRepository textBlock
  */

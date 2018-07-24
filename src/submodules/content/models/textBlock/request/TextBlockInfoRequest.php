@@ -6,14 +6,14 @@
  * Time: 0:08
  */
 
-namespace Obvu\Modules\Api\Admin\submodules\content\models\textBlock\request;
+namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\textBlock\request;
 
 
 use Zvinger\BaseClasses\api\request\BaseApiRequest;
 
 /**
  * Class PostInfoRequest
- * @package Obvu\Modules\Api\Admin\submodules\content\models\textBlock\request
+ * @package Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\textBlock\request
  * @SWG\Definition()
  */
 class TextBlockInfoRequest extends BaseApiRequest

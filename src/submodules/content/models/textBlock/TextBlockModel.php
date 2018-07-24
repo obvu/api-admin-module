@@ -6,7 +6,7 @@
  * Time: 0:03
  */
 
-namespace Obvu\Modules\Api\Admin\submodules\content\models\textBlock;
+namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\textBlock;
 
 use app\components\database\repository\content\textBlock\models\object\TextBlock;
 use Zvinger\BaseClasses\app\helpers\fakeData\DataFakerGenerator;
@@ -14,7 +14,7 @@ use Zvinger\BaseClasses\app\helpers\fakeData\FakeFilledInterface;
 
 /**
  * Class PostModel
- * @package Obvu\Modules\Api\Admin\submodules\content\models\textBlock
+ * @package Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\textBlock
  * @SWG\Definition()
  */
 class TextBlockModel implements FakeFilledInterface

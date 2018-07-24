@@ -6,13 +6,13 @@
  * Time: 23:59
  */
 
-namespace Obvu\Modules\Api\Admin\submodules\content\controllers\blog;
+namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\controllers\blog;
 
 
 use Obvu\Modules\Api\Admin\controllers\base\BaseAdminController;
-use Obvu\Modules\Api\Admin\submodules\content\components\post\object\PostAdminRepository;
-use Obvu\Modules\Api\Admin\submodules\content\models\post\request\AdminPostInfoRequest;
-use Obvu\Modules\Api\Admin\submodules\content\models\post\response\PostIndexResponse;
+use Obvu\Modules\Api\Admin\AdminSubmodules\Content\components\post\object\PostAdminRepository;
+use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\post\request\AdminPostInfoRequest;
+use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\post\response\PostIndexResponse;
 
 class PostController extends BaseAdminController
 {

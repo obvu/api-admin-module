@@ -6,11 +6,11 @@
  * Time: 16:09
  */
 
-namespace Obvu\Modules\Api\Admin\submodules\content\interfaces\action;
+namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\interfaces\action;
 
 
-use Obvu\Modules\Api\Admin\submodules\content\actions\base\BaseAdminContentRequest;
-use Obvu\Modules\Api\Admin\submodules\content\actions\base\BaseAdminContentResponse;
+use Obvu\Modules\Api\Admin\AdminSubmodules\Content\actions\base\BaseAdminContentRequest;
+use Obvu\Modules\Api\Admin\AdminSubmodules\Content\actions\base\BaseAdminContentResponse;
 
 interface ActionHandlerInterface
 {

@@ -6,7 +6,7 @@
  * Time: 16:01
  */
 
-namespace Obvu\Modules\Api\Admin\submodules\content\interfaces\textBlock;
+namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\interfaces\textBlock;
 
 
 interface TextBlockResponseCollector

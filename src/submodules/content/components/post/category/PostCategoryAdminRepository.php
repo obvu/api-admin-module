@@ -6,12 +6,12 @@
  * Time: 0:00
  */
 
-namespace Obvu\Modules\Api\Admin\submodules\content\components\post\category;
+namespace Obvu\Modules\Api\Admin\AdminSubmodules\Content\components\post\category;
 
 
 use app\components\database\repository\post\models\category\PostCategory;
 use app\components\database\repository\post\PostCategoryRepository;
-use Obvu\Modules\Api\Admin\submodules\content\models\postCategory\PostCategoryModel;
+use Obvu\Modules\Api\Admin\AdminSubmodules\Content\models\postCategory\PostCategoryModel;
 use Zvinger\BaseClasses\app\components\database\repository\BaseApiRepository;
 
 class PostCategoryAdminRepository extends BaseApiRepository

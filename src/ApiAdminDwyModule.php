@@ -23,6 +23,8 @@ use Zvinger\BaseClasses\app\modules\api\ApiModule;
  */
 class ApiAdminDwyModule extends ApiModule implements BootstrapInterface
 {
+    public $submodulesRouts = [];
+
     public $docsScanPaths = [];
 
     /**
@@ -31,20 +33,22 @@ class ApiAdminDwyModule extends ApiModule implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-        $app->urlManager->addRules([
+        $app->urlManager->addRules(array_merge($this->submodulesRouts, [
             ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/text-block'],
             ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/blog/post'],
             ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/blog/post-category'],
             ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/page'],
             ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/widget'],
-        ]);
+        ]));
     }
 
-
+    /**
+     * @throws \ReflectionException
+     */
     public function init()
     {
         $this->docsScanPaths[] = $this->basePath;
-        $this->docsScanPaths[] = dirname((new ReflectionClass(AdminApiVendorModule::class))->getFileName());
+        $this->docsScanPaths[] = \dirname((new ReflectionClass(AdminApiVendorModule::class))->getFileName());
 
         $this->controllerMap = [
             'docs' => [
@@ -63,6 +67,4 @@ class ApiAdminDwyModule extends ApiModule implements BootstrapInterface
         ];
         parent::init();
     }
-
-
 }

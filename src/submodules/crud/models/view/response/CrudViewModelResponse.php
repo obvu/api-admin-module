@@ -6,7 +6,7 @@
  * Time: 8:25
  */
 
-namespace ObvuCrudModule\models\view\response;
+namespace Obvu\Modules\Api\AdminSubmodules\Crud\models\view\response;
 
 use yii\base\BaseObject;
 

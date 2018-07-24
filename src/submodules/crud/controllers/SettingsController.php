@@ -6,10 +6,10 @@
  * Time: 23:43
  */
 
-namespace ObvuCrudModule\controllers;
+namespace Obvu\Modules\Api\AdminSubmodules\Crud\controllers;
 
 
-use ObvuCrudModule\components\settings\CrudSettingsRepository;
+use Obvu\Modules\Api\AdminSubmodules\Crud\components\settings\CrudSettingsRepository;
 
 class SettingsController extends BaseCrudController
 {

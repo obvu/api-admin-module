@@ -1,6 +1,6 @@
 <?php
 
-namespace ObvuCrudModule\components\database\models\crud\element;
+namespace Obvu\Modules\Api\AdminSubmodules\Crud\components\database\models\crud\element;
 
 use Yii;
 

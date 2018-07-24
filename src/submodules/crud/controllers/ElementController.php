@@ -6,7 +6,7 @@
  * Time: 8:18
  */
 
-namespace ObvuCrudModule\controllers;
+namespace Obvu\Modules\Api\AdminSubmodules\Crud\controllers;
 
 
 use yii\rest\OptionsAction;

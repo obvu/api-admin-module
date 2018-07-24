@@ -6,7 +6,7 @@
  * Time: 12:48
  */
 
-namespace ObvuCrudModule\components\element\parser\base;
+namespace Obvu\Modules\Api\AdminSubmodules\Crud\components\element\parser\base;
 
 
 class SimpleParser extends BaseParser

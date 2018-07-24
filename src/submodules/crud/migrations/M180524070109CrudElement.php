@@ -1,6 +1,6 @@
 <?php
 
-namespace ObvuCrudModule\migrations;
+namespace Obvu\Modules\Api\AdminSubmodules\Crud\migrations;
 
 use yii\db\Migration;
 

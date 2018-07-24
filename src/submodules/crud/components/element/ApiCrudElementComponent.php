@@ -6,14 +6,14 @@
  * Time: 9:51
  */
 
-namespace ObvuCrudModule\components\element;
+namespace Obvu\Modules\Api\AdminSubmodules\Crud\components\element;
 
 
-use ObvuCrudModule\components\database\models\crud\element\CrudElementObject;
-use ObvuCrudModule\components\element\parser\base\BaseParser;
-use ObvuCrudModule\components\element\parser\base\SimpleParser;
-use ObvuCrudModule\components\element\parser\LocationsParser;
-use ObvuCrudModule\models\view\response\CrudViewModelResponse;
+use Obvu\Modules\Api\AdminSubmodules\Crud\components\database\models\crud\element\CrudElementObject;
+use Obvu\Modules\Api\AdminSubmodules\Crud\components\element\parser\base\BaseParser;
+use Obvu\Modules\Api\AdminSubmodules\Crud\components\element\parser\base\SimpleParser;
+use Obvu\Modules\Api\AdminSubmodules\Crud\components\element\parser\LocationsParser;
+use Obvu\Modules\Api\AdminSubmodules\Crud\models\view\response\CrudViewModelResponse;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use Zvinger\BaseClasses\app\exceptions\model\ModelValidateException;

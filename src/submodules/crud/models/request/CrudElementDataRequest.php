@@ -6,7 +6,7 @@
  * Time: 13:28
  */
 
-namespace ObvuCrudModule\models\request;
+namespace Obvu\Modules\Api\AdminSubmodules\Crud\models\request;
 
 /**
  * Class CrudElementDataRequest

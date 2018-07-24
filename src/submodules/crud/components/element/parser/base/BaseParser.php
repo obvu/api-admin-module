@@ -6,11 +6,11 @@
  * Time: 12:32
  */
 
-namespace ObvuCrudModule\components\element\parser\base;
+namespace Obvu\Modules\Api\AdminSubmodules\Crud\components\element\parser\base;
 
 
-use ObvuCrudModule\components\database\models\crud\element\CrudElementObject;
-use ObvuCrudModule\models\view\response\CrudViewModelResponse;
+use Obvu\Modules\Api\AdminSubmodules\Crud\components\database\models\crud\element\CrudElementObject;
+use Obvu\Modules\Api\AdminSubmodules\Crud\models\view\response\CrudViewModelResponse;
 
 abstract class BaseParser
 {

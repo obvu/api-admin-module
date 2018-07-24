@@ -6,7 +6,7 @@
  * Time: 12:20
  */
 
-namespace ObvuCrudModule\components\database\models\crud\element;
+namespace Obvu\Modules\Api\AdminSubmodules\Crud\components\database\models\crud\element;
 
 
 use yii\db\ActiveQuery;

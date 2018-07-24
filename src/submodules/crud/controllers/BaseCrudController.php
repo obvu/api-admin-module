@@ -6,16 +6,16 @@
  * Time: 9:52
  */
 
-namespace ObvuCrudModule\controllers;
+namespace Obvu\Modules\Api\AdminSubmodules\Crud\controllers;
 
 
-use ObvuCrudModule\ObvuCrudModule;
+use Obvu\Modules\Api\AdminSubmodules\Crud\CrudModule;
 use Zvinger\BaseClasses\api\controllers\BaseApiController;
 
 class BaseCrudController extends BaseApiController
 {
     /**
-     * @var ObvuCrudModule
+     * @var CrudModule
      */
     public $module;
 }

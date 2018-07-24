@@ -6,7 +6,7 @@
  * Time: 0:01
  */
 
-namespace ObvuCrudModule\components\settings\models;
+namespace Obvu\Modules\Api\AdminSubmodules\Crud\components\settings\models;
 
 /**
  * Class SingleSettingsFormField

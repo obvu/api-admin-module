@@ -6,16 +6,16 @@
  * Time: 10:05
  */
 
-namespace ObvuCrudModule\commands;
+namespace Obvu\Modules\Api\AdminSubmodules\Crud\commands;
 
 
-use ObvuCrudModule\ObvuCrudModule;
+use Obvu\Modules\Api\AdminSubmodules\Crud\CrudModule;
 use yii\console\Controller;
 
 class InitController extends Controller
 {
     /**
-     * @var ObvuCrudModule
+     * @var CrudModule
      */
     public $module;
 

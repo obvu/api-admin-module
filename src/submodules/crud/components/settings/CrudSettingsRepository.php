@@ -6,12 +6,12 @@
  * Time: 23:44
  */
 
-namespace ObvuCrudModule\components\settings;
+namespace Obvu\Modules\Api\AdminSubmodules\Crud\components\settings;
 
 
-use ObvuCrudModule\components\settings\models\SettingsFormModel;
-use ObvuCrudModule\components\settings\models\SingleSettingsFormField;
-use ObvuCrudModule\components\settings\models\SingleSettingsModel;
+use Obvu\Modules\Api\AdminSubmodules\Crud\components\settings\models\SettingsFormModel;
+use Obvu\Modules\Api\AdminSubmodules\Crud\components\settings\models\SingleSettingsFormField;
+use Obvu\Modules\Api\AdminSubmodules\Crud\components\settings\models\SingleSettingsModel;
 
 class CrudSettingsRepository
 {

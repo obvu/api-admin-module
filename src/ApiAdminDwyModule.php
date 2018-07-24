@@ -11,7 +11,7 @@ namespace Obvu\Modules\Api\Admin;
 use Obvu\Modules\Api\Admin\submodules\event\components\EventAdminComponent;
 use Obvu\Modules\Api\Admin\submodules\content\ApiAdminDwyContentModule;
 use Obvu\Modules\Api\Admin\submodules\event\EventModule;
-use ObvuCrudModule\ObvuCrudModule;
+use Obvu\Modules\Api\AdminSubmodules\Crud\CrudModule;
 use ReflectionClass;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
@@ -67,7 +67,7 @@ class ApiAdminDwyModule extends ApiModule implements BootstrapInterface
                 'docsScanPaths' => $this->docsScanPaths,
             ],
             'crud'    => [
-                'class' => ObvuCrudModule::class,
+                'class' => CrudModule::class,
             ],
             'event' => EventModule::class
         ];

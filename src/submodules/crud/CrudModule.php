@@ -6,10 +6,10 @@
  * Time: 8:14
  */
 
-namespace ObvuCrudModule;
+namespace Obvu\Modules\Api\AdminSubmodules\Crud;
 
 
-use ObvuCrudModule\components\element\ApiCrudElementComponent;
+use Obvu\Modules\Api\AdminSubmodules\Crud\components\element\ApiCrudElementComponent;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 use yii\base\Module;
@@ -19,7 +19,7 @@ use yii\base\Module;
  * @package ObvuCrudModule
  * @property ApiCrudElementComponent $apiElement
  */
-class ObvuCrudModule extends Module implements BootstrapInterface
+class CrudModule extends Module implements BootstrapInterface
 {
     public function init()
     {

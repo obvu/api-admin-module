@@ -1,0 +1,25 @@
+{
+  "name" : "obvu/api-admin-module",
+  "description" : "yii2 api admin module",
+  "type" : "yii2-extension",
+  "homepage": "https://github.com/obvu/api-admin-module",
+  "license" : "MIT",
+  "keywords" : ["admin", "admin module"],
+  "authors" : [
+    {
+      "name" : "Anton Morev",
+      "email" : "shikto@mail.ru"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require" : {
+    "php": ">=7.1.3",
+    "yiisoft/yii2": "~2.0.0",
+    "zvinger/yii2-base-classes": "dev-master"
+  },
+  "autoload" : {
+    "psr-4" : {
+      "Obvu\\Modules\\Api\\Admin\\" : ""
+    }
+  }
+}

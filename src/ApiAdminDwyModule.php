@@ -8,9 +8,7 @@
 
 namespace Obvu\Modules\Api\Admin;
 
-use Obvu\Modules\Api\Admin\submodules\event\components\EventAdminComponent;
 use Obvu\Modules\Api\Admin\submodules\content\ApiAdminDwyContentModule;
-use Obvu\Modules\Api\Admin\submodules\event\EventModule;
 use Obvu\Modules\Api\AdminSubmodules\Crud\CrudModule;
 use ReflectionClass;
 use yii\base\Application;
@@ -22,8 +20,6 @@ use Zvinger\BaseClasses\app\modules\api\ApiModule;
 /**
  * Class ApiAdminDwyModule
  * @package Obvu\Modules\Api\Admin
- *
- * @property EventAdminComponent event
  */
 class ApiAdminDwyModule extends ApiModule implements BootstrapInterface
 {
@@ -36,17 +32,12 @@ class ApiAdminDwyModule extends ApiModule implements BootstrapInterface
     public function bootstrap($app)
     {
         $app->urlManager->addRules([
-            ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/event/information', 'pluralize' => false],
             ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/text-block'],
             ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/blog/post'],
             ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/blog/post-category'],
             ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/page'],
             ['class' => 'yii\rest\UrlRule', 'controller' => $this->uniqueId . '/content/widget'],
         ]);
-        $components = [
-            'event' => EventAdminComponent::class,
-        ];
-        $this->setComponents($components);
     }
 
 
@@ -69,7 +60,6 @@ class ApiAdminDwyModule extends ApiModule implements BootstrapInterface
             'crud'    => [
                 'class' => CrudModule::class,
             ],
-            'event' => EventModule::class
         ];
         parent::init();
     }

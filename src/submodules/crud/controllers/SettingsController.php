@@ -15,7 +15,7 @@ class SettingsController extends BaseCrudController
 {
     /**
      * @SWG\GET(
-     *     path="/dwy/crud/settings",
+     *     path="/crud/settings",
      *     tags={"crud"},
      *     summary="Получение списка элементов CRUD",
      *     @SWG\Response(

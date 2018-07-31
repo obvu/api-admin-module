@@ -34,7 +34,7 @@ class PageController extends BaseAdminContentController
 
     /**
      * @SWG\Get(
-     *     path="/dwy/content/pages/{pageId}",
+     *     path="/content/pages/{pageId}",
      *     tags={"Page"},
      *     summary="Получение страницы",
      *     @SWG\Parameter(
@@ -58,7 +58,7 @@ class PageController extends BaseAdminContentController
 
     /**
      * @SWG\Post(
-     *     path="/dwy/content/pages",
+     *     path="/content/pages",
      *     tags={"Page"},
      *     summary="Создание страницы",
      *     @SWG\Parameter(
@@ -82,7 +82,7 @@ class PageController extends BaseAdminContentController
 
     /**
      * @SWG\Put(
-     *     path="/dwy/content/pages/{pageId}",
+     *     path="/content/pages/{pageId}",
      *     tags={"Page"},
      *     summary="Редактирование страницы",
      *     @SWG\Parameter(
@@ -113,7 +113,7 @@ class PageController extends BaseAdminContentController
 
     /**
      * @SWG\GET(
-     *     path="/dwy/content/pages",
+     *     path="/content/pages",
      *     tags={"Page"},
      *     summary="Получение списка текстовых блоков",
      *     @SWG\Response(

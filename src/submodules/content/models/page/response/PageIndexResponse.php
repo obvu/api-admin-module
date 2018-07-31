@@ -8,8 +8,8 @@
 
 namespace Obvu\Modules\Api\AdminSubmodules\content\models\page\response;
 
-use Obvu\Modules\Api\AdminSubmodules\content\models\page\textBlockModel;
-use Obvu\Modules\Api\AdminSubmodules\content\models\textBlock\PageModel;
+use Obvu\Modules\Api\AdminSubmodules\Сontent\models\page\textBlockModel;
+use Obvu\Modules\Api\AdminSubmodules\Сontent\models\textBlock\PageModel;
 
 /**
  * Class PostListResponse

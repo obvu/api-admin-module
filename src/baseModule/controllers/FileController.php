@@ -16,7 +16,7 @@ class FileController extends BaseAdminController
 {
     /**
      *
-     * @SWG\Post(path="/dwy/file/upload",
+     * @SWG\Post(path="/file/upload",
      *     tags={"File"},
      *     summary="Загрузка файла",
      *     consumes={"multipart/form-data"},

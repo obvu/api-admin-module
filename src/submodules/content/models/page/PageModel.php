@@ -9,8 +9,6 @@
 namespace Obvu\Modules\Api\AdminSubmodules\content\models\page;
 
 use Obvu\Modules\Api\AdminSubmodules\content\models\page\property\TemplateModel;
-use Zvinger\BaseClasses\app\helpers\fakeData\DataFakerGenerator;
-use Zvinger\BaseClasses\app\helpers\fakeData\FakeFilledInterface;
 
 /**
  * Class PostModel

@@ -19,7 +19,7 @@ class ElementController extends BaseCrudController
     }
     /**
      * @SWG\GET(
-     *     path="/dwy/crud/element/{elementType}/{elementId}",
+     *     path="/crud/element/{elementType}/{elementId}",
      *     tags={"crud"},
      *     summary="Получения элемента CRUD",
      *     description="
@@ -61,7 +61,7 @@ Type, например, locations. ID = 1. В таком случае верне
 
     /**
      * @SWG\GET(
-     *     path="/dwy/crud/element/{elementType}",
+     *     path="/crud/element/{elementType}",
      *     tags={"crud"},
      *     summary="Получение списка элементов CRUD",
      *     @SWG\Parameter(
@@ -88,7 +88,7 @@ Type, например, locations. ID = 1. В таком случае верне
 
     /**
      * @SWG\Put(
-     *     path="/dwy/crud/element/{elementType}/{elementId}",
+     *     path="/crud/element/{elementType}/{elementId}",
      *     tags={"crud"},
      *     summary="Обновление элемента CRUD",
      *     @SWG\Parameter(
@@ -133,7 +133,7 @@ Type, например, locations. ID = 1. В таком случае верне
 
     /**
      * @SWG\Post(
-     *     path="/dwy/crud/element/{elementType}",
+     *     path="/crud/element/{elementType}",
      *     tags={"crud"},
      *     summary="Создание элемента CRUD",
      *     @SWG\Parameter(

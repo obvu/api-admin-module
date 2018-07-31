@@ -34,7 +34,7 @@ class TextBlockController extends BaseAdminContentController
 
     /**
      * @SWG\GET(
-     *     path="/dwy/content/text-blocks/{textBlockId}",
+     *     path="/content/text-blocks/{textBlockId}",
      *     tags={"Text Block"},
      *     summary="Получение текстового блока",
      *     @SWG\Parameter(
@@ -58,7 +58,7 @@ class TextBlockController extends BaseAdminContentController
 
     /**
      * @SWG\Post(
-     *     path="/dwy/content/text-blocks",
+     *     path="/content/text-blocks",
      *     tags={"Text Block"},
      *     summary="Создание текстового блока",
      *     @SWG\Parameter(
@@ -82,7 +82,7 @@ class TextBlockController extends BaseAdminContentController
 
     /**
      * @SWG\PUT(
-     *     path="/dwy/content/text-blocks/{textBlockId}",
+     *     path="/content/text-blocks/{textBlockId}",
      *     tags={"Text Block"},
      *     summary="Редактирование текстового блока",
      *     @SWG\Parameter(
@@ -113,7 +113,7 @@ class TextBlockController extends BaseAdminContentController
 
     /**
      * @SWG\GET(
-     *     path="/dwy/content/text-blocks",
+     *     path="/content/text-blocks",
      *     tags={"Text Block"},
      *     summary="Получение списка текстовых блоков",
      *     @SWG\Response(

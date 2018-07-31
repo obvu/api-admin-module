@@ -38,7 +38,7 @@ class WidgetController extends BaseAdminContentController
 
     /**
      * @SWG\Post(
-     *     path="/dwy/content/widgets",
+     *     path="/content/widgets",
      *     tags={"Widget"},
      *     summary="Редактирование виджетов",
      *     @SWG\Parameter(
@@ -63,7 +63,7 @@ class WidgetController extends BaseAdminContentController
 
     /**
      * @SWG\GET(
-     *     path="/dwy/content/widgets",
+     *     path="/content/widgets",
      *     tags={"Widget"},
      *     summary="Получение значений виджетов",
      *     @SWG\Response(

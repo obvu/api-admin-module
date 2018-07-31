@@ -32,7 +32,7 @@ class PostController extends BaseAdminController
     }
 
     /**
-     * @SWG\Get(path="/dwy/content/blog/posts/{postId}",
+     * @SWG\Get(path="/content/blog/posts/{postId}",
      *     tags={"blog"},
      *     summary="Получение информации о посте",
      *     @SWG\Parameter(
@@ -56,7 +56,7 @@ class PostController extends BaseAdminController
     }
 
     /**
-     * @SWG\Post(path="/dwy/content/blog/posts",
+     * @SWG\Post(path="/content/blog/posts",
      *     tags={"blog"},
      *     summary="Создание фонда",
      *     @SWG\Parameter(
@@ -80,7 +80,7 @@ class PostController extends BaseAdminController
     }
 
     /**
-     * @SWG\Put(path="/dwy/content/blog/posts/{postId}",
+     * @SWG\Put(path="/content/blog/posts/{postId}",
      *     tags={"blog"},
      *     summary="Создание фонда",
      *     @SWG\Parameter(
@@ -111,7 +111,7 @@ class PostController extends BaseAdminController
 
 
     /**
-     * @SWG\GET(path="/dwy/content/blog/posts",
+     * @SWG\GET(path="/content/blog/posts",
      *     tags={"blog"},
      *     summary="Получение списка постов",
      *     @SWG\Response(

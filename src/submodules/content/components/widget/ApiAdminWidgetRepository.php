@@ -9,8 +9,8 @@
 namespace Obvu\Modules\Api\AdminSubmodules\Content\components\widget;
 
 
-use app\components\database\repository\content\widget\models\object\WidgetObject;
-use app\components\database\repository\content\widget\WidgetRepository;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\widget\object\WidgetObject;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\widget\repository\WidgetRepository;
 use Obvu\Modules\Api\AdminSubmodules\Content\models\widget\WidgetModel;
 use Obvu\Modules\Api\AdminSubmodules\Content\models\widget\WidgetsInfo;
 use Zvinger\BaseClasses\app\components\database\repository\BaseApiRepository;
@@ -22,6 +22,10 @@ class ApiAdminWidgetRepository extends BaseApiRepository
      */
     public $repository;
 
+    /**
+     * ApiAdminWidgetRepository constructor.
+     * @throws \yii\base\InvalidConfigException
+     */
     public function __construct()
     {
         $this->setRepository(\Yii::createObject(WidgetRepository::class));

@@ -6,14 +6,14 @@
  * Time: 0:08
  */
 
-namespace Obvu\Modules\Api\AdminSubmodules\content\models\page\request;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\models\page\request;
 
 
 use Zvinger\BaseClasses\api\request\BaseApiRequest;
 
 /**
  * Class PostInfoRequest
- * @package Obvu\Modules\Api\AdminSubmodules\content\models\page\request
+ * @package Obvu\Modules\Api\AdminSubmodules\Content\models\page\request
  * @SWG\Definition()
  */
 class PageInfoRequest extends BaseApiRequest

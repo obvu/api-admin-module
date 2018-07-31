@@ -23,6 +23,6 @@ class CrudElementObject extends DBCrudElementObject
 
     public static function find()
     {
-        return new CrudElementQuery(get_called_class());
+        return new CrudElementQuery(static::class);
     }
 }

@@ -8,11 +8,10 @@
 
 namespace Obvu\Modules\Api\AdminSubmodules\Content\components\post\object;
 
-
-use app\components\database\repository\post\models\object\PostObject;
-use app\components\database\repository\post\PostRepository;
 use Obvu\Modules\Api\AdminSubmodules\Content\components\post\category\PostCategoryAdminRepository;
 use Obvu\Modules\Api\AdminSubmodules\Content\models\post\AdminPostModel;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\post\object\PostObject;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\post\repository\PostRepository;
 use Obvu\Modules\Api\AdminSubmodules\Content\models\post\request\AdminPostInfoRequest;
 use Zvinger\BaseClasses\app\components\database\repository\BaseApiRepository;
 
@@ -77,13 +76,10 @@ class PostAdminRepository extends BaseApiRepository
     }
 
     /**
-     * @param bool $fake
      * @return AdminPostModel
      */
-    private function createElement($fake = FALSE)
+    private function createElement()
     {
-        $object = new AdminPostModel();
-
-        return $object;
+        return new AdminPostModel();
     }
 }

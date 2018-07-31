@@ -8,7 +8,6 @@
 
 namespace Obvu\Modules\Api\AdminSubmodules\Content\models\textBlock;
 
-use app\components\database\repository\content\textBlock\models\object\TextBlock;
 use Zvinger\BaseClasses\app\helpers\fakeData\DataFakerGenerator;
 use Zvinger\BaseClasses\app\helpers\fakeData\FakeFilledInterface;
 

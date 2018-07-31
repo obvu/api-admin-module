@@ -13,6 +13,9 @@ use yii\rest\OptionsAction;
 
 class ElementController extends BaseCrudController
 {
+    /**
+     * @throws \yii\base\InvalidConfigException
+     */
     public function actionOptions()
     {
         return \Yii::createObject(OptionsAction::class)->run();

@@ -8,8 +8,8 @@
 
 namespace Obvu\Modules\Api\AdminSubmodules\Content\components\textBlock;
 
-use app\components\database\repository\content\textBlock\models\object\TextBlock;
-use app\components\database\repository\content\textBlock\TextBlockRepository;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\textBlock\object\TextBlock;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\textBlock\repository\TextBlockRepository;
 use Obvu\Modules\Api\AdminSubmodules\Content\models\textBlock\request\TextBlockInfoRequest;
 use Obvu\Modules\Api\AdminSubmodules\Content\models\textBlock\TextBlockModel;
 use Zvinger\BaseClasses\app\components\database\repository\BaseApiRepository;

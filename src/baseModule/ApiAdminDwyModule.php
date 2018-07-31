@@ -8,7 +8,6 @@
 
 namespace Obvu\Modules\Api\Admin;
 
-use Obvu\Modules\Api\Admin\AdminSubmodules\Content\ApiAdminDwyContentModule;
 use ReflectionClass;
 use yii\base\Application;
 use yii\base\BootstrapInterface;

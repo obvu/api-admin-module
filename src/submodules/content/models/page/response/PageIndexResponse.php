@@ -6,14 +6,13 @@
  * Time: 0:02
  */
 
-namespace Obvu\Modules\Api\AdminSubmodules\content\models\page\response;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\models\page\response;
 
-use Obvu\Modules\Api\AdminSubmodules\Сontent\models\page\textBlockModel;
-use Obvu\Modules\Api\AdminSubmodules\Сontent\models\textBlock\PageModel;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\page\PageModel;
 
 /**
  * Class PostListResponse
- * @package Obvu\Modules\Api\AdminSubmodules\content\models\page\response
+ * @package Obvu\Modules\Api\AdminSubmodules\Content\models\page\response
  * @SWG\Definition()
  */
 class PageIndexResponse

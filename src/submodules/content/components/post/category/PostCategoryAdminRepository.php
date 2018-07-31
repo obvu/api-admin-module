@@ -8,17 +8,14 @@
 
 namespace Obvu\Modules\Api\AdminSubmodules\Content\components\post\category;
 
-
-use app\components\database\repository\post\models\category\PostCategory;
-use app\components\database\repository\post\PostCategoryRepository;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\postCategory\object\PostCategory;
 use Obvu\Modules\Api\AdminSubmodules\Content\models\postCategory\PostCategoryModel;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\postCategory\repository\PostCategoryRepository;
 use Zvinger\BaseClasses\app\components\database\repository\BaseApiRepository;
 
 class PostCategoryAdminRepository extends BaseApiRepository
 {
-    public function __construct(
-        PostCategoryRepository $repository
-    )
+    public function __construct(PostCategoryRepository $repository)
     {
         $this->repository = $repository;
     }

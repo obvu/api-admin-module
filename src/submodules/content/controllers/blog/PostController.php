@@ -21,6 +21,13 @@ class PostController extends BaseAdminController
      */
     private $postAdminRepository;
 
+    /**
+     * PostController constructor.
+     * @param string $id
+     * @param $module
+     * @param PostAdminRepository $postAdminRepository
+     * @param array $config
+     */
     public function __construct(
         string $id,
         $module,

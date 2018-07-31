@@ -24,6 +24,13 @@ class PostCategoryController extends BaseAdminController
      */
     private $postCategoryAdminRepository;
 
+    /**
+     * PostCategoryController constructor.
+     * @param string $id
+     * @param $module
+     * @param PostCategoryAdminRepository $postCategoryAdminRepository
+     * @param array $config
+     */
     public function __construct(
         string $id,
         $module,

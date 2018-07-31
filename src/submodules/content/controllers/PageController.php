@@ -22,6 +22,13 @@ class PageController extends BaseAdminContentController
      */
     private $repository;
 
+    /**
+     * PageController constructor.
+     * @param string $id
+     * @param $module
+     * @param ApiAdminPageRepository $repository
+     * @param array $config
+     */
     public function __construct(
         string $id,
         $module,

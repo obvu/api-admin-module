@@ -6,13 +6,13 @@
  * Time: 0:03
  */
 
-namespace Obvu\Modules\Api\AdminSubmodules\content\models\page;
+namespace Obvu\Modules\Api\AdminSubmodules\Content\models\page;
 
-use Obvu\Modules\Api\AdminSubmodules\content\models\page\property\TemplateModel;
+use Obvu\Modules\Api\AdminSubmodules\Content\models\page\property\TemplateModel;
 
 /**
  * Class PostModel
- * @package Obvu\Modules\Api\AdminSubmodules\content\models\textBlock
+ * @package Obvu\Modules\Api\AdminSubmodules\Content\models\textBlock
  * @SWG\Definition()
  */
 class PageModel

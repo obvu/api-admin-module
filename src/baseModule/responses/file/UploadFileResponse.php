@@ -8,7 +8,6 @@
 
 namespace Obvu\Modules\Api\Admin\responses\file;
 
-
 /**
  * @SWG\Definition()
  */

@@ -1,15 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zvinger
- * Date: 19.04.18
- * Time: 15:52
- */
 
 namespace Obvu\Modules\Api\AdminSubmodules\Content\components\textBlock\filter;
 
+use Obvu\Modules\Api\Admin\repository\BaseFilter;
 
-class TextBlockFilter
+class TextBlockFilter extends BaseFilter
 {
-
+    public $key;
 }

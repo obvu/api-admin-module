@@ -22,6 +22,13 @@ class TextBlockController extends BaseAdminContentController
      */
     private $repository;
 
+    /**
+     * TextBlockController constructor.
+     * @param string $id
+     * @param $module
+     * @param AdminTextBlockRepository $repository
+     * @param array $config
+     */
     public function __construct(
         string $id,
         $module,

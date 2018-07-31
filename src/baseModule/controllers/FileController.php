@@ -12,6 +12,11 @@ use Obvu\Modules\Api\Admin\controllers\base\BaseAdminController;
 use Obvu\Modules\Api\Admin\responses\file\UploadFileResponse;
 use Zvinger\BaseClasses\app\modules\fileStorage\VendorFileStorageModule;
 
+if (!defined("FILE_STORAGE_MODULE")) {
+    define("FILE_STORAGE_MODULE", 'fileStorage');
+}
+
+
 class FileController extends BaseAdminController
 {
     /**

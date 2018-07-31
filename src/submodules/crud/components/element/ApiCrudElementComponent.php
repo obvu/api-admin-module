@@ -43,7 +43,6 @@ class ApiCrudElementComponent
     /**
      * @param $type
      * @return CrudViewModelResponse[]
-     * @throws \yii\base\InvalidConfigException
      * @throws \Exception
      */
     public function listElement($type)

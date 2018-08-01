@@ -37,7 +37,7 @@ class AdminModule extends ApiModule implements BootstrapInterface
     public function init()
     {
         $this->docsScanPaths[] = $this->basePath;
-        $this->docsScanPaths[] = \dirname((new ReflectionClass(AdminApiVendorModule::class))->getFileName());
+//        $this->docsScanPaths[] = \dirname((new ReflectionClass(AdminApiVendorModule::class))->getFileName());
         foreach ($this->modules as $id => $module) {
             $this->docsScanPaths[] = $this->getModule($id)->basePath;
         }

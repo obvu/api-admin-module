@@ -10,12 +10,12 @@ namespace Obvu\Modules\Api\AdminSubmodules\Content\controllers\base;
 
 
 use Obvu\Modules\Api\Admin\controllers\base\BaseAdminController;
-use Obvu\Modules\Api\AdminSubmodules\Content\ApiAdminDwyContentModule;
+use Obvu\Modules\Api\AdminSubmodules\Content\ContentModule;
 
 class BaseAdminContentController extends BaseAdminController
 {
     /**
-     * @var ApiAdminDwyContentModule
+     * @var ContentModule
      */
     public $module;
 }

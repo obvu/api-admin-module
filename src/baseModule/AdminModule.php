@@ -16,10 +16,10 @@ use Zvinger\BaseClasses\app\modules\api\admin\v1\AdminApiVendorModule;
 use Zvinger\BaseClasses\app\modules\api\ApiModule;
 
 /**
- * Class ApiAdminDwyModule
+ * Class AdminModule
  * @package Obvu\Modules\Api\Admin
  */
-class ApiAdminDwyModule extends ApiModule implements BootstrapInterface
+class AdminModule extends ApiModule implements BootstrapInterface
 {
     public $docsScanPaths = [];
 

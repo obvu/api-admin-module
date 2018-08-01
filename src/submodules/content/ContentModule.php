@@ -9,15 +9,15 @@
 namespace Obvu\Modules\Api\AdminSubmodules\Content;
 
 use Obvu\Modules\Api\AdminSubmodules\Content\components\textBlock\AdminTextBlockRepository;
-use Obvu\Modules\Api\Admin\ApiAdminDwyModule;
+use Obvu\Modules\Api\Admin\AdminModule;
 
 /**
- * Class ApiAdminDwyContentModule
+ * Class ContentModule
  * @package Obvu\Modules\Api\AdminSubmodules\Content
  *
  * @property AdminTextBlockRepository textBlock
  */
-class ApiAdminDwyContentModule extends ApiAdminDwyModule
+class ContentModule extends AdminModule
 {
     public function bootstrap($app)
     {

@@ -8,7 +8,7 @@
 
 namespace Obvu\Modules\Api\Admin\controllers\base;
 
-use Obvu\Modules\Api\Admin\ApiAdminDwyModule;
+use Obvu\Modules\Api\Admin\AdminModule;
 use yii\filters\auth\HttpBearerAuth;
 use yii\rest\OptionsAction;
 use Zvinger\BaseClasses\api\controllers\BaseApiController;
@@ -16,7 +16,7 @@ use Zvinger\BaseClasses\api\controllers\BaseApiController;
 class BaseAdminController extends BaseApiController
 {
     /**
-     * @var ApiAdminDwyModule
+     * @var AdminModule
      */
     public $module;
 

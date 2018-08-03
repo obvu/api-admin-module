@@ -63,7 +63,7 @@ class FileController extends BaseAdminController
      *     consumes={"multipart/form-data"},
      *     @SWG\Parameter(
      *          in="formData",
-     *          name="files",
+     *          name="files[]",
      *          type="file",
      *          description="Файл для загрузки"
      *     ),
@@ -83,7 +83,7 @@ class FileController extends BaseAdminController
     {
         /** @var VendorFileStorageModule $fileStorageModule */
         $fileStorageModule = \Yii::$app->getModule(FILE_STORAGE_MODULE);
-        $savedFileModels = $fileStorageModule->storage->uploadPostFiles('image');
+        $savedFileModels = $fileStorageModule->storage->uploadPostFiles('files');
         $responses = [];
         foreach ($savedFileModels as $savedFileModel) {
             $response = new UploadFileResponse();

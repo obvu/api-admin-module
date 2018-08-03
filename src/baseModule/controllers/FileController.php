@@ -6,7 +6,7 @@
  * Time: 16:42
  */
 
-namespace Obvu\Modules\Api\AdminSubmodules\event\controllers;
+namespace Obvu\Modules\Api\Admin\controllers;
 
 use Obvu\Modules\Api\Admin\controllers\base\BaseAdminController;
 use Obvu\Modules\Api\Admin\responses\file\UploadFileResponse;

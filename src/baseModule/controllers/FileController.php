@@ -54,4 +54,44 @@ class FileController extends BaseAdminController
 
         return $response;
     }
+
+    /**
+     *
+     * @SWG\Post(path="/file/upload-multiple",
+     *     tags={"File"},
+     *     summary="Загрузка файлов",
+     *     consumes={"multipart/form-data"},
+     *     @SWG\Parameter(
+     *          in="formData",
+     *          name="files",
+     *          type="file",
+     *          description="Файл для загрузки"
+     *     ),
+     *     @SWG\Response(
+     *         response = 200,
+     *         description = "Массив мероприятий",
+     *         @SWG\Schema(ref = "#/definitions/UploadFileResponse")
+     *     ),
+     * )
+     *
+     * @return UploadFileResponse
+     * @throws \Zvinger\BaseClasses\app\exceptions\model\ModelValidateException
+     * @throws \yii\base\InvalidConfigException
+     * @throws \Exception
+     */
+    public function actionUploadMultiple()
+    {
+        /** @var VendorFileStorageModule $fileStorageModule */
+        $fileStorageModule = \Yii::$app->getModule(FILE_STORAGE_MODULE);
+        $savedFileModels = $fileStorageModule->storage->uploadPostFiles('image');
+        $responses = [];
+        foreach ($savedFileModels as $savedFileModel) {
+            $response = new UploadFileResponse();
+            $response->fullUrl = $savedFileModel->getFullUrl();
+            $response->fileId = $savedFileModel->fileStorageElement->id;
+            $responses[] = $response;
+        }
+
+        return $responses;
+    }
 }

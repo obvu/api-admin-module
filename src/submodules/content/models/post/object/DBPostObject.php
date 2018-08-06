@@ -2,6 +2,7 @@
 
 namespace Obvu\Modules\Api\AdminSubmodules\Content\models\post\object;
 
+
 /**
  * This is the model class for table "post".
  *
@@ -34,7 +35,7 @@ class DBPostObject extends \yii\db\ActiveRecord
             [['text'], 'string'],
             [['slug'], 'string', 'max' => 30],
             [['title'], 'string', 'max' => 255],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\components\database\repository\post\models\category\DBPostCategory::className(), 'targetAttribute' => ['category_id' => 'id']],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => \Obvu\Modules\Api\AdminSubmodules\Content\models\postCategory\object\DBPostCategory::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => \Zvinger\BaseClasses\app\models\work\user\object\VendorUserObject::className(), 'targetAttribute' => ['created_by' => 'id']],
         ];
     }

@@ -13,7 +13,7 @@ use yii\db\ActiveQuery;
 
 /**
  * Class TextBlockQuery
- * @package app\components\database\repository\content\textBlock\models\object
+ * @package Obvu\Modules\Api\AdminSubmodules\Content\models\textBlock\object
  * @see TextBlock
  */
 class TextBlockQuery extends ActiveQuery

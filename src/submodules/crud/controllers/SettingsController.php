@@ -33,6 +33,6 @@ class SettingsController extends BaseCrudController
      */
     public function actionIndex()
     {
-        return \Yii::createObject(CrudSettingsRepository::class)->getSettings();
+        return $this->module->crudSettings->getSettings();
     }
 }

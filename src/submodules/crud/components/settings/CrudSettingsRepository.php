@@ -18,9 +18,8 @@ class CrudSettingsRepository
     public $crudSettings = [];
     /**
      * @return SingleSettingsModel[]
-     * @throws \yii\base\InvalidConfigException
      */
-    public function getSettings()
+    public function getSettings(): array
     {
         return $this->crudSettings;
     }

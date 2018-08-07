@@ -11,6 +11,9 @@ namespace Obvu\Modules\Api\AdminSubmodules\Crud;
 
 use Obvu\Modules\Api\AdminSubmodules\Crud\components\element\ApiCrudElementComponent;
 use Obvu\Modules\Api\AdminSubmodules\Crud\components\settings\CrudSettingsRepository;
+use Obvu\Modules\Api\AdminSubmodules\Crud\components\settings\models\SettingsFormModel;
+use Obvu\Modules\Api\AdminSubmodules\Crud\components\settings\models\SingleSettingsFormField;
+use Obvu\Modules\Api\AdminSubmodules\Crud\components\settings\models\SingleSettingsModel;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 use yii\base\Module;
@@ -24,10 +27,13 @@ class CrudModule extends Module implements BootstrapInterface
 {
     public $crudSettings = [];
 
+    /**
+     * @throws \yii\base\InvalidConfigException
+     */
     public function init()
     {
-        if (empty($this->crudConfigs)) {
-            $this->crudConfigs = [
+        if (empty($this->crudSettings)) {
+            $this->crudSettings = [
                 \Yii::createObject([
                     'class' => SingleSettingsModel::class,
                     'title' => 'Площадки',

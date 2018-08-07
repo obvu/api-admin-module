@@ -9,8 +9,6 @@
 namespace Obvu\Modules\Api\AdminSubmodules\Crud\controllers;
 
 
-use Obvu\Modules\Api\AdminSubmodules\Crud\components\settings\CrudSettingsRepository;
-
 class SettingsController extends BaseCrudController
 {
     /**
@@ -29,10 +27,10 @@ class SettingsController extends BaseCrudController
      * @throws \yii\base\InvalidConfigException
      */
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @return
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
-        return $this->module->crudSettings->getSettings();
+        return $this->module->crudSettings;
     }
 }

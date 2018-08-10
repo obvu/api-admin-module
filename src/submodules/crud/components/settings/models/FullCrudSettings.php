@@ -20,4 +20,10 @@ class FullCrudSettings
      * @SWG\Property()
      */
     public $fields;
+
+    /**
+     * @var SingleMenuElement[]
+     * @SWG\Property()
+     */
+    public $menuElements;
 }

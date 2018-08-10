@@ -19,7 +19,7 @@ class SettingsController extends BaseCrudController
      *     @SWG\Response(
      *         response = 200,
      *         description = "Успешный ответ",
-     *         @SWG\Schema(ref = "#/definitions/SingleSettingsModel")
+     *         @SWG\Schema(ref = "#/definitions/FullCrudSettings")
      *     ),
      * )
      * @param $elementType

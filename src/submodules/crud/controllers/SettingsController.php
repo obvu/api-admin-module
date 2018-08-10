@@ -29,7 +29,7 @@ class SettingsController extends BaseCrudController
     /**
      * @return
      */
-    public function actionIndex(): array
+    public function actionIndex()
     {
         return $this->module->crudSettings;
     }

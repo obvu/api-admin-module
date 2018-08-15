@@ -8,11 +8,16 @@
 
 namespace Obvu\Modules\Api\AdminSubmodules\Content\components\post\object;
 
+use Obvu\Modules\Api\Admin\models\FilledInformationEvent;
 use Obvu\Modules\Api\AdminSubmodules\Content\components\post\category\PostCategoryAdminRepository;
+use Obvu\Modules\Api\AdminSubmodules\Content\ContentModule;
 use Obvu\Modules\Api\AdminSubmodules\Content\models\post\AdminPostModel;
 use Obvu\Modules\Api\AdminSubmodules\Content\models\post\object\PostObject;
 use Obvu\Modules\Api\AdminSubmodules\Content\models\post\repository\PostRepository;
 use Obvu\Modules\Api\AdminSubmodules\Content\models\post\request\AdminPostInfoRequest;
+use yii\base\Event;
+use yii\db\ActiveRecord;
+use Zvinger\BaseClasses\app\components\data\miscInfo\VendorUserMiscInfoService;
 use Zvinger\BaseClasses\app\components\database\repository\BaseApiRepository;
 
 class PostAdminRepository extends BaseApiRepository
@@ -51,6 +56,9 @@ class PostAdminRepository extends BaseApiRepository
             }
             $model->{$key} = $postObject->{$key};
         }
+        $event = new FilledInformationEvent();
+        $event->filledInformation = &$model;
+        ContentModule::getInstance()->trigger(ContentModule::EVENT_FILL_POST_MODEL, $event);
 
         return $model;
     }
@@ -71,8 +79,26 @@ class PostAdminRepository extends BaseApiRepository
             }
             $postObject->{$key} = $value;
         }
+        $saved = false;
+        $callback = function () use ($postObject, $postModel, $saved) {
+            if ($saved) {
+                return;
+            }
+            $event = new FilledInformationEvent();
+            $event->filledInformation = &$postObject;
+            $event->baseInformation = $postModel;
+            ContentModule::getInstance()->trigger(ContentModule::EVENT_FILL_POST_OBJECT, $event);
+            $saved = true;
+        };
+        $postObject->on(ActiveRecord::EVENT_AFTER_INSERT, $callback);
+        $postObject->on(ActiveRecord::EVENT_AFTER_UPDATE, $callback);
 
         return $postObject;
+    }
+
+    public function getMiscInfo($postId)
+    {
+        return new VendorUserMiscInfoService($postId, 'post');
     }
 
     /**

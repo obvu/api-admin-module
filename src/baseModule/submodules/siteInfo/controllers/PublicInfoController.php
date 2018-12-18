@@ -1,17 +1,21 @@
 <?php
 
-
 namespace Obvu\Modules\Api\Admin\submodules\siteInfo\controllers;
 
-
-use Zvinger\BaseClasses\api\controllers\BaseApiController;
-
-class PublicInfoController extends BaseApiController
+class PublicInfoController extends BaseSiteInfoController
 {
-    public function actionGetInfo()
+    public function actionPageInfo($page)
     {
-        return [
-            'title' => '123',
-        ];
+        return $this->module->getDataGetter()->getForPage($page, \Yii::$app->request->post());
+    }
+
+    public function actionCommonInfo()
+    {
+        return $this->module->getDataGetter()->getCommonInfo(\Yii::$app->request->post());
+    }
+
+    public function actionBlockInfo($blockName)
+    {
+        return $this->module->getDataGetter()->getBlockInfo($blockName, \Yii::$app->request->post());
     }
 }

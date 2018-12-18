@@ -356,6 +356,9 @@ class CrudModule extends Module implements BootstrapInterface
     private function getIniter()
     {
         if (empty($this->initer)) {
+            if (empty($this->initilizationClassName)) {
+                $this->initilizationClassName = BaseInitialization::class;
+            }
             $this->initer = \Yii::createObject($this->initilizationClassName, [$this]);
         }
 

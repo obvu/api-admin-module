@@ -12,7 +12,7 @@ use function League\Uri\parse;
 use Obvu\Modules\Api\AdminSubmodules\Crud\CrudModule;
 use yii\base\BaseObject;
 
-abstract class BaseInitialization extends BaseObject
+class BaseInitialization extends BaseObject
 {
     protected $handlers = [];
     /**

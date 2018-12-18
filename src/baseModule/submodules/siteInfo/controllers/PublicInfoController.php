@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Obvu\Modules\Api\AdminSubmodules\siteInfo\controllers;
+namespace Obvu\Modules\Api\Admin\submodules\siteInfo\controllers;
 
 
 use Zvinger\BaseClasses\api\controllers\BaseApiController;

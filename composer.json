@@ -21,7 +21,8 @@
     "psr-4" : {
       "Obvu\\Modules\\Api\\Admin\\" : "src/baseModule",
       "Obvu\\Modules\\Api\\AdminSubmodules\\Content\\" : "src/submodules/content/",
-      "Obvu\\Modules\\Api\\AdminSubmodules\\Crud\\" : "src/submodules/crud/"
+      "Obvu\\Modules\\Api\\AdminSubmodules\\Crud\\" : "src/submodules/crud/",
+      "Obvu\\Modules\\Api\\AdminSubmodules\\" : "src/submodules/"
     }
   }
 }

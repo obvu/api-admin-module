@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Obvu\Modules\Api\AdminSubmodules\submodules\src\submodules\siteInfo;
+namespace Obvu\Modules\Api\AdminSubmodules\siteInfo;
 
 
 use yii\base\Module;

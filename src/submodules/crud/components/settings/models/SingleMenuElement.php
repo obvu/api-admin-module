@@ -15,6 +15,9 @@ namespace Obvu\Modules\Api\AdminSubmodules\Crud\components\settings\models;
  */
 class SingleMenuElement
 {
+    const TYPE_CRUD = 'crud';
+    const TYPE_SINGLE = 'single';
+
     /**
      * Ключ пункта меню. Для уникальности
      * @var string
@@ -42,4 +45,11 @@ class SingleMenuElement
      * @SWG\Property()
      */
     public $block;
+
+    /**
+     * Если crud - значит делаем список + формы и тд. Если single - просто нужно сделать одну форму. Отправлять ее так же как отправляется форма в списке
+     * @var string
+     * @SWG\Property()
+     */
+    public $type = self::TYPE_CRUD;
 }

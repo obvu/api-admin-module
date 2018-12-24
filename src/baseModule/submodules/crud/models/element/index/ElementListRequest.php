@@ -1,17 +1,15 @@
 <?php
 
-
 namespace Obvu\Modules\Api\Admin\submodules\crud\models\element\index;
 
-
-use Zvinger\BaseClasses\api\request\BaseApiRequest;
+use Obvu\Modules\Api\Admin\submodules\crud\models\element\BaseElementRequest;
 
 /**
  * Class ElementListRequest
  * @package Obvu\Modules\Api\Admin\submodules\crud\models\element\index
  * @SWG\Definition()
  */
-class ElementListRequest extends BaseApiRequest
+class ElementListRequest extends BaseElementRequest
 {
     /**
      * @var int
@@ -30,10 +28,4 @@ class ElementListRequest extends BaseApiRequest
      * @SWG\Property()
      */
     public $filter;
-
-    /**
-     * @var string
-     * @SWG\Property()
-     */
-    public $type;
 }

@@ -8,8 +8,10 @@ use Obvu\Modules\Api\Admin\submodules\crud\components\database\models\crud\eleme
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\base\BaseFullCrudElementHandler;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementHeaderElement;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementListResult;
+use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementSingleResult;
 use Obvu\Modules\Api\Admin\submodules\crud\models\SingleCrudElementModel;
 use yii\data\ActiveDataProvider;
+use yii\web\NotFoundHttpException;
 
 class SimpleFullCrudElementHandler extends BaseFullCrudElementHandler
 {
@@ -41,7 +43,14 @@ class SimpleFullCrudElementHandler extends BaseFullCrudElementHandler
 
     final public function getSingle($id)
     {
-        // TODO: Implement getSingle() method.
+        $object = $this->getObjectById($id);
+
+        return \Yii::createObject(
+            [
+                'class' => FullCrudElementSingleResult::class,
+                'element' => $this->prepareModel($object),
+            ]
+        );
     }
 
     final public function create($data)
@@ -51,7 +60,11 @@ class SimpleFullCrudElementHandler extends BaseFullCrudElementHandler
 
     final public function update($id, $data)
     {
-        // TODO: Implement update() method.
+        $object = $this->getObjectById($id);
+        $object->data = $data;
+        $object->save();
+
+        return $this->prepareModel($object);
     }
 
     final public function delete($id)
@@ -63,7 +76,7 @@ class SimpleFullCrudElementHandler extends BaseFullCrudElementHandler
     {
         $result = new SingleCrudElementModel();
         $result->id = $elementObject->id;
-        $result->type = $this->type;
+        $result->type = $elementObject->type;
         $result->setObject($elementObject);
         $result->fullData = $this->prepareFullData($elementObject);
         $result->listData = $this->prepareListData($elementObject);
@@ -118,5 +131,20 @@ class SimpleFullCrudElementHandler extends BaseFullCrudElementHandler
             ->byType($this->type)
             ->byModule($this->module)
             ->orderBy('sort, cast(data_id as unsigned)');
+    }
+
+    /**
+     * @param $id
+     * @return FullCrudElementObject
+     * @throws NotFoundHttpException
+     */
+    private function getObjectById($id)
+    {
+        $object = FullCrudElementObject::findOne($id);
+        if (empty($object)) {
+            throw new NotFoundHttpException();
+        }
+
+        return $object;
     }
 }

@@ -8,6 +8,8 @@ use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\base\Base
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\simple\SimpleFullCrudElementHandler;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListRequest;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListResponse;
+use Obvu\Modules\Api\Admin\submodules\crud\models\element\single\ElementSingleRequest;
+use Obvu\Modules\Api\Admin\submodules\crud\models\element\single\ElementSingleResponse;
 
 class FullCrudElementComponent
 {
@@ -27,6 +29,16 @@ class FullCrudElementComponent
                 'headers' => $result->headers,
             ]
         );
+    }
+
+    public function singleElement(ElementSingleRequest $request)
+    {
+        return $this->defineHandler($request->type)->getSingle($request->id);
+    }
+
+    public function updateElement(ElementSingleResponse $request)
+    {
+        return $this->defineHandler($request->element->type)->update($request->element->id, $request->element->fullData);
     }
 
     private function defineHandler($type)

@@ -1,21 +1,18 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: zvinger
- * Date: 07.02.18
- * Time: 16:42
+ * User: amorev
+ * Date: 25.12.2018
+ * Time: 0:12
  */
 
-namespace Obvu\Modules\Api\Admin\controllers;
+namespace Obvu\Modules\Api\Admin\submodules\crud\controllers;
+
 
 use Obvu\Modules\Api\Admin\controllers\base\BaseAdminController;
 use Obvu\Modules\Api\Admin\responses\file\UploadFileResponse;
+use yii\helpers\Json;
 use Zvinger\BaseClasses\app\modules\fileStorage\VendorFileStorageModule;
-
-if (!defined("FILE_STORAGE_MODULE")) {
-    define("FILE_STORAGE_MODULE", 'fileStorage');
-}
-
 
 class FileController extends BaseAdminController
 {
@@ -89,6 +86,7 @@ class FileController extends BaseAdminController
             $response = new UploadFileResponse();
             $response->fullUrl = $savedFileModel->getFullUrl();
             $response->fileId = $savedFileModel->fileStorageElement->id;
+            $response->fileInfo = Json::decode($savedFileModel->fileStorageElement->info);
             $responses[] = $response;
         }
 

@@ -29,6 +29,7 @@ class AdminModule extends ApiModule implements BootstrapInterface
      */
     public function bootstrap($app)
     {
+
     }
 
     /**

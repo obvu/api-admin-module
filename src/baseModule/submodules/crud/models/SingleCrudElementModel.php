@@ -3,26 +3,34 @@
 
 namespace Obvu\Modules\Api\Admin\submodules\crud\models;
 
-
+/**
+ * Class SingleCrudElementModel
+ * @package Obvu\Modules\Api\Admin\submodules\crud\models
+ * @SWG\Definition()
+ */
 class SingleCrudElementModel
 {
     /**
      * @var int
+     * @SWG\Property()
      */
     public $id;
 
     /**
      * @var string
+     * @SWG\Property()
      */
     public $type;
 
     /**
-     * @var mixed
+     * @var object
+     * @SWG\Property()
      */
     public $listData;
 
     /**
-     * @var mixed
+     * @var object
+     * @SWG\Property()
      */
     public $fullData;
 

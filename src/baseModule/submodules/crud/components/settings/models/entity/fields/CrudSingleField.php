@@ -11,6 +11,7 @@ class CrudSingleField extends BaseObject
     const TYPE_INPUT_TEXT = 'input_text';
     const TYPE_TEXTAREA = 'textarea';
     const TYPE_SELECT = 'select';
+    const TYPE_FILE_PHOTO = 'file_photo';
 
     public $type;
 
@@ -19,6 +20,8 @@ class CrudSingleField extends BaseObject
     public $label;
 
     public $variants = null;
+
+    public $multiple = false;
 
     /**
      * @var callable

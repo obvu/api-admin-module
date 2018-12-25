@@ -141,7 +141,7 @@ class SimpleFullCrudElementHandler extends BaseFullCrudElementHandler
         return FullCrudElementObject::find()
             ->byType($this->type)
             ->byModule($this->module)
-            ->orderBy('sort, cast(data_id as unsigned)');
+            ->orderBy('sort');
     }
 
     /**

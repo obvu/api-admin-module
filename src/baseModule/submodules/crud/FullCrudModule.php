@@ -12,7 +12,7 @@ use Zvinger\BaseClasses\api\controllers\ApiDocsSwaggerController;
 
 /**
  * @SWG\Swagger(
- *     basePath=BASE_CRUD_MODULE_PATH,
+ *     basePath="/api/admin/new-site/crud",
  *     produces={"application/json"},
  *     consumes={"application/json"},
  *     host=API_HOST,
@@ -30,7 +30,7 @@ class FullCrudModule extends Module
 
     public function init()
     {
-        !defined("BASE_CRUD_MODULE_PATH") ? define("BASE_CRUD_MODULE_PATH", '/'.$this->getUniqueId()) : true;
+//        !defined("BASE_CRUD_MODULE_PATH") ? define("BASE_CRUD_MODULE_PATH", '/'.$this->getUniqueId()) : true;
         $docsScanPaths[] = $this->basePath;
         foreach ($this->modules as $id => $module) {
             $docsScanPaths[] = $this->getModule($id)->basePath;

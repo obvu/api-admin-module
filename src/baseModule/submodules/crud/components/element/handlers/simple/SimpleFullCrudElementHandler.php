@@ -12,6 +12,7 @@ use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\Fu
 use Obvu\Modules\Api\Admin\submodules\crud\models\SingleCrudElementModel;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
+use Zvinger\BaseClasses\app\exceptions\model\ModelValidateException;
 
 class SimpleFullCrudElementHandler extends BaseFullCrudElementHandler
 {
@@ -56,6 +57,16 @@ class SimpleFullCrudElementHandler extends BaseFullCrudElementHandler
     final public function create($data)
     {
         // TODO: Implement create() method.
+        $object = new FullCrudElementObject([
+            'module' => $this->module,
+            'type' => $this->type,
+            'data' => $data,
+        ]);
+        if (!$object->save()) {
+            throw new ModelValidateException($object);
+        }
+
+        return $this->prepareModel($object);
     }
 
     final public function update($id, $data)

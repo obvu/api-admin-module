@@ -11,12 +11,12 @@ use Zvinger\BaseClasses\api\controllers\ApiDocsSwaggerController;
 
 
 /**
- * (
+ * @SWG\Swagger(
  *     basePath=BASE_CRUD_MODULE_PATH,
  *     produces={"application/json"},
  *     consumes={"application/json"},
  *     host=API_HOST,
- *     (version="1.0", title="API Форм Deworkacy"),
+ *     @SWG\Info(version="1.0", title="API Форм Deworkacy"),
  * )
  */
 

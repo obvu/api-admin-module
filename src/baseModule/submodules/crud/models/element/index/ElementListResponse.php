@@ -4,6 +4,8 @@
 namespace Obvu\Modules\Api\Admin\submodules\crud\models\element\index;
 
 
+use Obvu\Modules\Api\Admin\submodules\crud\models\SingleCrudElementModel;
+
 /**
  * Class ElementListResponse
  * @package Obvu\Modules\Api\Admin\submodules\crud\models\element\index
@@ -12,7 +14,7 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\models\element\index;
 class ElementListResponse
 {
     /**
-     * @var mixed[]
+     * @var SingleCrudElementModel[]
      * @SWG\Property()
      */
     public $elements;

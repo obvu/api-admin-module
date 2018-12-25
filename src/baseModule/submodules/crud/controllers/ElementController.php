@@ -78,4 +78,27 @@ class ElementController extends BaseFullCrudController
 
         return $this->module->getElementComponent()->updateElement($request);
     }
+
+    /**
+     * @SWG\Post(path="/element/create",
+     *     tags={"element"},
+     *     summary="Создание элемента",
+     *     @SWG\Parameter(
+     *          in="body",
+     *          name="body",
+     *          @SWG\Schema(ref = "#/definitions/ElementSingleResponse")
+     *     ),
+     *     @SWG\Response(
+     *         response = 200,
+     *         description = "Массив мероприятий",
+     *         @SWG\Schema(ref = "#/definitions/ElementSingleResponse")
+     *     ),
+     * )
+     */
+    public function actionCreate()
+    {
+        $request = ElementSingleResponse::createRequest();
+
+        return $this->module->getElementComponent()->createElement($request);
+    }
 }

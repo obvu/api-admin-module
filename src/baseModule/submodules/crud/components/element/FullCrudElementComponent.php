@@ -41,6 +41,11 @@ class FullCrudElementComponent
         return $this->defineHandler($request->element->type)->update($request->element->id, $request->element->fullData);
     }
 
+    public function createElement(ElementSingleResponse $request)
+    {
+        return $this->defineHandler($request->element->type)->create($request->element->fullData);
+    }
+
     private function defineHandler($type)
     {
         $handlerClass = !empty($this->handlers[$type]) ? $this->handlers[$type] : SimpleFullCrudElementHandler::class;

@@ -24,8 +24,13 @@ class SimpleFullCrudElementHandler extends BaseFullCrudElementHandler
                 'query' => $query,
             ]
         );
-        $provider->pagination->setPage($page - 1);
-        $provider->pagination->pageSize = $perPage;
+        if (!$page) {
+            $provider->pagination->setPage(null);
+            $provider->pagination->pageSize = 0;
+        } else {
+            $provider->pagination->setPage($page - 1);
+            $provider->pagination->pageSize = $perPage;
+        }
         $objects = $provider->getModels();
         $result = [];
         foreach ($objects as $object) {
@@ -57,11 +62,13 @@ class SimpleFullCrudElementHandler extends BaseFullCrudElementHandler
     final public function create($data)
     {
         // TODO: Implement create() method.
-        $object = new FullCrudElementObject([
-            'module' => $this->module,
-            'type' => $this->type,
-            'data' => $data,
-        ]);
+        $object = new FullCrudElementObject(
+            [
+                'module' => $this->module,
+                'type' => $this->type,
+                'data' => $data,
+            ]
+        );
         if (!$object->save()) {
             throw new ModelValidateException($object);
         }

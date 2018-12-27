@@ -104,7 +104,7 @@ class SimpleFullCrudElementHandler extends BaseFullCrudElementHandler
 
     protected function prepareFullData(FullCrudElementObject $elementObject)
     {
-        return $elementObject->data;
+        return $elementObject->data ?? new \stdClass();
     }
 
     protected function prepareListData(FullCrudElementObject $elementObject)
@@ -158,7 +158,25 @@ class SimpleFullCrudElementHandler extends BaseFullCrudElementHandler
      */
     private function getObjectById($id)
     {
-        $object = FullCrudElementObject::findOne($id);
+        if ($id != 0) {
+            $object = FullCrudElementObject::findOne($id);
+        } else {
+            $object = FullCrudElementObject::findOne(
+                [
+                    'module' => $this->module,
+                    'type' => $this->type,
+                ]
+            );
+            if (empty($object)) {
+                $object = new FullCrudElementObject(
+                    [
+                        'type' => $this->type,
+                        'module' => $this->module,
+                    ]
+                );
+                $object->save();
+            }
+        }
         if (empty($object)) {
             throw new NotFoundHttpException();
         }

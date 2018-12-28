@@ -5,6 +5,7 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\bas
 
 
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementListResult;
+use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementSingleResult;
 
 abstract class BaseFullCrudElementHandler
 {
@@ -14,6 +15,10 @@ abstract class BaseFullCrudElementHandler
 
     abstract public function getList($page = 1, $perPage = 20, $filter = []): FullCrudElementListResult;
 
+    /**
+     * @param $id
+     * @return FullCrudElementSingleResult
+     */
     abstract public function getSingle($id);
 
     abstract public function create($data);

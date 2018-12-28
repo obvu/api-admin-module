@@ -7,6 +7,7 @@ namespace Obvu\Modules\Api\Admin\submodules\crud;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\FullCrudElementComponent;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\FullCrudSettings;
 use yii\base\Module;
+use yii2mod\rbac\filters\AccessControl;
 use Zvinger\BaseClasses\api\controllers\ApiDocsSwaggerController;
 
 
@@ -19,12 +20,13 @@ use Zvinger\BaseClasses\api\controllers\ApiDocsSwaggerController;
  *     @SWG\Info(version="1.0", title="API Форм Deworkacy"),
  * )
  */
-
 class FullCrudModule extends Module
 {
     public $crudSettings;
 
     public $handlers = [];
+
+    public $accessRole = null;
 
     private $elementComponent;
 
@@ -36,8 +38,8 @@ class FullCrudModule extends Module
             $docsScanPaths[] = $this->getModule($id)->basePath;
         }
         $this->controllerMap = [
-            'docs'    => [
-                'class'     => ApiDocsSwaggerController::class,
+            'docs' => [
+                'class' => ApiDocsSwaggerController::class,
                 'scanPaths' => $docsScanPaths,
             ],
         ];

@@ -24,9 +24,7 @@ class ElementSingleResponse extends BaseApiRequest
     {
         /** @var self $data */
         $data =  parent::createRequest($data);
-        $data->element = \Yii::createObject([
-            'class' => 
-        ])
+        $data->element = \Yii::configure(new SingleCrudElementModel(), $data->element);
 
         return $data;
     }

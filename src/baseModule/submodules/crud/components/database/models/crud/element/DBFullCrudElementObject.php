@@ -10,7 +10,6 @@ use Yii;
  * @property int $id
  * @property string $module
  * @property string $type
- * @property string $data_id
  * @property array $data
  * @property int $sort
  */
@@ -32,8 +31,7 @@ class DBFullCrudElementObject extends \yii\db\ActiveRecord
         return [
             [['data'], 'safe'],
             [['sort'], 'integer'],
-            [['module', 'type', 'data_id'], 'string', 'max' => 255],
-            [['module', 'type', 'data_id'], 'unique', 'targetAttribute' => ['module', 'type', 'data_id']],
+            [['module', 'type'], 'string', 'max' => 255],
         ];
     }
 
@@ -46,7 +44,6 @@ class DBFullCrudElementObject extends \yii\db\ActiveRecord
             'id' => 'ID',
             'module' => 'Module',
             'type' => 'Type',
-            'data_id' => 'Data ID',
             'data' => 'Data',
             'sort' => 'Sort',
         ];

@@ -28,6 +28,4 @@ class ElementSingleResponse extends BaseApiRequest
 
         return $data;
     }
-
-
 }

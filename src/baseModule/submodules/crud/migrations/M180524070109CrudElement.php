@@ -37,7 +37,6 @@ class M180524070109CrudElement extends Migration
                 'id' => $this->primaryKey(),
                 'module' => $this->string(),
                 'type' => $this->string(255),
-                'data_id' => $this->string(255),
                 'data' => $this->json(),
                 'sort' => $this->integer(),
             ],
@@ -47,8 +46,7 @@ class M180524070109CrudElement extends Migration
         $this->createIndex(
             'INDEX_'.$this->elementTableName.'_type',
             $this->elementTable,
-            ['module', 'type', 'data_id'],
-            true
+            ['module', 'type']
         );
 
         $this->createIndex('crud_sort_index', $this->elementTable, 'sort');

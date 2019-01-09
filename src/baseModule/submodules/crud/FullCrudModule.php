@@ -5,6 +5,8 @@ namespace Obvu\Modules\Api\Admin\submodules\crud;
 
 
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\FullCrudElementComponent;
+use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\mongo\MongoFullCrudElementHandler;
+use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\simple\SimpleFullCrudElementHandler;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\FullCrudSettings;
 use yii\base\Module;
 use yii2mod\rbac\filters\AccessControl;
@@ -25,6 +27,10 @@ class FullCrudModule extends Module
     public $crudSettings;
 
     public $handlers = [];
+
+    public $useMongo = [];
+
+    public $useMongoAsDefault = false;
 
     public $accessRole = null;
 
@@ -61,11 +67,17 @@ class FullCrudModule extends Module
     public function getElementComponent()
     {
         if (!$this->elementComponent) {
+            if ($this->useMongo) {
+                foreach ($this->useMongo as $useMongo) {
+                    $this->handlers[$useMongo] = MongoFullCrudElementHandler::class;
+                }
+            }
             $this->elementComponent = \Yii::createObject(
                 [
                     'class' => FullCrudElementComponent::class,
                     'handlers' => $this->handlers,
                     'module' => $this->getUniqueId(),
+                    'defaultHandlerClass' => $this->useMongoAsDefault ? MongoFullCrudElementHandler::class : SimpleFullCrudElementHandler::class,
                 ]
             );
         }

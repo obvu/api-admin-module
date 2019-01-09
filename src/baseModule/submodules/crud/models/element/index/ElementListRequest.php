@@ -24,7 +24,7 @@ class ElementListRequest extends BaseElementRequest
     public $perPage = 20;
 
     /**
-     * @var mixed
+     * @var ElementListFilter
      * @SWG\Property()
      */
     public $filter;

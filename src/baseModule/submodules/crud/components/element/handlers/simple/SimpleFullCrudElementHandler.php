@@ -19,18 +19,7 @@ class SimpleFullCrudElementHandler extends BaseFullCrudElementHandler
     final public function getList($page = 1, $perPage = 20, $filter = []): FullCrudElementListResult
     {
         $query = $this->getBaseQuery();
-        $provider = new ActiveDataProvider(
-            [
-                'query' => $query,
-            ]
-        );
-        if (!$page) {
-            $provider->pagination->setPage(null);
-            $provider->pagination->pageSize = 0;
-        } else {
-            $provider->pagination->setPage($page - 1);
-            $provider->pagination->pageSize = $perPage;
-        }
+        $provider = $this->getDataProvider($query, $page, $perPage);
         $objects = $provider->getModels();
         $result = [];
         foreach ($objects as $object) {

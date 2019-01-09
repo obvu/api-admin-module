@@ -15,6 +15,8 @@ class FullCrudElementComponent
 {
     public $handlers = [];
 
+    public $defaultHandlerClass = SimpleFullCrudElementHandler::class;
+
     public $module;
 
     public function listElement(ElementListRequest $request)
@@ -48,7 +50,7 @@ class FullCrudElementComponent
 
     private function defineHandler($type)
     {
-        $handlerClass = !empty($this->handlers[$type]) ? $this->handlers[$type] : SimpleFullCrudElementHandler::class;
+        $handlerClass = !empty($this->handlers[$type]) ? $this->handlers[$type] : $this->defaultHandlerClass;
 
         /** @var BaseFullCrudElementHandler $handler */
         $handler = \Yii::createObject(

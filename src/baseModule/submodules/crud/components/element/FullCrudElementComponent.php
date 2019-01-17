@@ -10,6 +10,7 @@ use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListReque
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListResponse;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\single\ElementSingleRequest;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\single\ElementSingleResponse;
+use yii\web\NotFoundHttpException;
 
 class FullCrudElementComponent
 {
@@ -35,12 +36,29 @@ class FullCrudElementComponent
 
     public function singleElement(ElementSingleRequest $request)
     {
-        return $this->defineHandler($request->type)->getSingle($request->id);
+        try {
+            $data = $this->defineHandler($request->type)->getSingle($request->id);
+        } catch (NotFoundHttpException $e) {
+            if ($request->id == 0) {
+                $id = $this->defineHandler($request->type)->getList()->elements[0]->id;
+                if (empty($id)) {
+                    $data = $this->defineHandler($request->type)->create([])->element;
+                } else {
+                    $data = $this->defineHandler($request->type)->getSingle($id);
+                }
+            }
+        }
+
+        return $data;
+
     }
 
     public function updateElement(ElementSingleResponse $request)
     {
-        return $this->defineHandler($request->element->type)->update($request->element->id, $request->element->fullData);
+        return $this->defineHandler($request->element->type)->update(
+            $request->element->id,
+            $request->element->fullData
+        );
     }
 
     public function createElement(ElementSingleResponse $request)

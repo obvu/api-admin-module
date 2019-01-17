@@ -24,6 +24,10 @@ class CrudSingleField extends BaseObject
 
     public $multiple = false;
 
+    public $component = 'default';
+
+    public $fileName = null;
+
     /**
      * @var callable
      */

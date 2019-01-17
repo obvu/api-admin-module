@@ -17,11 +17,11 @@ use Zvinger\BaseClasses\app\modules\fileStorage\VendorFileStorageModule;
 class FileController extends BaseAdminController
 {
 
-    public function actionUpload()
+    public function actionUpload($component = null, $saveFileName = null)
     {
         /** @var VendorFileStorageModule $fileStorageModule */
         $fileStorageModule = \Yii::$app->getModule(FILE_STORAGE_MODULE);
-        $savedFileModel = $fileStorageModule->storage->uploadPostFile('image');
+        $savedFileModel = $fileStorageModule->storage->uploadPostFile('image', $component, $saveFileName);
         $response = new UploadFileResponse();
         $response->fullUrl = $savedFileModel->getFullUrl();
         $response->fileId = $savedFileModel->fileStorageElement->id;
@@ -30,11 +30,11 @@ class FileController extends BaseAdminController
     }
 
 
-    public function actionUploadMultiple()
+    public function actionUploadMultiple($component = null, $saveFileName = null)
     {
         /** @var VendorFileStorageModule $fileStorageModule */
         $fileStorageModule = \Yii::$app->getModule(FILE_STORAGE_MODULE);
-        $savedFileModels = $fileStorageModule->storage->uploadPostFiles('files');
+        $savedFileModels = $fileStorageModule->storage->uploadPostFiles('files', $component, $saveFileName);
         $responses = [];
         foreach ($savedFileModels as $savedFileModel) {
             $response = new UploadFileResponse();

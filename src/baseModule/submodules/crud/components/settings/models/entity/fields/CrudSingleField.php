@@ -20,6 +20,9 @@ class CrudSingleField extends BaseObject
 
     public $label;
 
+    /**
+     * @var CrudSingleSelectVariant[]
+     */
     public $variants = null;
 
     public $multiple = false;
@@ -43,6 +46,4 @@ class CrudSingleField extends BaseObject
             }
         }
     }
-
-
 }

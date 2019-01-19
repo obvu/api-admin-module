@@ -28,4 +28,10 @@ class ElementListRequest extends BaseElementRequest
      * @SWG\Property()
      */
     public $filter;
+
+    /**
+     * @var string
+     * @SWG\Property()
+     */
+    public $sortBy = null;
 }

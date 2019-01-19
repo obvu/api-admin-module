@@ -17,6 +17,8 @@ class CrudSingleBlock extends BaseObject
 
     public $key;
 
+    public $tableFields;
+
     public function init()
     {
         $this->key = (!$this->key && $this->entityKey) ? $this->entityKey : $this->key;

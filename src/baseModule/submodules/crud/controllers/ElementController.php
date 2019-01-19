@@ -30,7 +30,10 @@ class ElementController extends BaseFullCrudController
     {
         $request = ElementListRequest::createRequest();
 
-        return $this->module->getElementComponent()->listElement($request);
+        $fullCrudElementComponent = $this->module->getElementComponent();
+        $elementListResponse = $fullCrudElementComponent->listElement($request);
+        $elementListResponse->headers = $fullCrudElementComponent->getHeaders($request);
+        return $fullCrudElementComponent->prepareListData($elementListResponse, $request);
     }
 
     /**
@@ -52,7 +55,6 @@ class ElementController extends BaseFullCrudController
     public function actionSingle()
     {
         $request = ElementSingleRequest::createRequest();
-
         return $this->module->getElementComponent()->singleElement($request);
     }
 

@@ -36,6 +36,9 @@ class MongoFullCrudElementHandler extends BaseFullCrudElementHandler
         if ($filter->conditions) {
             $query->andWhere($filter->conditions);
         }
+        if ($filter->orderBy) {
+            $query->orderBy($filter->orderBy);
+        }
         if ($filter->filterCallBack) {
             ($filter->filterCallBack)($query);
         }

@@ -6,6 +6,7 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\enti
 
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\fields\CrudSingleField;
 use yii\base\BaseObject;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class CrudSingleEntity
@@ -31,4 +32,13 @@ class CrudSingleEntity extends BaseObject
      * @SWG\Property()
      */
     public $fields;
+
+    public function findField($fieldKey)
+    {
+        foreach ($this->fields as $field) {
+            if ($field->name === $fieldKey) {
+                return $field;
+            }
+        }
+    }
 }

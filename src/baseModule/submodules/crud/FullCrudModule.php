@@ -38,6 +38,7 @@ class FullCrudModule extends Module
 
     public function init()
     {
+
 //        !defined("BASE_CRUD_MODULE_PATH") ? define("BASE_CRUD_MODULE_PATH", '/'.$this->getUniqueId()) : true;
         $docsScanPaths[] = $this->basePath;
         foreach ($this->modules as $id => $module) {

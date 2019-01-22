@@ -133,11 +133,7 @@ class FullCrudElementComponent
         $handlerClass = !empty($this->handlers[$type]) ? $this->handlers[$type] : $this->defaultHandlerClass;
 
         /** @var BaseFullCrudElementHandler $handler */
-        $handler = \Yii::createObject(
-            [
-                'class' => $handlerClass,
-            ]
-        );
+        $handler = \Yii::createObject($handlerClass);
         $handler->setType($type);
         $handler->setModule($this->module);
 

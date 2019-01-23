@@ -23,8 +23,17 @@ abstract class BaseFullCrudElementHandler extends BaseObject
      */
     abstract public function getSingle($id);
 
+    /**
+     * @param $data
+     * @return FullCrudElementSingleResult
+     */
     abstract public function create($data);
 
+    /**
+     * @param $id
+     * @param $data
+     * @return FullCrudElementSingleResult
+     */
     abstract public function update($id, $data);
 
     abstract public function delete($id);

@@ -79,11 +79,11 @@ class ActiveRecordFullCrudElementHandler extends BaseFullCrudElementHandler
                         'listData' => $object->attributes,
                         'id' => $object->id,
                         'type' => $this->type,
-                        'object' => $object,
                     ]
                 ),
             ]
         );
+        $fullCrudElementSingleResult->element->setObject($object);
 
         return $fullCrudElementSingleResult;
     }
@@ -102,22 +102,47 @@ class ActiveRecordFullCrudElementHandler extends BaseFullCrudElementHandler
     {
         /** @var ActiveRecord $object */
         $object = new  $this->activeRecordClassName;
+        $miscInfoData = $this->extractMiscInfo($data);
         \Yii::configure($object, $data);
         if (!$object->save()) {
             throw new ModelValidateException($object);
         }
+        $this->handleMiscInfo($object, $miscInfoData);
 
         return $this->getSingle($object->id);
+    }
+
+    private function extractMiscInfo(&$data)
+    {
+        $miscInfoData = [];
+        foreach ($data as $key => $value) {
+            $array = explode('miscInfo.', $key);
+            if (count($array) > 1) {
+                $miscInfoData[$array[1]] = $value;
+                unset($data[$key]);
+            }
+        }
+
+        return $miscInfoData;
+    }
+
+    private function handleMiscInfo(ActiveRecord &$object, $data)
+    {
+        $miscInfo = $object->miscInfo;
+        foreach ($data as $key => $datum) {
+            $miscInfo->{$key} = $datum;
+        }
     }
 
     public function update($id, $data)
     {
         $object= $this->getObject($id);
+        $miscInfoData = $this->extractMiscInfo($data);
         \Yii::configure($object, $data);
         if (!$object->save()) {
             throw new ModelValidateException($object);
         }
-
+        $this->handleMiscInfo($object, $miscInfoData);
         return $this->getSingle($object->id);
     }
 

@@ -76,7 +76,7 @@ class SimpleFullCrudElementHandler extends BaseFullCrudElementHandler
 
     final public function delete($id)
     {
-        // TODO: Implement delete() method.
+        FullCrudElementObject::deleteAll(['id' => $id]);
     }
 
     final private function prepareModel(FullCrudElementObject $elementObject): SingleCrudElementModel

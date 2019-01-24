@@ -128,6 +128,11 @@ class FullCrudElementComponent
         return $this->defineHandler($request->element->type)->create($request->element->fullData);
     }
 
+    public function deleteElement(ElementSingleResponse $request)
+    {
+        return $this->defineHandler($request->element->type)->delete($request->element->id);
+    }
+
     private function defineHandler($type)
     {
         $handlerClass = !empty($this->handlers[$type]) ? $this->handlers[$type] : $this->defaultHandlerClass;

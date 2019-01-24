@@ -103,4 +103,27 @@ class ElementController extends BaseFullCrudController
 
         return $this->module->getElementComponent()->createElement($request);
     }
+
+    /**
+     * @SWG\Post(path="/element/delete",
+     *     tags={"element"},
+     *     summary="Удаление элемента",
+     *     @SWG\Parameter(
+     *          in="body",
+     *          name="body",
+     *          @SWG\Schema(ref = "#/definitions/ElementSingleResponse")
+     *     ),
+     *     @SWG\Response(
+     *         response = 200,
+     *         description = "Массив мероприятий",
+     *         @SWG\Schema(ref = "#/definitions/ElementSingleResponse")
+     *     ),
+     * )
+     */
+    public function actionDelete()
+    {
+        $request = ElementSingleResponse::createRequest();
+
+        return $this->module->getElementComponent()->deleteElement($request);
+    }
 }

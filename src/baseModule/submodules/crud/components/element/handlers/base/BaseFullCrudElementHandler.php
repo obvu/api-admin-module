@@ -6,9 +6,10 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\bas
 
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementListResult;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementSingleResult;
+use yii\base\BaseObject;
 use yii\data\ActiveDataProvider;
 
-abstract class BaseFullCrudElementHandler
+abstract class BaseFullCrudElementHandler extends BaseObject
 {
     protected $type;
 
@@ -22,8 +23,17 @@ abstract class BaseFullCrudElementHandler
      */
     abstract public function getSingle($id);
 
+    /**
+     * @param $data
+     * @return FullCrudElementSingleResult
+     */
     abstract public function create($data);
 
+    /**
+     * @param $id
+     * @param $data
+     * @return FullCrudElementSingleResult
+     */
     abstract public function update($id, $data);
 
     abstract public function delete($id);

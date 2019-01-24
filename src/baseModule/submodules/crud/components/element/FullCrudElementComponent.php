@@ -5,6 +5,7 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\components\element;
 
 
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\base\BaseFullCrudElementHandler;
+use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementSingleResult;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\simple\SimpleFullCrudElementHandler;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\FullCrudSettings;
 use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
@@ -13,6 +14,7 @@ use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListReque
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListResponse;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\single\ElementSingleRequest;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\single\ElementSingleResponse;
+use Obvu\Modules\Api\Admin\submodules\crud\models\SingleCrudElementModel;
 use yii\web\NotFoundHttpException;
 
 class FullCrudElementComponent
@@ -22,6 +24,7 @@ class FullCrudElementComponent
     public $defaultHandlerClass = SimpleFullCrudElementHandler::class;
 
     public $module;
+
 
     /**
      * @var FullCrudSettings
@@ -36,6 +39,14 @@ class FullCrudElementComponent
             $request->filter->orderBy = $request->sortBy;
         }
         $result = $this->defineHandler($request->type)->getList($request->page, $request->perPage, $request->filter);
+        $context = $this;
+        $result->elements = array_map(
+            function (SingleCrudElementModel $el) use ($context) {
+                $el =$this->prepareFullData($el);
+                return $el;
+            },
+            $result->elements
+        );
 
         return \Yii::createObject(
             [
@@ -64,6 +75,25 @@ class FullCrudElementComponent
         }
 
         return $fieldNames;
+    }
+
+    public function prepareFullData(SingleCrudElementModel &$singleCrudElementModel)
+    {
+        /** @var FullCrudModule $module */
+
+        $module = \Yii::$app->getModule($this->module);
+        $crudSettings = $module->getCrudSettings();
+        $entity = $crudSettings->findEntity($singleCrudElementModel->type);
+        foreach ($entity->fields as $field) {
+            if (strpos($field->name, '.') !== false) {
+                $array = explode('.', $field->name);
+                $object = $singleCrudElementModel->getObject();
+                $var = $object->{$array[0]};
+                $singleCrudElementModel->fullData[$field->name] = $var->{$array[1]};
+                unset($singleCrudElementModel->fullData[$array[0]][$array[1]]);
+            }
+        }
+        return $singleCrudElementModel;
     }
 
     public function prepareListData(ElementListResponse $response, ElementListRequest $request)
@@ -110,6 +140,7 @@ class FullCrudElementComponent
                 throw $e;
             }
         }
+        $data->element = $this->prepareFullData($data->element);
 
         return $data;
 
@@ -117,15 +148,24 @@ class FullCrudElementComponent
 
     public function updateElement(ElementSingleResponse $request)
     {
-        return $this->defineHandler($request->element->type)->update(
+        $fullCrudElementSingleResult = $this->defineHandler($request->element->type)->update(
             $request->element->id,
             $request->element->fullData
         );
+
+        $fullCrudElementSingleResult->element = $this->prepareFullData(
+            $fullCrudElementSingleResult->element
+        );
+
+        return $fullCrudElementSingleResult;
     }
 
     public function createElement(ElementSingleResponse $request)
     {
-        return $this->defineHandler($request->element->type)->create($request->element->fullData);
+        return $this->prepareFullData(
+            $this->defineHandler($request->element->type)->create(
+                $request->element->fullData
+            )->element);
     }
 
     public function deleteElement(ElementSingleResponse $request)
@@ -138,11 +178,7 @@ class FullCrudElementComponent
         $handlerClass = !empty($this->handlers[$type]) ? $this->handlers[$type] : $this->defaultHandlerClass;
 
         /** @var BaseFullCrudElementHandler $handler */
-        $handler = \Yii::createObject(
-            [
-                'class' => $handlerClass,
-            ]
-        );
+        $handler = \Yii::createObject($handlerClass);
         $handler->setType($type);
         $handler->setModule($this->module);
 

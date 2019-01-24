@@ -43,4 +43,12 @@ class SingleCrudElementModel
     {
         $this->_object = $object;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getObject()
+    {
+        return $this->_object;
+    }
 }

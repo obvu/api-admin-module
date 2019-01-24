@@ -11,6 +11,7 @@ class CrudSingleField extends BaseObject
     const TYPE_INPUT_TEXT = 'input_text';
     const TYPE_TEXTAREA = 'textarea';
     const TYPE_SELECT = 'select';
+    const TYPE_DATE = 'input_text';
     const TYPE_FILE_PHOTO = 'file_photo';
     const TYPE_FILE_SIMPLE = 'file_photo';
 

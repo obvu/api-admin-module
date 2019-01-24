@@ -148,6 +148,6 @@ class ActiveRecordFullCrudElementHandler extends BaseFullCrudElementHandler
 
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        $this->activeRecordClassName::deleteAll(['id' => $id]);
     }
 }

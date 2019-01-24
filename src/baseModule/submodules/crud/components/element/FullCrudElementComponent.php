@@ -25,6 +25,7 @@ class FullCrudElementComponent
 
     public $module;
 
+    private $format = true;
 
     /**
      * @var FullCrudSettings
@@ -40,13 +41,16 @@ class FullCrudElementComponent
         }
         $result = $this->defineHandler($request->type)->getList($request->page, $request->perPage, $request->filter);
         $context = $this;
-        $result->elements = array_map(
-            function (SingleCrudElementModel $el) use ($context) {
-                $el =$this->prepareFullData($el);
-                return $el;
-            },
-            $result->elements
-        );
+        if ($this->format) {
+            $result->elements = array_map(
+                function (SingleCrudElementModel $el) use ($context) {
+                    $el = $this->prepareFullData($el);
+
+                    return $el;
+                },
+                $result->elements
+            );
+        }
 
         return \Yii::createObject(
             [
@@ -93,6 +97,7 @@ class FullCrudElementComponent
                 unset($singleCrudElementModel->fullData[$array[0]][$array[1]]);
             }
         }
+
         return $singleCrudElementModel;
     }
 
@@ -140,7 +145,9 @@ class FullCrudElementComponent
                 throw $e;
             }
         }
-        $data->element = $this->prepareFullData($data->element);
+        if ($this->format) {
+            $data->element = $this->prepareFullData($data->element);
+        }
 
         return $data;
 
@@ -153,19 +160,28 @@ class FullCrudElementComponent
             $request->element->fullData
         );
 
-        $fullCrudElementSingleResult->element = $this->prepareFullData(
-            $fullCrudElementSingleResult->element
-        );
+        if ($this->format) {
+            $fullCrudElementSingleResult->element = $this->prepareFullData(
+                $fullCrudElementSingleResult->element
+            );
+        }
 
         return $fullCrudElementSingleResult;
     }
 
     public function createElement(ElementSingleResponse $request)
     {
-        return $this->prepareFullData(
-            $this->defineHandler($request->element->type)->create(
-                $request->element->fullData
-            )->element);
+        $fullCrudElementSingleResult = $this->defineHandler($request->element->type)->create(
+            $request->element->fullData
+        );
+
+        if ($this->format) {
+            $request->element = $this->prepareFullData(
+                $fullCrudElementSingleResult->element
+            );
+        }
+
+        return $request;
     }
 
     public function deleteElement(ElementSingleResponse $request)
@@ -183,5 +199,16 @@ class FullCrudElementComponent
         $handler->setModule($this->module);
 
         return $handler;
+    }
+
+    /**
+     * @param bool $format
+     * @return FullCrudElementComponent
+     */
+    public function setFormat(bool $format): FullCrudElementComponent
+    {
+        $this->format = $format;
+
+        return $this;
     }
 }

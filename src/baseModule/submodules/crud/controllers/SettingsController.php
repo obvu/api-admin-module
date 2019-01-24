@@ -17,6 +17,7 @@ class SettingsController extends BaseFullCrudController
      */
     public function actionIndex()
     {
+        $this->module->getElementComponent()->setFormat(false);
         $crudSettings = $this->module->crudSettings;
         $crudSettings = \Yii::createObject($crudSettings);
 

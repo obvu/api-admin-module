@@ -31,7 +31,7 @@ class ElementController extends BaseFullCrudController
         $request = ElementListRequest::createRequest();
 
         $fullCrudElementComponent = $this->module->getElementComponent();
-        $elementListResponse = $fullCrudElementComponent->listElement($request);
+        $elementListResponse = $fullCrudElementComponent->setFormat(false)->listElement($request);
         $elementListResponse->headers = $fullCrudElementComponent->getHeaders($request);
         return $fullCrudElementComponent->prepareListData($elementListResponse, $request);
     }

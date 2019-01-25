@@ -25,7 +25,7 @@ class FullCrudElementComponent
 
     public $module;
 
-    private $format = true;
+    private $format = false;
 
     /**
      * @var FullCrudSettings

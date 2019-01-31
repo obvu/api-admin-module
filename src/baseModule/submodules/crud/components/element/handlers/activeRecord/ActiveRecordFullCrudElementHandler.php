@@ -13,6 +13,7 @@ use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\base\Base
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementListResult;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementSingleResult;
 use Obvu\Modules\Api\Admin\submodules\crud\models\SingleCrudElementModel;
+use yii\base\UnknownPropertyException;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
 use yii\web\NotFoundHttpException;
@@ -128,7 +129,11 @@ class ActiveRecordFullCrudElementHandler extends BaseFullCrudElementHandler
 
     private function handleMiscInfo(ActiveRecord &$object, $data)
     {
-        $miscInfo = $object->miscInfo;
+        try {
+            $miscInfo = $object->miscInfo;
+        } catch (UnknownPropertyException $e) {
+            return true;
+        }
         foreach ($data as $key => $datum) {
             $miscInfo->{$key} = $datum;
         }

@@ -96,6 +96,13 @@ class FullCrudElementComponent
                 $singleCrudElementModel->fullData[$field->name] = $var->{$array[1]};
                 unset($singleCrudElementModel->fullData[$array[0]][$array[1]]);
             }
+            if ($field->defaultValue) {
+                $singleCrudElementModel->fullData[$field->name] = $field->defaultValue;
+            } elseif ($field->type === $field::TYPE_SELECT) {
+                if (!$singleCrudElementModel->fullData[$field->name]) {
+                    $singleCrudElementModel->fullData[$field->name] = $field->variants[0]->key;
+                }
+            }
         }
 
         return $singleCrudElementModel;

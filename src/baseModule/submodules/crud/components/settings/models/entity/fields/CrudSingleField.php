@@ -21,6 +21,8 @@ class CrudSingleField extends BaseObject
 
     public $label;
 
+    public $defaultValue = null;
+
     /**
      * @var CrudSingleSelectVariant[]
      */

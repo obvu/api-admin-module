@@ -81,10 +81,16 @@ class FullCrudElementComponent
         return $fieldNames;
     }
 
-    public function prepareFullData(SingleCrudElementModel &$singleCrudElementModel)
+    /**
+     * @param SingleCrudElementModel $singleCrudElementModel
+     * @return mixedЫ
+     */
+    public function prepareFullData(&$singleCrudElementModel = null)
     {
         /** @var FullCrudModule $module */
-
+        if (!$singleCrudElementModel) {
+            return $singleCrudElementModel;
+        }
         $module = \Yii::$app->getModule($this->module);
         $crudSettings = $module->getCrudSettings();
         $entity = $crudSettings->findEntity($singleCrudElementModel->type);

@@ -4,7 +4,9 @@
 namespace Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\fields;
 
 
+use GraphQL\Type\Definition\Type;
 use yii\base\BaseObject;
+use yii\helpers\ArrayHelper;
 
 class CrudSingleField extends BaseObject
 {
@@ -39,6 +41,19 @@ class CrudSingleField extends BaseObject
      * @var callable
      */
     public $variantsCallBack = null;
+
+    public function getGraphQLFieldType()
+    {
+        $map = [
+            self::TYPE_INPUT_TEXT => Type::string(),
+            self::TYPE_TEXTAREA => Type::string(),
+            self::TYPE_SELECT => 'select',
+            self::TYPE_DATE => Type::string(),
+            self::TYPE_FILE_PHOTO => 'file_photo',
+            self::TYPE_FILE_SIMPLE => 'file_photo',
+        ];
+        return ArrayHelper::getValue($map, $this->type);
+    }
 
     public function init()
     {

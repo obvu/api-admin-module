@@ -11,6 +11,9 @@ class FullCrudSettings
 {
     public $title;
 
+    /**
+     * @var CrudSingleEntity[]
+     */
     public $entities;
 
     public $menu;

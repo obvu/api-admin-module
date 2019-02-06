@@ -21,7 +21,7 @@ class ElementListFilter
      */
     public $filterCallBack = null;
 
-    public $conditions;
+    public $conditions = [];
 
     public $orderBy = null;
 }

@@ -18,6 +18,7 @@ class CrudBlockType extends ObjectType
     public function __construct($type)
     {
         $config = [
+            'name' => 'block_type_'.$type,
             'fields' => function () use ($type) {
                 return [
                     'id' => [
@@ -28,9 +29,6 @@ class CrudBlockType extends ObjectType
                     ],
                     'fullData' => [
                         'type' => Types::crudFullData($type),
-                        'resolve' => function ($el) {
-                    d($el);die;
-                        }
                     ],
                 ];
             },

@@ -6,6 +6,7 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\bas
 
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementListResult;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementSingleResult;
+use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListFilter;
 use yii\base\BaseObject;
 use yii\data\ActiveDataProvider;
 
@@ -37,6 +38,22 @@ abstract class BaseFullCrudElementHandler extends BaseObject
     abstract public function update($id, $data);
 
     abstract public function delete($id);
+
+    public function buildFilterFromGraphQLArgs($args)
+    {
+        $filter = new ElementListFilter();
+        $conditions = [];
+        if ($args['id']) {
+            $conditions[] = ['id' => $args['id']];
+        }
+
+        if (!empty($conditions)) {
+            $filter->conditions = array_merge(['and'], $conditions);
+        }
+//        d($filter->conditions);die;
+
+        return $filter;
+    }
 
     /**
      * @param mixed $type

@@ -22,7 +22,6 @@ class Types
     private static $crudBlock;
     private static $crudFullData;
 
-
     public static function query()
     {
         return self::$query ?: (self::$query = new QueryType());

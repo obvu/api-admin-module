@@ -202,6 +202,11 @@ class FullCrudElementComponent
         return $this->defineHandler($request->element->type)->delete($request->element->id);
     }
 
+    public function buildFilterFromGraphQLArgs($type, $args = [])
+    {
+        return $this->defineHandler($type)->buildFilterFromGraphQLArgs($args);
+    }
+
     private function defineHandler($type)
     {
         $handlerClass = !empty($this->handlers[$type]) ? $this->handlers[$type] : $this->defaultHandlerClass;

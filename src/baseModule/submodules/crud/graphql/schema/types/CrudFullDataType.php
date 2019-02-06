@@ -19,6 +19,7 @@ class CrudFullDataType extends ObjectType
     public function __construct($type)
     {
         $config = [
+            'name' => 'full_data_'.$type,
             'fields' => function () use ($type) {
                 $module = \Yii::$app->currentFullCrud;
                 $settings = $module->getCrudSettings();
@@ -30,6 +31,7 @@ class CrudFullDataType extends ObjectType
                 foreach ($entity->fields as $field) {
                     $resultFields[$field->name] = [
                         'type' => $field->getGraphQLFieldType(),
+                        'description' => $field->label
                     ];
                 }
 

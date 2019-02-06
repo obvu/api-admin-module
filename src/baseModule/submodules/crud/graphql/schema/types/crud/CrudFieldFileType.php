@@ -14,12 +14,12 @@ use GraphQL\Type\Definition\Type;
 
 class CrudFieldFileType extends ObjectType
 {
-    public function __construct($type)
+    public function __construct()
     {
         $config = [
-            'fields' => function () use ($type) {
+            'fields' => function () {
                 return [
-                    'id' => [
+                    'fileId' => [
                         'type' => Type::string(),
                     ],
                     'fullUrl' => [

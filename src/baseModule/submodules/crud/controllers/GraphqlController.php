@@ -76,7 +76,7 @@ class GraphqlController extends BaseApiController
             null,
             empty($variables) ? null : $variables,
             empty($operation) ? null : $operation
-        )->toArray();
+        )->toArray(YII_DEBUG);
 
         return $result;
     }

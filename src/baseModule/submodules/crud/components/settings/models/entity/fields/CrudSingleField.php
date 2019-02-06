@@ -6,7 +6,7 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\enti
 
 use GraphQL\Type\Definition\Type;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\Types;
-use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\crud\CrudFieldFileType;
+use Yii;
 use yii\base\BaseObject;
 use yii\helpers\ArrayHelper;
 
@@ -53,8 +53,8 @@ class CrudSingleField extends BaseObject
             self::TYPE_TEXTAREA => Type::string(),
             self::TYPE_SELECT => 'select',
             self::TYPE_DATE => Type::string(),
-            self::TYPE_FILE_PHOTO => new CrudFieldFileType(),
-            self::TYPE_FILE_SIMPLE => new CrudFieldFileType(),
+            self::TYPE_FILE_PHOTO => Types::file(),
+            self::TYPE_FILE_SIMPLE => Types::file(),
         ];
 
         return ArrayHelper::getValue($map, $this->type);
@@ -86,7 +86,24 @@ class CrudSingleField extends BaseObject
                 $variantsCallBack = $this->variantsCallBack;
                 $this->variants = $variantsCallBack($this, \Yii::$app->controller->module);
             } elseif ($this->type === $this::TYPE_BOOLEAN_SELECT) {
-
+                $boolVariants = [
+                    Yii::createObject(
+                        [
+                            'class' => CrudSingleSelectVariant::class,
+                            'key' => 0,
+                            'value' => 'Нет',
+                        ]
+                    ),
+                    Yii::createObject(
+                        [
+                            'class' => CrudSingleSelectVariant::class,
+                            'key' => 1,
+                            'value' => 'Да',
+                        ]
+                    ),
+                ];
+                $this->variants = $boolVariants;
+                $this->type = $this::TYPE_SELECT;
             }
         }
     }

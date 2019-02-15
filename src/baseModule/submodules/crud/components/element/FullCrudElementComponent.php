@@ -81,10 +81,16 @@ class FullCrudElementComponent
         return $fieldNames;
     }
 
-    public function prepareFullData(SingleCrudElementModel &$singleCrudElementModel)
+    /**
+     * @param SingleCrudElementModel $singleCrudElementModel
+     * @return mixedЫ
+     */
+    public function prepareFullData(&$singleCrudElementModel = null)
     {
         /** @var FullCrudModule $module */
-
+        if (!$singleCrudElementModel) {
+            return $singleCrudElementModel;
+        }
         $module = \Yii::$app->getModule($this->module);
         $crudSettings = $module->getCrudSettings();
         $entity = $crudSettings->findEntity($singleCrudElementModel->type);
@@ -95,6 +101,13 @@ class FullCrudElementComponent
                 $var = $object->{$array[0]};
                 $singleCrudElementModel->fullData[$field->name] = $var->{$array[1]};
                 unset($singleCrudElementModel->fullData[$array[0]][$array[1]]);
+            }
+            if ($field->defaultValue) {
+                $singleCrudElementModel->fullData[$field->name] = $field->defaultValue;
+            } elseif ($field->type === $field::TYPE_SELECT) {
+                if (!$singleCrudElementModel->fullData[$field->name]) {
+                    $singleCrudElementModel->fullData[$field->name] = $field->variants[0]->key;
+                }
             }
         }
         foreach ((array) $entity->rawData as $rawDatum) {
@@ -192,6 +205,11 @@ class FullCrudElementComponent
     public function deleteElement(ElementSingleResponse $request)
     {
         return $this->defineHandler($request->element->type)->delete($request->element->id);
+    }
+
+    public function buildFilterFromGraphQLArgs($type, $args = [])
+    {
+        return $this->defineHandler($type)->buildFilterFromGraphQLArgs($args);
     }
 
     private function defineHandler($type)

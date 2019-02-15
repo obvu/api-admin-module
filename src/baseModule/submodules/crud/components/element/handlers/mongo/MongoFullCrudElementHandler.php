@@ -34,7 +34,17 @@ class MongoFullCrudElementHandler extends BaseFullCrudElementHandler
     {
         $query = $this->getBaseQuery();
         if ($filter->conditions) {
-            $query->andWhere($filter->conditions);
+            $resultConditions = [];
+            foreach ($filter->conditions as $condition) {
+                $resultCondition = [];
+                if (!empty($condition['id'])) {
+                    $resultCondition['_id'] = $condition['id'];
+                } else {
+                    $resultCondition = $condition;
+                }
+                $resultConditions[] = $resultCondition;
+            }
+            $query->andWhere($resultConditions);
         }
         if ($filter->orderBy) {
             $query->orderBy($filter->orderBy);

@@ -97,6 +97,11 @@ class FullCrudElementComponent
                 unset($singleCrudElementModel->fullData[$array[0]][$array[1]]);
             }
         }
+        foreach ((array) $entity->rawData as $rawDatum) {
+            $singleCrudElementModel->rawData[] = $rawDatum
+                ->setEntity($singleCrudElementModel)
+                ->getData();
+        }
 
         return $singleCrudElementModel;
     }

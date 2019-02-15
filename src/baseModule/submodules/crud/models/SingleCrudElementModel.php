@@ -34,6 +34,12 @@ class SingleCrudElementModel
      */
     public $fullData;
 
+    /**
+     * @var object
+     * @SWG\Property()
+     */
+    public $rawData = [];
+
     private $_object;
 
     /**

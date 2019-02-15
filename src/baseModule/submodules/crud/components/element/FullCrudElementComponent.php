@@ -110,6 +110,11 @@ class FullCrudElementComponent
                 }
             }
         }
+        foreach ((array) $entity->rawData as $rawDatum) {
+            $singleCrudElementModel->rawData[] = $rawDatum
+                ->setEntity($singleCrudElementModel)
+                ->getData();
+        }
 
         return $singleCrudElementModel;
     }

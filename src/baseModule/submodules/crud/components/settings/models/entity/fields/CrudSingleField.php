@@ -5,6 +5,7 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\enti
 
 
 use GraphQL\Type\Definition\Type;
+use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\Types;
 use Yii;
 use yii\base\BaseObject;
@@ -19,6 +20,7 @@ class CrudSingleField extends BaseObject
     const TYPE_BOOLEAN_SELECT = 'boolean_select';
     const TYPE_DATE = 'input_text';
     const TYPE_FILE_PHOTO = 'file_photo';
+    const TYPE_FILE_PHOTO_LARGE = 'file_photo_large';
     const TYPE_FILE_SIMPLE = 'file_photo';
 
     public $type;
@@ -45,13 +47,15 @@ class CrudSingleField extends BaseObject
      */
     public $variantsCallBack = null;
 
+    public $options;
+
     public function getGraphQLFieldType()
     {
         $map = [
             self::TYPE_INPUT_TEXT => Type::string(),
             self::TYPE_TEXT_EDITOR => Type::string(),
             self::TYPE_TEXTAREA => Type::string(),
-            self::TYPE_SELECT => 'select',
+            self::TYPE_SELECT => Type::string(),
             self::TYPE_DATE => Type::string(),
             self::TYPE_FILE_PHOTO => Types::file(),
             self::TYPE_FILE_SIMPLE => Types::file(),
@@ -84,7 +88,15 @@ class CrudSingleField extends BaseObject
         if (empty($this->variants)) {
             if (!empty($this->variantsCallBack)) {
                 $variantsCallBack = $this->variantsCallBack;
-                $this->variants = $variantsCallBack($this, \Yii::$app->controller->module);
+                /** @var FullCrudModule $module */
+                $module = Yii::createObject(FullCrudModule::class);
+                if ($module->getElementComponent()->isDeepLoad()) {
+                    $module->getElementComponent()->setDeepLoad(false);
+                    $this->variants = $variantsCallBack($this, $module);
+                    $module->getElementComponent()->setDeepLoad(true);
+                } else {
+                    $this->variants = [];
+                }
             } elseif ($this->type === $this::TYPE_BOOLEAN_SELECT) {
                 $boolVariants = [
                     Yii::createObject(

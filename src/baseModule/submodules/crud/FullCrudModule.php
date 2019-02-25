@@ -36,6 +36,8 @@ class FullCrudModule extends Module
 
     private $elementComponent;
 
+    public $cachedData = [];
+
     public function init()
     {
 

@@ -29,7 +29,6 @@ class ElementController extends BaseFullCrudController
     public function actionIndex()
     {
         $request = ElementListRequest::createRequest();
-
         $fullCrudElementComponent = $this->module->getElementComponent();
         $elementListResponse = $fullCrudElementComponent->setFormat(false)->listElement($request);
         $elementListResponse->headers = $fullCrudElementComponent->getHeaders($request);

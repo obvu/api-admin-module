@@ -4,17 +4,32 @@
 namespace Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\base;
 
 
+use Obvu\Modules\Api\Admin\submodules\crud\components\element\FullCrudElementComponent;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementListResult;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementSingleResult;
+use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\CrudSingleEntity;
+use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListFilter;
+use Obvu\Modules\Api\Admin\submodules\crud\models\SingleCrudElementModel;
 use yii\base\BaseObject;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 
 abstract class BaseFullCrudElementHandler extends BaseObject
 {
     protected $type;
 
     protected $module;
+
+    /**
+     * @var CrudSingleEntity
+     */
+    private $entity;
+
+    /**
+     * @var FullCrudElementComponent
+     */
+    private $fullCrudComponent;
 
     abstract public function getList($page = 1, $perPage = 20, $filter = []): FullCrudElementListResult;
 
@@ -33,11 +48,31 @@ abstract class BaseFullCrudElementHandler extends BaseObject
     /**
      * @param $id
      * @param $data
+     * @param SingleCrudElementModel|null $fullCrudModel
      * @return FullCrudElementSingleResult
      */
-    abstract public function update($id, $data);
+    abstract public function update($id, $data, SingleCrudElementModel $fullCrudModel = null);
 
     abstract public function delete($id);
+
+    public function deleteByIds($ids = [])
+    {
+        $count = 0;
+        foreach ($ids as $id) {
+            $this->delete($id);
+            $count++;
+        }
+
+        return $count;
+    }
+
+    public function deleteByFilter($filter)
+    {
+        $list = $this->getList(1, 300, $filter);
+        $ids = ArrayHelper::getColumn(ArrayHelper::getValue($list, 'elements'), 'id');
+
+        return $this->deleteByIds($ids);
+    }
 
     public function buildFilterFromGraphQLArgs($args)
     {
@@ -50,6 +85,7 @@ abstract class BaseFullCrudElementHandler extends BaseObject
         if (!empty($conditions)) {
             $filter->conditions = array_merge(['and'], $conditions);
         }
+
 //        d($filter->conditions);die;
 
         return $filter;
@@ -72,6 +108,46 @@ abstract class BaseFullCrudElementHandler extends BaseObject
     public function setModule($module): void
     {
         $this->module = $module;
+    }
+
+    /**
+     * @return FullCrudModule
+     */
+    public function getCurrentModule()
+    {
+        return \Yii::$app->getModule($this->module);
+    }
+
+    /**
+     * @param CrudSingleEntity $entity
+     */
+    public function setEntity(CrudSingleEntity $entity): void
+    {
+        $this->entity = $entity;
+    }
+
+    /**
+     * @return CrudSingleEntity
+     */
+    public function getEntity(): CrudSingleEntity
+    {
+        return $this->entity;
+    }
+
+    /**
+     * @return FullCrudElementComponent
+     */
+    public function getFullCrudComponent(): FullCrudElementComponent
+    {
+        return $this->fullCrudComponent;
+    }
+
+    /**
+     * @param FullCrudElementComponent $fullCrudComponent
+     */
+    public function setFullCrudComponent(FullCrudElementComponent $fullCrudComponent): void
+    {
+        $this->fullCrudComponent = $fullCrudComponent;
     }
 
     protected function getDataProvider($query, $page = 1, $perPage = 20)

@@ -4,6 +4,7 @@
 namespace Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity;
 
 
+use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\blocks\multipleBlock\MultipleEditDataBlock;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\fields\CrudSingleField;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\rawData\CrudRawData;
 use yii\base\BaseObject;
@@ -29,7 +30,7 @@ class CrudSingleEntity extends BaseObject
     public $key;
 
     /**
-     * @var CrudSingleField[]
+     * @var CrudSingleField[]|MultipleEditDataBlock[]
      * @SWG\Property()
      */
     public $fields;
@@ -40,10 +41,34 @@ class CrudSingleEntity extends BaseObject
      */
     public $rawData;
 
+    /**
+     * @var bool
+     * @SWG\Property()
+     */
+    public $aggregateEntity = false;
+
+
+    /**
+     * @param $fieldKey
+     * @return CrudSingleField
+     */
     public function findField($fieldKey)
     {
         foreach ($this->fields as $field) {
-            if ($field->name === $fieldKey) {
+            if ($field instanceof CrudSingleField && $field->name === $fieldKey) {
+                return $field;
+            }
+        }
+    }
+
+    /**
+     * @param $blockKey
+     * @return MultipleEditDataBlock
+     */
+    public function findMultipleBlock($blockKey)
+    {
+        foreach ($this->fields as $field) {
+            if ($field instanceof MultipleEditDataBlock && $field->entityKey === $blockKey) {
                 return $field;
             }
         }

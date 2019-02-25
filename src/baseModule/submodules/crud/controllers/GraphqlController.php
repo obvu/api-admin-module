@@ -11,6 +11,7 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\controllers;
 
 use GraphQL\GraphQL;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\Types;
+use yii\base\InvalidArgumentException;
 use yii\helpers\Json;
 use Zvinger\BaseClasses\api\controllers\BaseApiController;
 
@@ -66,7 +67,6 @@ class GraphqlController extends BaseApiController
         $schema = new \GraphQL\Type\Schema([
             'query' => Types::query(),
         ]);
-
         // огонь!
 
         $result = GraphQL::executeQuery(

@@ -4,6 +4,7 @@
 namespace Obvu\Modules\Api\Admin\submodules\crud\components\element;
 
 
+use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\aggregate\AggregateFullCrudElementHandler;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\base\BaseFullCrudElementHandler;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementSingleResult;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\simple\SimpleFullCrudElementHandler;
@@ -15,6 +16,7 @@ use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListRespo
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\single\ElementSingleRequest;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\single\ElementSingleResponse;
 use Obvu\Modules\Api\Admin\submodules\crud\models\SingleCrudElementModel;
+use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
 
 class FullCrudElementComponent
@@ -23,9 +25,16 @@ class FullCrudElementComponent
 
     public $defaultHandlerClass = SimpleFullCrudElementHandler::class;
 
+    /**
+     * @var FullCrudModule
+     */
     public $module;
 
     private $format = false;
+
+    private $deepLoad = true;
+
+    private $_list_cache = [];
 
     /**
      * @var FullCrudSettings
@@ -33,6 +42,10 @@ class FullCrudElementComponent
 
     public function listElement(ElementListRequest $request)
     {
+        $key = md5('list'.Json::encode($request));
+        if ($this->_list_cache[$key]) {
+            return $this->_list_cache[$key];
+        }
         if (!$request->filter) {
             $request->filter = new ElementListFilter();
         }
@@ -40,8 +53,9 @@ class FullCrudElementComponent
             $request->filter->orderBy = $request->sortBy;
         }
         $result = $this->defineHandler($request->type)->getList($request->page, $request->perPage, $request->filter);
-        $context = $this;
+
         if ($this->format) {
+            $context = $this;
             $result->elements = array_map(
                 function (SingleCrudElementModel $el) use ($context) {
                     $el = $this->prepareFullData($el);
@@ -52,7 +66,7 @@ class FullCrudElementComponent
             );
         }
 
-        return \Yii::createObject(
+        $this->_list_cache[$key] = \Yii::createObject(
             [
                 'class' => ElementListResponse::class,
                 'elements' => $result->elements,
@@ -60,12 +74,14 @@ class FullCrudElementComponent
                 'headers' => $result->headers,
             ]
         );
+
+        return $this->_list_cache[$key];
     }
 
     public function getHeaders(ElementListRequest $request)
     {
         /** @var FullCrudModule $module */
-        $module = \Yii::$app->getModule($this->module);
+        $module = $this->getCurrentModule();
         $crudSettings = $module->getCrudSettings();
         $block = $crudSettings->findBlock($request->type);
         $entity = $crudSettings->findEntity($request->type);
@@ -91,7 +107,7 @@ class FullCrudElementComponent
         if (!$singleCrudElementModel) {
             return $singleCrudElementModel;
         }
-        $module = \Yii::$app->getModule($this->module);
+        $module = $this->getCurrentModule();
         $crudSettings = $module->getCrudSettings();
         $entity = $crudSettings->findEntity($singleCrudElementModel->type);
         foreach ($entity->fields as $field) {
@@ -110,7 +126,7 @@ class FullCrudElementComponent
                 }
             }
         }
-        foreach ((array) $entity->rawData as $rawDatum) {
+        foreach ((array)$entity->rawData as $rawDatum) {
             $singleCrudElementModel->rawData[] = $rawDatum
                 ->setEntity($singleCrudElementModel)
                 ->getData();
@@ -122,9 +138,12 @@ class FullCrudElementComponent
     public function prepareListData(ElementListResponse $response, ElementListRequest $request)
     {
         /** @var FullCrudModule $module */
-        $module = \Yii::$app->getModule($this->module);
+        $module = $this->getCurrentModule();
         $crudSettings = $module->getCrudSettings();
         $entity = $crudSettings->findEntity($request->type);
+        if ($entity->aggregateEntity) {
+            $entity = $crudSettings->findEntity($entity->aggregateEntity);
+        }
         foreach ($response->elements as $element) {
             $resultListData = [];
             foreach ($entity->fields as $field) {
@@ -175,7 +194,8 @@ class FullCrudElementComponent
     {
         $fullCrudElementSingleResult = $this->defineHandler($request->element->type)->update(
             $request->element->id,
-            $request->element->fullData
+            $request->element->fullData,
+            $request->element
         );
 
         if ($this->format) {
@@ -212,14 +232,22 @@ class FullCrudElementComponent
         return $this->defineHandler($type)->buildFilterFromGraphQLArgs($args);
     }
 
-    private function defineHandler($type)
+    public function defineHandler($type)
     {
-        $handlerClass = !empty($this->handlers[$type]) ? $this->handlers[$type] : $this->defaultHandlerClass;
+        $settings = $this->getCurrentModule()->getCrudSettings();
+        $entity = $settings->findEntity($type);
+        if ($entity->aggregateEntity) {
+            $handlerClass = AggregateFullCrudElementHandler::class;
+        } else {
+            $handlerClass = !empty($this->handlers[$type]) ? $this->handlers[$type] : $this->defaultHandlerClass;
+        }
 
         /** @var BaseFullCrudElementHandler $handler */
         $handler = \Yii::createObject($handlerClass);
         $handler->setType($type);
         $handler->setModule($this->module);
+        $handler->setEntity($entity);
+        $handler->setFullCrudComponent($this);
 
         return $handler;
     }
@@ -233,5 +261,37 @@ class FullCrudElementComponent
         $this->format = $format;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFormat(): bool
+    {
+        return $this->format;
+    }
+
+    /**
+     * @param bool $deepLoad
+     */
+    public function setDeepLoad(bool $deepLoad): void
+    {
+        $this->deepLoad = $deepLoad;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeepLoad(): bool
+    {
+        return $this->deepLoad;
+    }
+
+    /**
+     * @return FullCrudModule
+     */
+    private function getCurrentModule()
+    {
+        return \Yii::$app->getModule($this->module);
     }
 }

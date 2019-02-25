@@ -29,10 +29,12 @@ class CrudFullDataType extends ObjectType
                 }
                 $resultFields = [];
                 foreach ($entity->fields as $field) {
-                    $resultFields[$field->name] = [
-                        'type' => $field->getGraphQLFieldType(),
-                        'description' => $field->label
-                    ];
+                    if (isset($field->name)) {
+                        $resultFields[$field->name] = [
+                            'type' => $field->getGraphQLFieldType(),
+                            'description' => $field->label,
+                        ];
+                    }
                 }
 
                 return $resultFields;

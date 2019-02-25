@@ -40,6 +40,12 @@ class SingleCrudElementModel
      */
     public $rawData = [];
 
+    /**
+     * @var object
+     * @SWG\Property()
+     */
+    public $subEntity;
+
     private $_object;
 
     /**
@@ -57,4 +63,11 @@ class SingleCrudElementModel
     {
         return $this->_object;
     }
+
+    public function __construct()
+    {
+        $this->subEntity = new \stdClass();
+    }
+
+
 }

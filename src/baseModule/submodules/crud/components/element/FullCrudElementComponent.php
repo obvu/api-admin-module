@@ -8,6 +8,7 @@ use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\aggregate
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\base\BaseFullCrudElementHandler;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementSingleResult;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\simple\SimpleFullCrudElementHandler;
+use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\fields\base\BaseCrudSingleField;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\FullCrudSettings;
 use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListFilter;
@@ -111,6 +112,7 @@ class FullCrudElementComponent
         $crudSettings = $module->getCrudSettings();
         $entity = $crudSettings->findEntity($singleCrudElementModel->type);
         foreach ($entity->fields as $field) {
+            if (!($field instanceof BaseCrudSingleField)) continue;
             if (strpos($field->name, '.') !== false) {
                 $array = explode('.', $field->name);
                 $object = $singleCrudElementModel->getObject();
@@ -212,12 +214,15 @@ class FullCrudElementComponent
         $fullCrudElementSingleResult = $this->defineHandler($request->element->type)->create(
             $request->element->fullData
         );
+        $request->element = $fullCrudElementSingleResult->element;
 
         if ($this->format) {
             $request->element = $this->prepareFullData(
                 $fullCrudElementSingleResult->element
             );
         }
+
+
 
         return $request;
     }

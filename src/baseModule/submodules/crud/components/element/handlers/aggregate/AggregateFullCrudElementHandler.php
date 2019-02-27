@@ -12,6 +12,7 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\agg
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\base\BaseFullCrudElementHandler;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementListResult;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementSingleResult;
+use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\blocks\base\BaseEditDataBlock;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\blocks\multipleBlock\MultipleEditDataBlock;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListFilter;
 use Obvu\Modules\Api\Admin\submodules\crud\models\SingleCrudElementModel;
@@ -34,13 +35,13 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
         $settings = $this->getCurrentModule()->getCrudSettings();
         $entity = $settings->findEntity($this->type);
         foreach ($entity->fields as $field) {
-            if ($field instanceof MultipleEditDataBlock) {
+            if ($field instanceof BaseEditDataBlock) {
                 $entityKey = $field->entityKey;
                 $filter = $this->getSearchFilter($id, $field);
                 $baseFullCrudElementHandler = $this->getFullCrudComponent()->defineHandler($entityKey);
-                $elementCollection = $baseFullCrudElementHandler->getList();
+                $elementCollection = $baseFullCrudElementHandler->getList(0, 500, $filter);
                 foreach ($elementCollection->elements as $item) {
-                    $baseEntity->element->subEntity->{$entityKey}[] = $item->fullData;
+                    $baseEntity->element->subEntity->{$field->name}[] = $item->fullData;
                 }
 //                d($field);die;
             }
@@ -55,7 +56,9 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
      */
     public function create($data)
     {
-        // TODO: Implement create() method.
+        $result = $this->getConnectedHandler()->create($data);
+
+        return $this->getSingle($result->element->id);
     }
 
     /**
@@ -76,6 +79,7 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
             $baseFullCrudElementHandler1 = $this->getFullCrudComponent()->defineHandler($field->entityKey);
             $baseFullCrudElementHandler1->deleteByFilter($filter);
             foreach ($subEntityElement as $item) {
+                $item['subEntityGroupData'] = $field->name;
                 $item[$field->parentElementKey] = $id;
                 $baseFullCrudElementHandler1->create($item);
             }
@@ -102,18 +106,21 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
 
     /**
      * @param $id
-     * @param MultipleEditDataBlock $field
+     * @param $field
      * @return object|ElementListFilter
      * @throws \yii\base\InvalidConfigException
      */
-    private function getSearchFilter($id, MultipleEditDataBlock $field): ElementListFilter
+    private function getSearchFilter($id, BaseEditDataBlock $field): ElementListFilter
     {
         $filter = \Yii::createObject(
             [
                 'class' => ElementListFilter::class,
             ]
         );
-        $filter->conditions[$field->parentElementKey] = $id;
+        $filter->conditions = ['and', [$field->parentElementKey => $id]];
+        if (!$field->notGroup) {
+            $filter->conditions[] = ['subEntityGroupData' => $field->name];
+        }
 
         return $filter;
     }

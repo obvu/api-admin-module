@@ -11,6 +11,7 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types;
 
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
+use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\fields\base\BaseCrudSingleField;
 use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
 use yii\web\NotFoundHttpException;
 
@@ -29,6 +30,7 @@ class CrudFullDataType extends ObjectType
                 }
                 $resultFields = [];
                 foreach ($entity->fields as $field) {
+                    if (!($field instanceof BaseCrudSingleField)) continue;
                     if (isset($field->name)) {
                         $resultFields[$field->name] = [
                             'type' => $field->getGraphQLFieldType(),

@@ -19,7 +19,7 @@ abstract class BaseEditDataBlock extends BaseObject
 
     public $parentElementKey;
 
-    public $name = [];
+    public $name = null;
 
     public $entityKey;
 

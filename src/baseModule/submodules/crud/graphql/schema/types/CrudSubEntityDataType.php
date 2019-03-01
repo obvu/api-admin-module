@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: amorev
- * Date: 06.02.2019
- * Time: 11:43
+ * Date: 01.03.2019
+ * Time: 11:32
  */
 
 namespace Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types;
@@ -11,35 +11,33 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types;
 
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
-use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\fields\base\BaseCrudSingleField;
-use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
+use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\blocks\base\BaseEditDataBlock;
+use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\Types;
 use yii\web\NotFoundHttpException;
 
-class CrudFullDataType extends ObjectType
+class CrudSubEntityDataType extends ObjectType
 {
     public function __construct($type)
     {
         $config = [
-            'name' => 'full_data_'.$type,
+            'name' => 'sub_entity_'.$type,
             'fields' => function () use ($type) {
                 $module = \Yii::$app->currentFullCrud;
                 $settings = $module->getCrudSettings();
                 $entity = $settings->findEntity($type);
+                $resultFields = [];
                 if (empty($entity)) {
                     throw new NotFoundHttpException("No such entity");
                 }
-                $resultFields = [];
                 foreach ($entity->fields as $field) {
-                    if (!($field instanceof BaseCrudSingleField)) continue;
-                    if (isset($field->name)) {
-                        $resultFields[$field->name] = [
-                            'type' => $field->getGraphQLFieldType(),
-                            'description' => $field->label,
-//                            'resolve' => function ($e) use ($field) {
-//                            d([$e, $field->name]);die;
-//                            }
-                        ];
+                    if (!($field instanceof BaseEditDataBlock)) {
+                        continue;
                     }
+
+                    $resultFields[$field->name] = [
+                        'type' => Type::listOf(Types::crudBlock($field->entityKey)),
+                        'description' => $field->title,
+                    ];
                 }
 
                 return $resultFields;
@@ -48,5 +46,4 @@ class CrudFullDataType extends ObjectType
 
         parent::__construct($config);
     }
-
 }

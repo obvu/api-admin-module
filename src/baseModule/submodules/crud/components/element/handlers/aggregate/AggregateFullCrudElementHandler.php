@@ -16,12 +16,20 @@ use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\blo
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\blocks\multipleBlock\MultipleEditDataBlock;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListFilter;
 use Obvu\Modules\Api\Admin\submodules\crud\models\SingleCrudElementModel;
+use yii\helpers\ArrayHelper;
 
 class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
 {
     public function getList($page = 1, $perPage = 20, $filter = []): FullCrudElementListResult
     {
-        return $this->getConnectedHandler()->getList($page, $perPage, $filter);
+        $fullCrudElementListResult = $this->getConnectedHandler()->getList($page, $perPage, $filter);
+        $ids = ArrayHelper::getColumn($fullCrudElementListResult->elements, 'id');
+        $fullCrudElementListResult->elements = [];
+        foreach ($ids as $id) {
+            $fullCrudElementListResult->elements[] = $this->getSingle($id)->element;
+        }
+
+        return $fullCrudElementListResult;
     }
 
     /**
@@ -41,7 +49,7 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
                 $baseFullCrudElementHandler = $this->getFullCrudComponent()->defineHandler($entityKey);
                 $elementCollection = $baseFullCrudElementHandler->getList(0, 500, $filter);
                 foreach ($elementCollection->elements as $item) {
-                    $baseEntity->element->subEntity->{$field->name}[] = $item->fullData;
+                    $baseEntity->element->subEntity->{$field->name}[] = $item;
                 }
 //                d($field);die;
             }
@@ -81,7 +89,7 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
             foreach ($subEntityElement as $item) {
                 $item['subEntityGroupData'] = $field->name;
                 $item[$field->parentElementKey] = $id;
-                $baseFullCrudElementHandler1->create($item);
+                $baseFullCrudElementHandler1->create($item['fullData']);
             }
         }
 

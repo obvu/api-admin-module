@@ -69,9 +69,23 @@ class CrudSingleEntity extends BaseObject
     public function findMultipleBlock($blockKey)
     {
         foreach ($this->fields as $field) {
-            if ($field instanceof BaseEditDataBlock && ( $field->entityKey === $blockKey || $field->name === $blockKey)) {
+            if ($field instanceof BaseEditDataBlock && ($field->entityKey === $blockKey || $field->name === $blockKey)) {
                 return $field;
             }
         }
+    }
+
+    public function hasSubEntity(): bool
+    {
+        $result = false;
+
+        foreach ($this->fields as $field) {
+            if ($field instanceof BaseEditDataBlock) {
+                $result = true;
+                break;
+            }
+        }
+
+        return $result;
     }
 }

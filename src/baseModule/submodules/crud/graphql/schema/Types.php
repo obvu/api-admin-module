@@ -13,6 +13,7 @@ use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\crud\CrudFieldFi
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudBlockType;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudElementType;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudFullDataType;
+use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudSubEntityDataType;
 
 class Types
 {
@@ -45,13 +46,18 @@ class Types
         return self::$crudFullData[$type] ?: (self::$crudFullData[$type] = new CrudFullDataType($type));
     }
 
+    public static function crudSubEntityData($type)
+    {
+        return static::getField('subEntity'.$type, CrudSubEntityDataType::class, $type);
+    }
+
     public static function file()
     {
         return static::getField('file', CrudFieldFileType::class);
     }
 
-    private static function getField($type, $class)
+    private static function getField($type, $class, $constructVar = null)
     {
-        return self::$fields[$type] ?: (self::$fields[$type] = new $class);
+        return self::$fields[$type] ?: (self::$fields[$type] = new $class($constructVar));
     }
 }

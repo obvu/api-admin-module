@@ -64,6 +64,7 @@ class CrudSingleField extends BaseCrudSingleField
                     ),
                 ];
                 $this->variants = $boolVariants;
+                $this->defaultValue = 0;
                 $this->type = $this::TYPE_SELECT;
             }
         }

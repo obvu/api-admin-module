@@ -55,7 +55,7 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
                             $filter->conditions[] = $gqlFilters->conditions;
                         }
                         if ($gqlFilters->orderBy) {
-                            $filter->orderBy = array_merge($filter->orderBy, $gqlFilters->orderBy);
+                            $filter->orderBy = array_merge((array)$filter->orderBy, (array)$gqlFilters->orderBy);
                         }
                         $baseFullCrudElementHandler = $this->getFullCrudComponent()->defineHandler($entityKey);
                         $elementCollection = $baseFullCrudElementHandler->getList(0, 500, $filter);

@@ -99,6 +99,7 @@ abstract class BaseFullCrudElementHandler extends BaseObject
                     $resultOrderBy[$key] = SORT_DESC;
                 }
             }
+            $filter->orderBy = $resultOrderBy;
         }
         if (!empty($conditions)) {
             $filter->conditions = array_merge(['and'], $conditions);

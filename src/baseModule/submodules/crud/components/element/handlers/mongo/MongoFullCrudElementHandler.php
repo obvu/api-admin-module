@@ -52,7 +52,6 @@ class MongoFullCrudElementHandler extends BaseFullCrudElementHandler
         if ($filter->filterCallBack) {
             ($filter->filterCallBack)($query);
         }
-        $data = $query->all();
         $provider = $this->getDataProvider($query, $page, $perPage);
         $list = $provider->getModels();
         $result = [];

@@ -90,7 +90,16 @@ abstract class BaseFullCrudElementHandler extends BaseObject
                 $conditions[] = $arr;
             }
         }
-
+        if (!empty($args['sortData'])) {
+            $resultOrderBy = [];
+            foreach ($args['sortData'] as $key => $sortDatum) {
+                if ($sortDatum == 'asc') {
+                    $resultOrderBy[$key] = SORT_ASC;
+                } elseif ($sortDatum == 'desc') {
+                    $resultOrderBy[$key] = SORT_DESC;
+                }
+            }
+        }
         if (!empty($conditions)) {
             $filter->conditions = array_merge(['and'], $conditions);
 //            if (empty($filter->conditions[2])) {

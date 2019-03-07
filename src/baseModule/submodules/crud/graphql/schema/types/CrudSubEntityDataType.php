@@ -40,6 +40,7 @@ class CrudSubEntityDataType extends ObjectType
                         'description' => $field->title,
                         'args' => [
                             'fullData' => Types::inputFullData($field->entityKey),
+                            'sortData' => Types::sortData($field->entityKey),
                         ],
                         'resolve' => function ($el, $args) use ($field) {
                             $result = $el->{$field->name};

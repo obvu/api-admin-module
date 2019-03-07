@@ -36,6 +36,7 @@ class CrudElementType extends ObjectType
                         'args' => [
                             'id' => Type::string(),
                             'fullData' => Types::inputFullData($crudSingleBlock->entityKey),
+                            'sortData' => Types::sortData($crudSingleBlock->entityKey),
                         ],
                         'resolve' => function ($root, $args) use ($crudSingleBlock, $fullCrud) {
                             $type = $crudSingleBlock->entityKey;

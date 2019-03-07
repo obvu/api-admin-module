@@ -15,6 +15,7 @@ use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudElementType;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudFullDataType;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudSubEntityDataType;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\input\CrudFullDataInputData;
+use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\input\CrudSortInputData;
 
 class Types
 {
@@ -55,6 +56,11 @@ class Types
     public static function inputFullData($type)
     {
         return static::getField('inputFullData'.$type, CrudFullDataInputData::class, $type);
+    }
+
+    public static function sortData($type)
+    {
+        return static::getField('sortData'.$type, CrudSortInputData::class, $type);
     }
 
     public static function file()

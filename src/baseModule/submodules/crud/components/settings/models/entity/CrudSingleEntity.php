@@ -48,6 +48,12 @@ class CrudSingleEntity extends BaseObject
      */
     public $aggregateEntity = false;
 
+    public function init()
+    {
+        parent::init();
+        \Yii::$app->currentFullCrud->getFieldHelper()->handleFields($this->aggregateEntity, $this->fields);
+    }
+
 
     /**
      * @param $fieldKey

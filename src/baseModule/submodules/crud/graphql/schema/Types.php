@@ -14,6 +14,7 @@ use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudBlockType;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudElementType;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudFullDataType;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudSubEntityDataType;
+use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\input\CrudFullDataInputData;
 
 class Types
 {
@@ -49,6 +50,11 @@ class Types
     public static function crudSubEntityData($type)
     {
         return static::getField('subEntity'.$type, CrudSubEntityDataType::class, $type);
+    }
+
+    public static function inputFullData($type)
+    {
+        return static::getField('inputFullData'.$type, CrudFullDataInputData::class, $type);
     }
 
     public static function file()

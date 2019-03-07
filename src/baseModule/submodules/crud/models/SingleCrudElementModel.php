@@ -41,7 +41,7 @@ class SingleCrudElementModel
     public $rawData = [];
 
     /**
-     * @var object
+     * @var object| callable
      * @SWG\Property()
      */
     public $subEntity;
@@ -69,5 +69,20 @@ class SingleCrudElementModel
         $this->subEntity = new \stdClass();
     }
 
+    public function prepareSubEntity($inside = false)
+    {
+        if (is_callable($this->subEntity)) {
+            $this->subEntity = ($this->subEntity)();
+        }
+        if ($inside) {
+            $this->subEntity = (array) $this->subEntity;
+            foreach ($this->subEntity as $key =>$item) {
+                if (is_callable($item)) {
+                    $this->subEntity[$key] = ($item)();
+                }
+            }
+        }
 
+        return $this;
+    }
 }

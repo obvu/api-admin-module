@@ -40,20 +40,33 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
     {
         $baseEntity = $this->getConnectedHandler()->getSingle($id);
         $baseEntity->element->type = $this->type;
-        $settings = $this->getCurrentModule()->getCrudSettings();
-        $entity = $settings->findEntity($this->type);
-        foreach ($entity->fields as $field) {
-            if ($field instanceof BaseEditDataBlock) {
-                $entityKey = $field->entityKey;
-                $filter = $this->getSearchFilter($id, $field);
-                $baseFullCrudElementHandler = $this->getFullCrudComponent()->defineHandler($entityKey);
-                $elementCollection = $baseFullCrudElementHandler->getList(0, 500, $filter);
-                foreach ($elementCollection->elements as $item) {
-                    $baseEntity->element->subEntity->{$field->name}[] = $item;
+        $baseEntity->element->subEntity = function ($subEntityFilters = null) use ($id) {
+            $subEntity = new \stdClass();
+            $settings = $this->getCurrentModule()->getCrudSettings();
+            $entity = $settings->findEntity($this->type);
+            foreach ((array)$entity->fields as $field) {
+                if ($field instanceof BaseEditDataBlock) {
+                    $subEntity->{$field->name} = function ($fieldFilters = null) use ($field, $id) {
+                        $var = [];
+                        $entityKey = $field->entityKey;
+                        $filter = $this->getSearchFilter($id, $field);
+                        $gqlFilters = $this->buildFilterFromGraphQLArgs($fieldFilters);
+                        if ($gqlFilters->conditions) {
+                            $filter->conditions[] = $gqlFilters->conditions;
+                        }
+                        $baseFullCrudElementHandler = $this->getFullCrudComponent()->defineHandler($entityKey);
+                        $elementCollection = $baseFullCrudElementHandler->getList(0, 500, $filter);
+                        foreach ($elementCollection->elements as $item) {
+                            $var[] = $item;
+                        }
+
+                        return $var;
+                    };
                 }
-//                d($field);die;
             }
-        }
+
+            return $subEntity;
+        };
 
         return $baseEntity;
     }
@@ -87,19 +100,13 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
             $baseFullCrudElementHandler1 = $this->getFullCrudComponent()->defineHandler($field->entityKey);
             $baseFullCrudElementHandler1->deleteByFilter($filter);
             foreach ($subEntityElement as $item) {
-                $item['subEntityGroupData'] = $field->name;
-                $item[$field->parentElementKey] = $id;
+                $item['fullData']['subEntityGroupData'] = $field->name;
+                $item['fullData'][$field->parentElementKey] = $id;
                 $baseFullCrudElementHandler1->create($item['fullData']);
             }
         }
 
         return $this->getSingle($id);
-    }
-
-    private function updateElement($element)
-    {
-        d($element);
-        die;
     }
 
     public function delete($id)

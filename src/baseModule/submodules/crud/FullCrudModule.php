@@ -7,6 +7,7 @@ namespace Obvu\Modules\Api\Admin\submodules\crud;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\FullCrudElementComponent;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\mongo\MongoFullCrudElementHandler;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\simple\SimpleFullCrudElementHandler;
+use Obvu\Modules\Api\Admin\submodules\crud\components\settings\helpers\FieldCollectorHelper;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\FullCrudSettings;
 use yii\base\Module;
 use yii2mod\rbac\filters\AccessControl;
@@ -112,5 +113,10 @@ class FullCrudModule extends Module
                 'generateRelations' => 'none',
             ]
         );
+    }
+
+    public function getFieldHelper()
+    {
+        return \Yii::createObject(FieldCollectorHelper::class, [$this]);
     }
 }

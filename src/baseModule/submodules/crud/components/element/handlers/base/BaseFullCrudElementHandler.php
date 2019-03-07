@@ -81,12 +81,22 @@ abstract class BaseFullCrudElementHandler extends BaseObject
         if ($args['id']) {
             $conditions[] = ['id' => $args['id']];
         }
+        if ($args['fullData']) {
+            foreach ($args['fullData'] as $key => $value) {
+                $arr = [$key => $value];
+                if (is_numeric($value)) {
+                    $arr = ['or', $arr, [$key => floatval($value)]];
+                }
+                $conditions[] = $arr;
+            }
+        }
 
         if (!empty($conditions)) {
             $filter->conditions = array_merge(['and'], $conditions);
+//            if (empty($filter->conditions[2])) {
+//                $filter->conditions[2] = '1=1';
+//            }
         }
-
-//        d($filter->conditions);die;
 
         return $filter;
     }

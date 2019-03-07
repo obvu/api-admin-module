@@ -21,6 +21,7 @@ class CrudSubEntityDataType extends ObjectType
     {
         $config = [
             'name' => 'sub_entity_'.$type,
+
             'fields' => function () use ($type) {
                 $module = \Yii::$app->currentFullCrud;
                 $settings = $module->getCrudSettings();
@@ -37,6 +38,17 @@ class CrudSubEntityDataType extends ObjectType
                     $resultFields[$field->name] = [
                         'type' => Type::listOf(Types::crudBlock($field->entityKey)),
                         'description' => $field->title,
+                        'args' => [
+                            'fullData' => Types::inputFullData($field->entityKey),
+                        ],
+                        'resolve' => function ($el, $args) use ($field) {
+                            $result = $el->{$field->name};
+                            if (is_callable($result)) {
+                                $result = ($result)($args);
+                            }
+
+                            return $result;
+                        },
                     ];
                 }
 

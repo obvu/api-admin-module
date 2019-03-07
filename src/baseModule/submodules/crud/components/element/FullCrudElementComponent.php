@@ -35,6 +35,8 @@ class FullCrudElementComponent
 
     private $deepLoad = true;
 
+    private $holders = [];
+
     private $_list_cache = [];
 
     /**
@@ -112,7 +114,9 @@ class FullCrudElementComponent
         $crudSettings = $module->getCrudSettings();
         $entity = $crudSettings->findEntity($singleCrudElementModel->type);
         foreach ($entity->fields as $field) {
-            if (!($field instanceof BaseCrudSingleField)) continue;
+            if (!($field instanceof BaseCrudSingleField)) {
+                continue;
+            }
             if (strpos($field->name, '.') !== false) {
                 $array = explode('.', $field->name);
                 $object = $singleCrudElementModel->getObject();
@@ -163,6 +167,7 @@ class FullCrudElementComponent
                 }
             }
             $element->listData = $resultListData;
+//            $element->prepareSubEntity();
         }
 
         return $response;
@@ -221,7 +226,6 @@ class FullCrudElementComponent
                 $fullCrudElementSingleResult->element
             );
         }
-
 
 
         return $request;
@@ -298,5 +302,20 @@ class FullCrudElementComponent
     private function getCurrentModule()
     {
         return \Yii::$app->getModule($this->module);
+    }
+
+    public function holdBlock($name)
+    {
+        $this->holders[$name] = true;
+    }
+
+    public function releaseBlock($name)
+    {
+        $this->holders[$name] = false;
+    }
+
+    public function isBlocked($name)
+    {
+        return isset($this->holders[$name]) ? $this->holders[$name] : false;
     }
 }

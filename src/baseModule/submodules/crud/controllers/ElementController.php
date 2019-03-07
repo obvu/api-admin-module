@@ -54,7 +54,10 @@ class ElementController extends BaseFullCrudController
     public function actionSingle()
     {
         $request = ElementSingleRequest::createRequest();
-        return $this->module->getElementComponent()->setFormat(true)->singleElement($request);
+        $singleCrudElementModel = $this->module->getElementComponent()->setFormat(true)->singleElement($request);
+        $singleCrudElementModel->element->prepareSubEntity(true);
+
+        return $singleCrudElementModel;
     }
 
     /**

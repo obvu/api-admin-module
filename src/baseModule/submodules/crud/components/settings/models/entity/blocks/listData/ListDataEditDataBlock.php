@@ -20,8 +20,8 @@ class ListDataEditDataBlock extends BaseEditDataBlock
     public function init()
     {
         parent::init();
+        $fullCrudModule = \Yii::$app->currentFullCrud;
         if ($this->fields === true) {
-            $fullCrudModule = \Yii::$app->currentFullCrud;
             if (!static::$inGettingData) {
                 static::$inGettingData = true;
                 $fullCrudModule->holdFormatting();
@@ -29,5 +29,6 @@ class ListDataEditDataBlock extends BaseEditDataBlock
                 $fullCrudModule->releaseFormatting();
             }
         }
+        $fullCrudModule->getFieldHelper()->handleFields($this->entityKey, $this->fields);
     }
 }

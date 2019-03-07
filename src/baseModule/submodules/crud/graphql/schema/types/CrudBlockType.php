@@ -40,6 +40,11 @@ class CrudBlockType extends ObjectType
                 if ($entity->hasSubEntity()) {
                     $arr['subEntity'] = [
                         'type' => Types::crudSubEntityData($type),
+                        'resolve' => function (SingleCrudElementModel $el) {
+                            $prepareSubEntity = $el->prepareSubEntity();
+
+                            return $prepareSubEntity->subEntity;
+                        },
                     ];
                 }
 

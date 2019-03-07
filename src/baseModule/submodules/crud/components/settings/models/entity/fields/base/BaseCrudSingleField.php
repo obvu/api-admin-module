@@ -13,6 +13,7 @@ use GraphQL\Type\Definition\Type;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\Types;
 use yii\base\BaseObject;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Inflector;
 
 abstract class BaseCrudSingleField extends BaseObject
 {
@@ -33,6 +34,15 @@ abstract class BaseCrudSingleField extends BaseObject
     public $label;
 
     public $defaultValue = null;
+
+    public function init()
+    {
+        parent::init();
+        if (empty($this->label)) {
+            $this->label = Inflector::camel2words($this->name, true);
+        }
+    }
+
 
     public function getGraphQLFieldType()
     {

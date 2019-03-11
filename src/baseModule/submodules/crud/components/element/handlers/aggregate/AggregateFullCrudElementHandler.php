@@ -12,15 +12,24 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\agg
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\base\BaseFullCrudElementHandler;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementListResult;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementSingleResult;
+use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\blocks\base\BaseEditDataBlock;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\blocks\multipleBlock\MultipleEditDataBlock;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListFilter;
 use Obvu\Modules\Api\Admin\submodules\crud\models\SingleCrudElementModel;
+use yii\helpers\ArrayHelper;
 
 class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
 {
     public function getList($page = 1, $perPage = 20, $filter = []): FullCrudElementListResult
     {
-        return $this->getConnectedHandler()->getList($page, $perPage, $filter);
+        $fullCrudElementListResult = $this->getConnectedHandler()->getList($page, $perPage, $filter);
+        $ids = ArrayHelper::getColumn($fullCrudElementListResult->elements, 'id');
+        $fullCrudElementListResult->elements = [];
+        foreach ($ids as $id) {
+            $fullCrudElementListResult->elements[] = $this->getSingle($id)->element;
+        }
+
+        return $fullCrudElementListResult;
     }
 
     /**
@@ -31,20 +40,36 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
     {
         $baseEntity = $this->getConnectedHandler()->getSingle($id);
         $baseEntity->element->type = $this->type;
-        $settings = $this->getCurrentModule()->getCrudSettings();
-        $entity = $settings->findEntity($this->type);
-        foreach ($entity->fields as $field) {
-            if ($field instanceof MultipleEditDataBlock) {
-                $entityKey = $field->entityKey;
-                $filter = $this->getSearchFilter($id, $field);
-                $baseFullCrudElementHandler = $this->getFullCrudComponent()->defineHandler($entityKey);
-                $elementCollection = $baseFullCrudElementHandler->getList();
-                foreach ($elementCollection->elements as $item) {
-                    $baseEntity->element->subEntity->{$entityKey}[] = $item->fullData;
+        $baseEntity->element->subEntity = function ($subEntityFilters = null) use ($id) {
+            $subEntity = new \stdClass();
+            $settings = $this->getCurrentModule()->getCrudSettings();
+            $entity = $settings->findEntity($this->type);
+            foreach ((array)$entity->fields as $field) {
+                if ($field instanceof BaseEditDataBlock) {
+                    $subEntity->{$field->name} = function ($fieldFilters = null) use ($field, $id) {
+                        $var = [];
+                        $entityKey = $field->entityKey;
+                        $filter = $this->getSearchFilter($id, $field);
+                        $gqlFilters = $this->buildFilterFromGraphQLArgs($fieldFilters);
+                        if ($gqlFilters->conditions) {
+                            $filter->conditions[] = $gqlFilters->conditions;
+                        }
+                        if ($gqlFilters->orderBy) {
+                            $filter->orderBy = array_merge((array)$filter->orderBy, (array)$gqlFilters->orderBy);
+                        }
+                        $baseFullCrudElementHandler = $this->getFullCrudComponent()->defineHandler($entityKey);
+                        $elementCollection = $baseFullCrudElementHandler->getList(0, 500, $filter);
+                        foreach ($elementCollection->elements as $item) {
+                            $var[] = $item;
+                        }
+
+                        return $var;
+                    };
                 }
-//                d($field);die;
             }
-        }
+
+            return $subEntity;
+        };
 
         return $baseEntity;
     }
@@ -55,7 +80,9 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
      */
     public function create($data)
     {
-        // TODO: Implement create() method.
+        $result = $this->getConnectedHandler()->create($data);
+
+        return $this->getSingle($result->element->id);
     }
 
     /**
@@ -76,18 +103,13 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
             $baseFullCrudElementHandler1 = $this->getFullCrudComponent()->defineHandler($field->entityKey);
             $baseFullCrudElementHandler1->deleteByFilter($filter);
             foreach ($subEntityElement as $item) {
-                $item[$field->parentElementKey] = $id;
-                $baseFullCrudElementHandler1->create($item);
+                $item['fullData']['subEntityGroupData'] = $field->name;
+                $item['fullData'][$field->parentElementKey] = $id;
+                $baseFullCrudElementHandler1->create($item['fullData']);
             }
         }
 
         return $this->getSingle($id);
-    }
-
-    private function updateElement($element)
-    {
-        d($element);
-        die;
     }
 
     public function delete($id)
@@ -102,18 +124,21 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
 
     /**
      * @param $id
-     * @param MultipleEditDataBlock $field
+     * @param $field
      * @return object|ElementListFilter
      * @throws \yii\base\InvalidConfigException
      */
-    private function getSearchFilter($id, MultipleEditDataBlock $field): ElementListFilter
+    private function getSearchFilter($id, BaseEditDataBlock $field): ElementListFilter
     {
         $filter = \Yii::createObject(
             [
                 'class' => ElementListFilter::class,
             ]
         );
-        $filter->conditions[$field->parentElementKey] = $id;
+        $filter->conditions = ['and', [$field->parentElementKey => $id]];
+        if (!$field->notGroup) {
+            $filter->conditions[] = ['subEntityGroupData' => $field->name];
+        }
 
         return $filter;
     }

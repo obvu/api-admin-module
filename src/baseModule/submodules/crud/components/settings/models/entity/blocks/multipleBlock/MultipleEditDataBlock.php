@@ -14,14 +14,7 @@ use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\fie
 
 class MultipleEditDataBlock extends BaseEditDataBlock
 {
-    public $entityKey;
-
-    public $title;
-
-
     public $type = 'multiple-fields-block';
-
-    public $parentElementKey;
 
     /**
      * @var CrudSingleField[]
@@ -32,4 +25,13 @@ class MultipleEditDataBlock extends BaseEditDataBlock
      * @var CrudSingleField[]
      */
     public $fieldsRight = [];
+
+    public function init()
+    {
+        parent::init();
+        \Yii::$app->currentFullCrud->getFieldHelper()->handleFields($this->entityKey, $this->fieldsRight);
+        \Yii::$app->currentFullCrud->getFieldHelper()->handleFields($this->entityKey, $this->fieldsLeft);
+    }
+
+
 }

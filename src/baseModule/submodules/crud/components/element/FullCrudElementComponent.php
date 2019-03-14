@@ -124,11 +124,13 @@ class FullCrudElementComponent
                 $singleCrudElementModel->fullData[$field->name] = $var->{$array[1]};
                 unset($singleCrudElementModel->fullData[$array[0]][$array[1]]);
             }
-            if ($field->defaultValue) {
-                $singleCrudElementModel->fullData[$field->name] = $field->defaultValue;
-            } elseif ($field->type === $field::TYPE_SELECT) {
-                if (!$singleCrudElementModel->fullData[$field->name]) {
-                    $singleCrudElementModel->fullData[$field->name] = $field->variants[0]->key;
+            if (empty($singleCrudElementModel->fullData[$field->name])) {
+                if ($field->defaultValue) {
+                    $singleCrudElementModel->fullData[$field->name] = $field->defaultValue;
+                } elseif ($field->type === $field::TYPE_SELECT) {
+                    if (!$singleCrudElementModel->fullData[$field->name]) {
+                        $singleCrudElementModel->fullData[$field->name] = $field->variants[0]->key;
+                    }
                 }
             }
         }
@@ -175,15 +177,16 @@ class FullCrudElementComponent
 
     public function singleElement(ElementSingleRequest $request)
     {
+        $baseFullCrudElementHandler = $this->defineHandler($request->type);
         try {
-            $data = $this->defineHandler($request->type)->getSingle($request->id);
+            $data = $baseFullCrudElementHandler->getSingle($request->id);
         } catch (NotFoundHttpException $e) {
             if ($request->id == 0) {
-                $id = $this->defineHandler($request->type)->getList()->elements[0]->id;
+                $id = $baseFullCrudElementHandler->getList()->elements[0]->id;
                 if (empty($id)) {
-                    $data = $this->defineHandler($request->type)->create([])->element;
+                    $data = $baseFullCrudElementHandler->create([]);
                 } else {
-                    $data = $this->defineHandler($request->type)->getSingle($id);
+                    $data = $baseFullCrudElementHandler->getSingle($id);
                 }
             } else {
                 throw $e;

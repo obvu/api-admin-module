@@ -32,6 +32,7 @@ class ElementController extends BaseFullCrudController
         $fullCrudElementComponent = $this->module->getElementComponent();
         $elementListResponse = $fullCrudElementComponent->setFormat(false)->listElement($request);
         $elementListResponse->headers = $fullCrudElementComponent->getHeaders($request);
+
         return $fullCrudElementComponent->prepareListData($elementListResponse, $request);
     }
 
@@ -55,7 +56,9 @@ class ElementController extends BaseFullCrudController
     {
         $request = ElementSingleRequest::createRequest();
         $singleCrudElementModel = $this->module->getElementComponent()->setFormat(true)->singleElement($request);
-        $singleCrudElementModel->element->prepareSubEntity(true);
+        if ($singleCrudElementModel->element) {
+            $singleCrudElementModel->element->prepareSubEntity(true);
+        }
 
         return $singleCrudElementModel;
     }

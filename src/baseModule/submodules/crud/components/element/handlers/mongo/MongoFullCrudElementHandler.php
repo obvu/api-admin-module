@@ -76,7 +76,7 @@ class MongoFullCrudElementHandler extends BaseFullCrudElementHandler
     {
         $query = $this->getBaseQuery();
         if ($id !== 0) {
-            $object = $query->where(['_id' => $id]);
+            $query->where(['_id' => $id]);
         }
         $object = $query->one();
         if (empty($object)) {

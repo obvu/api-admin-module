@@ -16,7 +16,9 @@ use GraphQL\Type\Definition\Type;
 use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListRequest;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\single\ElementSingleRequest;
+use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
+use Zvinger\BaseClasses\app\graphql\base\types\input\PaginationInputType;
 
 class CrudElementType extends ObjectType
 {
@@ -37,6 +39,7 @@ class CrudElementType extends ObjectType
                             'id' => Type::string(),
                             'fullData' => Types::inputFullData($crudSingleBlock->entityKey),
                             'sortData' => Types::sortData($crudSingleBlock->entityKey),
+                            'paginationData' => PaginationInputType::initType(),
                         ],
                         'resolve' => function ($root, $args) use ($crudSingleBlock, $fullCrud) {
                             $type = $crudSingleBlock->entityKey;
@@ -73,6 +76,8 @@ class CrudElementType extends ObjectType
                                                 'class' => ElementListRequest::class,
                                                 'type' => $type,
                                                 'filter' => $elementListFilter,
+                                                'page' => ArrayHelper::getValue($args, 'paginationData.page', 1),
+                                                'perPage' => ArrayHelper::getValue($args, 'paginationData.perPage', 20),
                                             ]
                                         )
                                     )

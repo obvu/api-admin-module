@@ -14,6 +14,7 @@ use GraphQL\Type\Definition\Type;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\blocks\base\BaseEditDataBlock;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\Types;
 use yii\web\NotFoundHttpException;
+use Zvinger\BaseClasses\app\graphql\base\types\input\PaginationInputType;
 
 class CrudSubEntityDataType extends ObjectType
 {

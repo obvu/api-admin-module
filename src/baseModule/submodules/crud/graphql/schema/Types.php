@@ -9,6 +9,7 @@
 namespace Obvu\Modules\Api\Admin\submodules\crud\graphql\schema;
 
 
+use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\crud\CrudFieldFileType;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudBlockType;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudElementType;
@@ -28,14 +29,14 @@ class Types
 
     private static $fields  = [];
 
-    public static function query()
+    public static function query(FullCrudModule $module)
     {
-        return self::$query ?: (self::$query = new QueryType());
+        return self::$query ?: (self::$query = new QueryType($module));
     }
 
-    public static function crudElement()
+    public static function crudElement(FullCrudModule $module)
     {
-        return self::$crudElement ?: (self::$crudElement = new CrudElementType());
+        return self::$crudElement[$module->getUniqueId()] ?: (self::$crudElement[$module->getUniqueId()] = new CrudElementType($module));
     }
 
     public static function crudBlock($type)

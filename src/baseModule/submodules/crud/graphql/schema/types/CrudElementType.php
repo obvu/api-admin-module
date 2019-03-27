@@ -14,22 +14,25 @@ use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\Types;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
+use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\input\CrudFullDataInputData;
+use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\input\CrudSortInputData;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListRequest;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\single\ElementSingleRequest;
 use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
+use Zvinger\BaseClasses\app\graphql\base\BaseGraphQLObjectType;
 use Zvinger\BaseClasses\app\graphql\base\types\input\PaginationInputType;
 
-class CrudElementType extends ObjectType
+class CrudElementType extends BaseGraphQLObjectType
 {
-    public function __construct()
+    public function __construct(FullCrudModule $module)
     {
         $config = [
-            'fields' => function () {
-                $fullCrud = \Yii::$app->currentFullCrud;
+            'fields' => function () use ($module) {
+                $fullCrud = $module;
                 $resultFields = [];
                 foreach ($fullCrud->getCrudSettings()->blocks as $crudSingleBlock) {
-                    $crudBlockType = Types::crudBlock($crudSingleBlock->entityKey);
+                    $crudBlockType = CrudBlockType::initType([$crudSingleBlock->entityKey, $module]);
                     if ($crudSingleBlock->type == $crudSingleBlock::TYPE_CRUD) {
                         $crudBlockType = Type::listOf($crudBlockType);
                     }
@@ -37,11 +40,11 @@ class CrudElementType extends ObjectType
                         'type' => $crudBlockType,
                         'args' => [
                             'id' => Type::string(),
-                            'fullData' => Types::inputFullData($crudSingleBlock->entityKey),
-                            'sortData' => Types::sortData($crudSingleBlock->entityKey),
+                            'fullData' => CrudFullDataInputData::initType([$crudSingleBlock->entityKey, $module]),
+                            'sortData' => CrudSortInputData::initType([$crudSingleBlock->entityKey, $module]),
                             'paginationData' => PaginationInputType::initType(),
                         ],
-                        'resolve' => function ($root, $args) use ($crudSingleBlock, $fullCrud) {
+                        'resolve' => function ($root, $args) use ($crudSingleBlock, $fullCrud, $module) {
                             $type = $crudSingleBlock->entityKey;
                             $id = $args['id'];
                             if ($crudSingleBlock->type == $crudSingleBlock::TYPE_SINGLE) {
@@ -55,7 +58,7 @@ class CrudElementType extends ObjectType
                                         'id' => $id,
                                     ]
                                 );
-                                $singleCrudElementModel = \Yii::$app->currentFullCrud->getElementComponent(
+                                $singleCrudElementModel = $module->getElementComponent(
                                 )->singleElement(
                                     $request
                                 );
@@ -65,10 +68,10 @@ class CrudElementType extends ObjectType
                                     $result = [$result];
                                 }
                             } else {
-                                $elementListFilter = \Yii::$app->currentFullCrud
+                                $elementListFilter = $module
                                     ->getElementComponent()
                                     ->buildFilterFromGraphQLArgs($type, $args);
-                                $result = \Yii::$app->currentFullCrud
+                                $result = $module
                                     ->getElementComponent()
                                     ->listElement(
                                         \Yii::createObject(

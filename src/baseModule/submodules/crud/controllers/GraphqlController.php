@@ -67,7 +67,7 @@ class GraphqlController extends BaseApiController
 
         $schema = new \GraphQL\Type\Schema(
             [
-                'query' => Types::query(),
+                'query' => Types::query($this->module),
             ]
         );
         $myErrorHandler = function (array $errors, callable $formatter) {

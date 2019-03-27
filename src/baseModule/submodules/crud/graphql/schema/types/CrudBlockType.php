@@ -10,19 +10,20 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types;
 
 
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementSingleResult;
+use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\Types;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use Obvu\Modules\Api\Admin\submodules\crud\models\SingleCrudElementModel;
+use Zvinger\BaseClasses\app\graphql\base\BaseGraphQLObjectType;
 
-class CrudBlockType extends ObjectType
+class CrudBlockType extends BaseGraphQLObjectType
 {
-    public function __construct($type)
+    public function __construct($type, FullCrudModule $module = null)
     {
         $config = [
             'name' => 'block_type_'.$type,
-            'fields' => function () use ($type) {
-                $module = \Yii::$app->currentFullCrud;
+            'fields' => function () use ($type, $module) {
                 $settings = $module->getCrudSettings();
                 $entity = $settings->findEntity($type);
 
@@ -34,12 +35,12 @@ class CrudBlockType extends ObjectType
                         'type' => Type::string(),
                     ],
                     'fullData' => [
-                        'type' => Types::crudFullData($type),
+                        'type' => CrudFullDataType::initType([$type, $module]),
                     ],
                 ];
                 if ($entity->hasSubEntity()) {
                     $arr['subEntity'] = [
-                        'type' => Types::crudSubEntityData($type),
+                        'type' => CrudSubEntityDataType::initType([$type, $module]),
                         'resolve' => function (SingleCrudElementModel $el) {
                             $prepareSubEntity = $el->prepareSubEntity();
 

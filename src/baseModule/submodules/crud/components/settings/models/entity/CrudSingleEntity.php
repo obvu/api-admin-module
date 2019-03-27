@@ -8,6 +8,7 @@ use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\blo
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\blocks\multipleBlock\MultipleEditDataBlock;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\fields\CrudSingleField;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\rawData\CrudRawData;
+use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
 use yii\base\BaseObject;
 use yii\helpers\ArrayHelper;
 
@@ -51,7 +52,7 @@ class CrudSingleEntity extends BaseObject
     public function init()
     {
         parent::init();
-        \Yii::$app->currentFullCrud->getFieldHelper()->handleFields($this->aggregateEntity, $this->fields);
+        FullCrudModule::getCurrentFullCrudHandlingModule()->getFieldHelper()->handleFields($this->aggregateEntity, $this->fields);
     }
 
 

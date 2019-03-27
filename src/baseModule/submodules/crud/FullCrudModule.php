@@ -39,6 +39,17 @@ class FullCrudModule extends Module
 
     public $cachedData = [];
 
+    /**
+     * @return self
+     */
+    public static function getCurrentFullCrudHandlingModule()
+    {
+        if (static::$currentFullCrudHandlingModule instanceof static) {
+            return static::$currentFullCrudHandlingModule;
+        }
+        return \Yii::$app->currentFullCrud;
+    }
+
     public function init()
     {
 
@@ -124,5 +135,15 @@ class FullCrudModule extends Module
     public function getFieldHelper()
     {
         return \Yii::createObject(FieldCollectorHelper::class, [$this]);
+    }
+
+    private static $currentFullCrudHandlingModule = null;
+
+    /**
+     * @param FullCrudModule|null $module
+     */
+    public static function setCurrentFullCrudHandlingModule($module)
+    {
+        static::$currentFullCrudHandlingModule = $module;
     }
 }

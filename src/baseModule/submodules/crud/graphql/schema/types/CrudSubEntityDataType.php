@@ -12,19 +12,22 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\blocks\base\BaseEditDataBlock;
+use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\Types;
+use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\input\CrudFullDataInputData;
+use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\input\CrudSortInputData;
 use yii\web\NotFoundHttpException;
+use Zvinger\BaseClasses\app\graphql\base\BaseGraphQLObjectType;
 use Zvinger\BaseClasses\app\graphql\base\types\input\PaginationInputType;
 
-class CrudSubEntityDataType extends ObjectType
+class CrudSubEntityDataType extends BaseGraphQLObjectType
 {
-    public function __construct($type)
+    public function __construct($type, FullCrudModule $module)
     {
         $config = [
             'name' => 'sub_entity_'.$type,
 
-            'fields' => function () use ($type) {
-                $module = \Yii::$app->currentFullCrud;
+            'fields' => function () use ($type, $module) {
                 $settings = $module->getCrudSettings();
                 $entity = $settings->findEntity($type);
                 $resultFields = [];
@@ -37,11 +40,15 @@ class CrudSubEntityDataType extends ObjectType
                     }
 
                     $resultFields[$field->name] = [
-                        'type' => Type::listOf(Types::crudBlock($field->entityKey)),
+                        'type' => Type::listOf(
+                            CrudBlockType::initType([$field->entityKey, $module])
+                        ),
                         'description' => $field->title,
                         'args' => [
-                            'fullData' => Types::inputFullData($field->entityKey),
-                            'sortData' => Types::sortData($field->entityKey),
+                            'fullData' => CrudFullDataInputData::initType(
+                                [$field->entityKey, $module]
+                            ),
+                            'sortData' => CrudSortInputData::initType([$field->entityKey, $module]),
                         ],
                         'resolve' => function ($el, $args) use ($field) {
                             $result = $el->{$field->name};

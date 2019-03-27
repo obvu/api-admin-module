@@ -9,17 +9,19 @@
 namespace Obvu\Modules\Api\Admin\submodules\crud\graphql\schema;
 
 
-use GraphQL\Type\Definition\ObjectType;
+use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
+use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudElementType;
+use Zvinger\BaseClasses\app\graphql\base\BaseGraphQLObjectType;
 
-class QueryType extends ObjectType
+class QueryType extends BaseGraphQLObjectType
 {
-    public function __construct()
+    public function __construct(FullCrudModule $module = null)
     {
         $config = [
-            'fields' => function() {
+            'fields' => function() use ($module) {
                 return [
                     'crud' => [
-                        'type' => Types::crudElement(),
+                        'type' => CrudElementType::initType([$module]),
                         'resolve' => function ($root, $args, $context, $a) {
                             return true;
                         },

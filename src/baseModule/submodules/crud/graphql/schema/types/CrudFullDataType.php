@@ -14,15 +14,15 @@ use GraphQL\Type\Definition\Type;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\fields\base\BaseCrudSingleField;
 use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
 use yii\web\NotFoundHttpException;
+use Zvinger\BaseClasses\app\graphql\base\BaseGraphQLObjectType;
 
-class CrudFullDataType extends ObjectType
+class CrudFullDataType extends BaseGraphQLObjectType
 {
-    public function __construct($type)
+    public function __construct($type, FullCrudModule $module = null)
     {
         $config = [
             'name' => 'full_data_'.$type,
-            'fields' => function () use ($type) {
-                $module = \Yii::$app->currentFullCrud;
+            'fields' => function () use ($type, $module) {
                 $settings = $module->getCrudSettings();
                 $entity = $settings->findEntity($type);
                 if (empty($entity)) {

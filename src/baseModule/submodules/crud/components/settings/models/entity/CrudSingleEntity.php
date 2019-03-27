@@ -49,10 +49,15 @@ class CrudSingleEntity extends BaseObject
      */
     public $aggregateEntity = false;
 
+    public $specialFilterClass = null;
+
     public function init()
     {
         parent::init();
-        FullCrudModule::getCurrentFullCrudHandlingModule()->getFieldHelper()->handleFields($this->aggregateEntity, $this->fields);
+        FullCrudModule::getCurrentFullCrudHandlingModule()->getFieldHelper()->handleFields(
+            $this->aggregateEntity,
+            $this->fields
+        );
     }
 
 

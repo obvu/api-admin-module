@@ -241,7 +241,7 @@ class FullCrudElementComponent
 
     public function buildFilterFromGraphQLArgs($type, $args = [])
     {
-        return $this->defineHandler($type)->buildFilterFromGraphQLArgs($args);
+        return $this->defineHandler($type)->buildFilterFromGraphQLArgs($args, $type);
     }
 
     public function defineHandler($type)

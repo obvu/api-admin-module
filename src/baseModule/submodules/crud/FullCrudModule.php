@@ -4,9 +4,11 @@
 namespace Obvu\Modules\Api\Admin\submodules\crud;
 
 
+use GraphQL\Type\Definition\Type;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\FullCrudElementComponent;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\mongo\MongoFullCrudElementHandler;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\simple\SimpleFullCrudElementHandler;
+use Obvu\Modules\Api\Admin\submodules\crud\components\filter\special\BaseSpecialEntityFilter;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\helpers\FieldCollectorHelper;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\FullCrudSettings;
 use yii\base\Module;
@@ -47,6 +49,7 @@ class FullCrudModule extends Module
         if (static::$currentFullCrudHandlingModule instanceof static) {
             return static::$currentFullCrudHandlingModule;
         }
+
         return \Yii::$app->currentFullCrud;
     }
 
@@ -144,5 +147,19 @@ class FullCrudModule extends Module
     public static function setCurrentFullCrudHandlingModule($module)
     {
         static::$currentFullCrudHandlingModule = $module;
+    }
+
+    /**
+     * @param $entityKey
+     * @return BaseSpecialEntityFilter
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getSpecialFilterData($entityKey)
+    {
+        $specialFilterClass = $this->getCrudSettings()->findEntity($entityKey)->specialFilterClass;
+
+        if ($specialFilterClass) {
+            return \Yii::createObject($specialFilterClass);
+        }
     }
 }

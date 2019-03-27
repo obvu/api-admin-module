@@ -50,7 +50,7 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
                         $var = [];
                         $entityKey = $field->entityKey;
                         $filter = $this->getSearchFilter($id, $field);
-                        $gqlFilters = $this->buildFilterFromGraphQLArgs($fieldFilters);
+                        $gqlFilters = $this->buildFilterFromGraphQLArgs($fieldFilters, $entityKey);
                         if ($gqlFilters->conditions) {
                             $filter->conditions[] = $gqlFilters->conditions;
                         }

@@ -36,14 +36,19 @@ class CrudElementType extends BaseGraphQLObjectType
                     if ($crudSingleBlock->type == $crudSingleBlock::TYPE_CRUD) {
                         $crudBlockType = Type::listOf($crudBlockType);
                     }
+                    $baseSpecialEntityFilter = $module->getSpecialFilterData($crudSingleBlock->entityKey);
+                    $arr = [
+                        'id' => Type::string(),
+                        'fullData' => CrudFullDataInputData::initType([$crudSingleBlock->entityKey, $module]),
+                        'sortData' => CrudSortInputData::initType([$crudSingleBlock->entityKey, $module]),
+                        'paginationData' => PaginationInputType::initType(),
+                    ];
+                    if ($baseSpecialEntityFilter) {
+                        $arr['specialFilters'] = $baseSpecialEntityFilter->getType();
+                    }
                     $resultFields[$crudSingleBlock->entityKey] = [
                         'type' => $crudBlockType,
-                        'args' => [
-                            'id' => Type::string(),
-                            'fullData' => CrudFullDataInputData::initType([$crudSingleBlock->entityKey, $module]),
-                            'sortData' => CrudSortInputData::initType([$crudSingleBlock->entityKey, $module]),
-                            'paginationData' => PaginationInputType::initType(),
-                        ],
+                        'args' => $arr,
                         'resolve' => function ($root, $args) use ($crudSingleBlock, $fullCrud, $module) {
                             $type = $crudSingleBlock->entityKey;
                             $id = $args['id'];
@@ -58,8 +63,7 @@ class CrudElementType extends BaseGraphQLObjectType
                                         'id' => $id,
                                     ]
                                 );
-                                $singleCrudElementModel = $module->getElementComponent(
-                                )->singleElement(
+                                $singleCrudElementModel = $module->getElementComponent()->singleElement(
                                     $request
                                 );
 

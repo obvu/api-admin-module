@@ -74,7 +74,7 @@ abstract class BaseFullCrudElementHandler extends BaseObject
         return $this->deleteByIds($ids);
     }
 
-    public function buildFilterFromGraphQLArgs($args)
+    public function buildFilterFromGraphQLArgs($args, $entityKey = null)
     {
         $filter = new ElementListFilter();
         $conditions = [];
@@ -85,7 +85,13 @@ abstract class BaseFullCrudElementHandler extends BaseObject
             foreach ($args['fullData'] as $key => $value) {
                 $arr = [$key => $value];
                 if (is_numeric($value)) {
-                    $arr = ['or', $arr, [$key => floatval($value)]];
+                    $arr = [
+                        'or',
+                        $arr,
+                        [
+                            $key => floatval($value),
+                        ],
+                    ];
                 }
                 $conditions[] = $arr;
             }
@@ -100,6 +106,13 @@ abstract class BaseFullCrudElementHandler extends BaseObject
                 }
             }
             $filter->orderBy = $resultOrderBy;
+        }
+        if (!empty($args['specialFilters'])) {
+            $info = $this->getCurrentModule()->getSpecialFilterData($entityKey);
+            $conditions1 = $info->getConditions($args);
+            if ($conditions1) {
+                $conditions = array_merge($conditions, $conditions1);
+            }
         }
         if (!empty($conditions)) {
             $filter->conditions = array_merge(['and'], $conditions);

@@ -41,10 +41,17 @@ class SingleCrudElementModel
     public $rawData = [];
 
     /**
+     * @var array
+     */
+    public $elementMiscData = [];
+
+    /**
      * @var object| callable
      * @SWG\Property()
      */
     public $subEntity;
+
+    public $formattedMiscData = [];
 
     private $_object;
 
@@ -75,8 +82,8 @@ class SingleCrudElementModel
             $this->subEntity = ($this->subEntity)();
         }
         if ($inside) {
-            $this->subEntity = (array) $this->subEntity;
-            foreach ($this->subEntity as $key =>$item) {
+            $this->subEntity = (array)$this->subEntity;
+            foreach ($this->subEntity as $key => $item) {
                 if (is_callable($item)) {
                     $this->subEntity[$key] = ($item)();
                 }
@@ -84,5 +91,27 @@ class SingleCrudElementModel
         }
 
         return $this;
+    }
+
+    public function pushMiscData($key, $value)
+    {
+        $el = [
+            'key' => $key,
+            'value' => $value,
+        ];
+        $set = false;
+        foreach ($this->elementMiscData as &$elementMiscDatum) {
+            if ($elementMiscDatum['key'] === $key) {
+                $elementMiscDatum = $el;
+                $set = true;
+            }
+        }
+        if (!$set) {
+            $this->elementMiscData[] = [
+                'key' => $key,
+                'value' => $value,
+            ];
+        }
+        $this->formattedMiscData[$key] = $value;
     }
 }

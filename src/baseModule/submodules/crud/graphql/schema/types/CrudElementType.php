@@ -14,6 +14,7 @@ use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\Types;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
+use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\crud\CrudListCollectionType;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\input\CrudFullDataInputData;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\input\CrudSortInputData;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListRequest;
@@ -32,10 +33,6 @@ class CrudElementType extends BaseGraphQLObjectType
                 $fullCrud = $module;
                 $resultFields = [];
                 foreach ($fullCrud->getCrudSettings()->blocks as $crudSingleBlock) {
-                    $crudBlockType = CrudBlockType::initType([$crudSingleBlock->entityKey, $module]);
-                    if ($crudSingleBlock->type == $crudSingleBlock::TYPE_CRUD) {
-                        $crudBlockType = Type::listOf($crudBlockType);
-                    }
                     $baseSpecialEntityFilter = $module->getSpecialFilterData($crudSingleBlock->entityKey);
                     $arr = [
                         'id' => Type::string(),
@@ -47,7 +44,7 @@ class CrudElementType extends BaseGraphQLObjectType
                         $arr['specialFilters'] = $baseSpecialEntityFilter->getType();
                     }
                     $resultFields[$crudSingleBlock->entityKey] = [
-                        'type' => $crudBlockType,
+                        'type' => CrudListCollectionType::initType([$crudSingleBlock, $module]),
                         'args' => $arr,
                         'resolve' => function ($root, $args) use ($crudSingleBlock, $fullCrud, $module) {
                             $type = $crudSingleBlock->entityKey;
@@ -55,6 +52,7 @@ class CrudElementType extends BaseGraphQLObjectType
                             if ($crudSingleBlock->type == $crudSingleBlock::TYPE_SINGLE) {
                                 $id = '0';
                             }
+                            $fullCrudElementComponent = $module->getElementComponent()->setFormat(true);
                             if ($crudSingleBlock->type == $crudSingleBlock::TYPE_SINGLE) {
                                 $request = \Yii::createObject(
                                     [
@@ -63,20 +61,24 @@ class CrudElementType extends BaseGraphQLObjectType
                                         'id' => $id,
                                     ]
                                 );
-                                $singleCrudElementModel = $module->getElementComponent()->singleElement(
+                                $singleCrudElementModel = $fullCrudElementComponent
+                                    ->singleElement(
                                     $request
                                 );
 
                                 $result = $singleCrudElementModel ? $singleCrudElementModel->element : null;
+                                $result = [
+                                    'element' => $result
+                                ];
                                 if ($crudSingleBlock->type == $crudSingleBlock::TYPE_CRUD) {
-                                    $result = [$result];
+                                    $result = [
+                                        'elements' => [$result]
+                                    ];
                                 }
                             } else {
-                                $elementListFilter = $module
-                                    ->getElementComponent()
+                                $elementListFilter = $fullCrudElementComponent
                                     ->buildFilterFromGraphQLArgs($type, $args);
-                                $result = $module
-                                    ->getElementComponent()
+                                $result = $fullCrudElementComponent
                                     ->listElement(
                                         \Yii::createObject(
                                             [
@@ -87,8 +89,7 @@ class CrudElementType extends BaseGraphQLObjectType
                                                 'perPage' => ArrayHelper::getValue($args, 'paginationData.perPage', 20),
                                             ]
                                         )
-                                    )
-                                    ->elements;
+                                    );
                             }
 
                             return $result;

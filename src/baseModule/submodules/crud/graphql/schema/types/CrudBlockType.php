@@ -16,6 +16,7 @@ use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use Obvu\Modules\Api\Admin\submodules\crud\models\SingleCrudElementModel;
 use Zvinger\BaseClasses\app\graphql\base\BaseGraphQLObjectType;
+use Zvinger\BaseClasses\app\graphql\base\types\KeyValueGraphQLType;
 
 class CrudBlockType extends BaseGraphQLObjectType
 {
@@ -36,6 +37,9 @@ class CrudBlockType extends BaseGraphQLObjectType
                     ],
                     'fullData' => [
                         'type' => CrudFullDataType::initType([$type, $module]),
+                    ],
+                    'elementMiscData' => [
+                        'type' => Type::listOf(KeyValueGraphQLType::initType()),
                     ],
                 ];
                 if ($entity->hasSubEntity()) {

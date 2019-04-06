@@ -96,16 +96,17 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
     {
         $baseFullCrudElementHandler = $this->getConnectedHandler();
         $baseFullCrudElementHandler->update($id, $data, $fullCrudModel);
+        $entityId = $data['__entityId'] ?? $id;
         $settings = $this->getCurrentModule()->getCrudSettings();
         $entity = $settings->findEntity($this->type);
         foreach ($fullCrudModel->subEntity as $blockKey => $subEntityElement) {
             $field = $entity->findMultipleBlock($blockKey);
-            $filter = $this->getSearchFilter($id, $field);
+            $filter = $this->getSearchFilter($entityId, $field);
             $baseFullCrudElementHandler1 = $this->getFullCrudComponent()->defineHandler($field->entityKey);
             $baseFullCrudElementHandler1->deleteByFilter($filter);
             foreach ($subEntityElement as $item) {
                 $item['fullData']['subEntityGroupData'] = $field->name;
-                $item['fullData'][$field->parentElementKey] = $id;
+                $item['fullData'][$field->parentElementKey] = $entityId;
                 $baseFullCrudElementHandler1->create($item['fullData']);
             }
         }

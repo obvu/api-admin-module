@@ -39,7 +39,7 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
     public function getSingle($id)
     {
         $baseEntity = $this->getConnectedHandler()->getSingle($id);
-        $id = $baseEntity->element->fullData['__entityId'];
+        $id = $baseEntity->element->fullData['__entityId'] ?? $id;
         $baseEntity->element->type = $this->type;
         $baseEntity->element->subEntity = function ($subEntityFilters = null) use ($id) {
             $subEntity = new \stdClass();
@@ -97,6 +97,7 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
         $baseFullCrudElementHandler = $this->getConnectedHandler();
         $baseFullCrudElementHandler->update($id, $data, $fullCrudModel);
         $entityId = $data['__entityId'] ?? $id;
+        $data['__entityId'] = $entityId;
         $settings = $this->getCurrentModule()->getCrudSettings();
         $entity = $settings->findEntity($this->type);
         foreach ($fullCrudModel->subEntity as $blockKey => $subEntityElement) {

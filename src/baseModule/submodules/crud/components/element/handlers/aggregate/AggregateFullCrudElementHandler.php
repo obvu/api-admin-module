@@ -116,7 +116,8 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
 
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        $baseFullCrudElementHandler = $this->getConnectedHandler();
+        $baseFullCrudElementHandler->delete($id);
     }
 
     private function getConnectedHandler()

@@ -44,6 +44,11 @@ class CrudSingleEntity extends BaseObject
     public $rawData;
 
     /**
+     * @var callable|null
+     */
+    public $afterFullCallback = null;
+
+    /**
      * @var bool
      * @SWG\Property()
      */

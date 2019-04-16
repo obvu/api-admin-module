@@ -128,7 +128,7 @@ class FullCrudElementComponent
                 if ($field->defaultValue) {
                     $singleCrudElementModel->fullData[$field->name] = $field->defaultValue;
                 } elseif ($field->type === $field::TYPE_SELECT) {
-                    if (!$singleCrudElementModel->fullData[$field->name]) {
+                    if (!$singleCrudElementModel->fullData[$field->name] && $field->defaultValue !== false) {
                         $singleCrudElementModel->fullData[$field->name] = $field->variants[0]->key;
                     }
                 }
@@ -138,6 +138,9 @@ class FullCrudElementComponent
             $singleCrudElementModel->rawData[] = $rawDatum
                 ->setEntity($singleCrudElementModel)
                 ->getData();
+        }
+        if ($entity->afterFullCallback) {
+            $singleCrudElementModel = ($entity->afterFullCallback)($singleCrudElementModel);
         }
 
         return $singleCrudElementModel;

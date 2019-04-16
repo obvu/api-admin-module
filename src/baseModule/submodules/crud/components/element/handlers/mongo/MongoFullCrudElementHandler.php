@@ -109,6 +109,7 @@ class MongoFullCrudElementHandler extends BaseFullCrudElementHandler
     private function convertToData($mongoObject)
     {
         $result = $mongoObject;
+        $result['__entityId'] = $mongoObject['__entityId'] ?? $mongoObject['id'];
         $result['id'] = (string)$mongoObject['_id'];
         unset($result['_id']);
 

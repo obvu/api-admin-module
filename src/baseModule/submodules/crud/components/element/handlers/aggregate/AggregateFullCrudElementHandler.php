@@ -39,6 +39,7 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
     public function getSingle($id)
     {
         $baseEntity = $this->getConnectedHandler()->getSingle($id);
+        $id = $baseEntity->element->fullData['__entityId'] ?? $id;
         $baseEntity->element->type = $this->type;
         $baseEntity->element->subEntity = function ($subEntityFilters = null) use ($id) {
             $subEntity = new \stdClass();
@@ -95,16 +96,18 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
     {
         $baseFullCrudElementHandler = $this->getConnectedHandler();
         $baseFullCrudElementHandler->update($id, $data, $fullCrudModel);
+        $entityId = $data['__entityId'] ?? $id;
+        $data['__entityId'] = $entityId;
         $settings = $this->getCurrentModule()->getCrudSettings();
         $entity = $settings->findEntity($this->type);
         foreach ($fullCrudModel->subEntity as $blockKey => $subEntityElement) {
             $field = $entity->findMultipleBlock($blockKey);
-            $filter = $this->getSearchFilter($id, $field);
+            $filter = $this->getSearchFilter($entityId, $field);
             $baseFullCrudElementHandler1 = $this->getFullCrudComponent()->defineHandler($field->entityKey);
             $baseFullCrudElementHandler1->deleteByFilter($filter);
             foreach ($subEntityElement as $item) {
                 $item['fullData']['subEntityGroupData'] = $field->name;
-                $item['fullData'][$field->parentElementKey] = $id;
+                $item['fullData'][$field->parentElementKey] = $entityId;
                 $baseFullCrudElementHandler1->create($item['fullData']);
             }
         }
@@ -114,7 +117,8 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
 
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        $baseFullCrudElementHandler = $this->getConnectedHandler();
+        $baseFullCrudElementHandler->delete($id);
     }
 
     private function getConnectedHandler()

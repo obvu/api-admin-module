@@ -42,6 +42,12 @@ class PageModel
     public $slug;
 
     /**
+     * @var object
+     * @SWG\Property()
+     */
+    public $misc = [];
+
+    /**
      * @var string
      * @SWG\Property()
      */

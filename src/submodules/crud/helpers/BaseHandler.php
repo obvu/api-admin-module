@@ -19,7 +19,7 @@ abstract class BaseHandler
 
     abstract public function create($data);
 
-    abstract public function update($id, $data);А
+    abstract public function update($id, $data);
 
     abstract public function delete($id);
 }

@@ -42,7 +42,7 @@ class FileController extends BaseAdminController
      * @throws \Zvinger\BaseClasses\app\exceptions\model\ModelValidateException
      * @throws \yii\base\InvalidConfigException
      * @throws \Exception
-     *
+     * f
      */
     public function actionUpload($component = 'default')
     {

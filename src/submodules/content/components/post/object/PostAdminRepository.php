@@ -77,8 +77,9 @@ class PostAdminRepository extends BaseApiRepository
             if (in_array($key, $skipKeys)) {
                 continue;
             }
+            if ($value !== null)
             $postObject->{$key} = $value;
-        }
+        };
         $saved = false;
         $callback = function () use ($postObject, $postModel, $saved) {
             if ($saved) {

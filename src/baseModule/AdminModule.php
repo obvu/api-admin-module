@@ -8,12 +8,16 @@
 
 namespace Obvu\Modules\Api\Admin;
 
+use Obvu\Modules\Api\Admin\responses\file\UploadFileResponse;
 use ReflectionClass;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
+use yii\helpers\Json;
 use Zvinger\BaseClasses\api\controllers\ApiDocsSwaggerController;
 use Zvinger\BaseClasses\app\modules\api\admin\v1\AdminApiVendorModule;
 use Zvinger\BaseClasses\app\modules\api\ApiModule;
+use Zvinger\BaseClasses\app\modules\fileStorage\components\storage\models\SavedFileModel;
+use Zvinger\BaseClasses\app\modules\fileStorage\VendorFileStorageModule;
 
 /**
  * Class AdminModule
@@ -29,6 +33,7 @@ class AdminModule extends ApiModule implements BootstrapInterface
      */
     public function bootstrap($app)
     {
+
     }
 
     /**
@@ -42,12 +47,30 @@ class AdminModule extends ApiModule implements BootstrapInterface
             $this->docsScanPaths[] = $this->getModule($id)->basePath;
         }
         $this->controllerMap = [
-            'docs'    => [
-                'class'     => ApiDocsSwaggerController::class,
+            'docs' => [
+                'class' => ApiDocsSwaggerController::class,
                 'scanPaths' => $this->docsScanPaths,
             ],
         ];
 
         parent::init();
+    }
+
+    public static function getFileModel($fileId)
+    {
+        /** @var VendorFileStorageModule $fileStorageModule */
+        $fileStorageModule = \Yii::$app->getModule(FILE_STORAGE_MODULE);
+
+        return static::getFileModelByFileStorageElement($fileStorageModule->storage->getFile($fileId));
+    }
+
+    public static function getFileModelByFileStorageElement(SavedFileModel $savedFileModel)
+    {
+        $response = new UploadFileResponse();
+        $response->fullUrl = $savedFileModel->getFullUrl();
+        $response->fileId = $savedFileModel->fileStorageElement->id;
+        $response->fileInfo = Json::decode($savedFileModel->fileStorageElement->info);
+
+        return $response;
     }
 }

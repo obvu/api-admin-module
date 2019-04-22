@@ -44,11 +44,11 @@ class FileController extends BaseAdminController
      * @throws \Exception
      *
      */
-    public function actionUpload()
+    public function actionUpload($component = 'default')
     {
         /** @var VendorFileStorageModule $fileStorageModule */
         $fileStorageModule = \Yii::$app->getModule(FILE_STORAGE_MODULE);
-        $savedFileModel = $fileStorageModule->storage->uploadPostFile('image');
+        $savedFileModel = $fileStorageModule->storage->uploadPostFile('image', $component);
         $response = new UploadFileResponse();
         $response->fullUrl = $savedFileModel->getFullUrl();
         $response->fileId = $savedFileModel->fileStorageElement->id;
@@ -80,11 +80,11 @@ class FileController extends BaseAdminController
      * @throws \yii\base\InvalidConfigException
      * @throws \Exception
      */
-    public function actionUploadMultiple()
+    public function actionUploadMultiple($component = 'default')
     {
         /** @var VendorFileStorageModule $fileStorageModule */
         $fileStorageModule = \Yii::$app->getModule(FILE_STORAGE_MODULE);
-        $savedFileModels = $fileStorageModule->storage->uploadPostFiles('files');
+        $savedFileModels = $fileStorageModule->storage->uploadPostFiles('files', $component);
         $responses = [];
         foreach ($savedFileModels as $savedFileModel) {
             $response = new UploadFileResponse();

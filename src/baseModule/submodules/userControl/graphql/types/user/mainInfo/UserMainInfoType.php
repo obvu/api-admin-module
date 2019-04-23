@@ -11,6 +11,7 @@ namespace Obvu\Modules\Api\Admin\submodules\userControl\graphql\types\user\mainI
 
 use GraphQL\Type\Definition\Type;
 use Zvinger\BaseClasses\app\graphql\base\BaseGraphQLObjectType;
+use Zvinger\BaseClasses\app\helpers\fakeData\DataFakerGenerator;
 
 class UserMainInfoType extends BaseGraphQLObjectType
 {
@@ -22,7 +23,12 @@ class UserMainInfoType extends BaseGraphQLObjectType
                     'id' => Type::id(),
                     'username' => Type::string(),
                     'email' => Type::string(),
-                    'status' => Type::int(),
+                    'fullName' => [
+                        'type' => Type::string(),
+                        'resolve' => function () {
+                            return DataFakerGenerator::go()->name;
+                        }
+                    ],
                 ];
             },
         ];

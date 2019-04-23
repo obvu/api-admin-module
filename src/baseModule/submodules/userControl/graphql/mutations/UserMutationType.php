@@ -25,7 +25,7 @@ class UserMutationType extends BaseGraphQLObjectType
                         'args' => [
                             'username' => Type::string(),
                             'email' => Type::string(),
-                            'status' => Type::int(),
+                            'fullName' => Type::string(),
                         ],
                         'resolve' => function (UserObject $userObject, $args) {
                             $userObject->setAttributes($args);

@@ -27,7 +27,7 @@ class UserInfoAdminQueryType extends BaseGraphQLObjectType
                             'user_id' => Type::id(),
                         ],
                         'resolve' => function ($v, $args) {
-                            return UserObject::find()->where(['id' => $args['user_id']])->asArray()->one();
+                            return UserObject::find()->where(['id' => $args['user_id']])->one();
                         }
                     ],
                     'userList' => [

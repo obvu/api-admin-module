@@ -22,8 +22,8 @@ class UserInfoType extends BaseGraphQLObjectType
                 return [
                     'mainInfo' => [
                         'type' => UserMainInfoType::initType(),
-                        'resolve' => function ($v, $args) {
-                            return UserObject::find()->where(['id' => $args['user_id']])->asArray()->one();
+                        'resolve' => function (UserObject $userObject, $args) {
+                            return $userObject->getAttributes();
                         }
                     ],
                     /* 'additionalInfo' => [

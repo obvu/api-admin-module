@@ -37,18 +37,18 @@ class UserMutationType extends BaseGraphQLObjectType
                     'changePassword' => [
                         'type' => Type::boolean(),
                         'args' => [
-                            'old_password' => Type::nonNull(Type::string()),
-                            'new_password' => Type::nonNull(Type::string()),
-                            'confirm_new_password' => Type::nonNull(Type::string()),
+                            'old' => Type::nonNull(Type::string()),
+                            'new' => Type::nonNull(Type::string()),
+                            'confirm' => Type::nonNull(Type::string()),
                         ],
                         'resolve' => function (UserObject $userObject, $args) {
-                            if (!Yii::$app->security->validatePassword($args['old_password'], $userObject->password_hash)) {
+                            if (!Yii::$app->security->validatePassword($args['old'], $userObject->password_hash)) {
                                 throw new BadRequestHttpException('Не верный текущий пароль');
                             }
-                            if ($args['new_password'] !== $args['confirm_new_password']) {
+                            if ($args['new'] !== $args['confirm']) {
                                 throw new BadRequestHttpException('Пароли не освпадают');
                             }
-                            $userObject->password_hash = Yii::$app->security->generatePasswordHash($args['new_password']);
+                            $userObject->password_hash = Yii::$app->security->generatePasswordHash($args['new']);
                             return $userObject->save();
                         }
                     ],

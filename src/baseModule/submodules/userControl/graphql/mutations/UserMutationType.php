@@ -48,7 +48,7 @@ class UserMutationType extends BaseGraphQLObjectType
                             if ($args['new'] !== $args['confirm']) {
                                 throw new BadRequestHttpException('Пароли не освпадают');
                             }
-                            $userObject->password_hash = Yii::$app->security->generatePasswordHash($args['new_password']);
+                            $userObject->password_hash = Yii::$app->security->generatePasswordHash($args['new']);
                             return $userObject->save();
                         }
                     ],

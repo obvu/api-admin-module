@@ -13,6 +13,7 @@ use app\models\work\user\object\UserObject;
 use GraphQL\Type\Definition\Type;
 use Obvu\Modules\Api\Admin\submodules\userControl\graphql\types\user\UserInfoType;
 use Zvinger\BaseClasses\app\graphql\base\BaseGraphQLObjectType;
+use Zvinger\BaseClasses\app\graphql\base\context\BaseGraphQLContext;
 
 class UserInfoAdminQueryType extends BaseGraphQLObjectType
 {
@@ -23,11 +24,8 @@ class UserInfoAdminQueryType extends BaseGraphQLObjectType
                 return [
                     'user' => [
                         'type' => UserInfoType::initType(),
-                        'args' => [
-                            'user_id' => Type::id(),
-                        ],
-                        'resolve' => function ($v, $args) {
-                            return UserObject::find()->where(['id' => $args['user_id']])->one();
+                        'resolve' => function ($v, $args, BaseGraphQLContext $context) {
+                            return UserObject::find()->where(['id' => $context->getIdentity()->getId()])->one();
                         }
                     ],
                     'userList' => [

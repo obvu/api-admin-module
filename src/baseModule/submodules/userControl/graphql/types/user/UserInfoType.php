@@ -26,12 +26,6 @@ class UserInfoType extends BaseGraphQLObjectType
                             return $userObject->getAttributes();
                         }
                     ],
-                    /* 'additionalInfo' => [
-                         'type' => ,
-                         'resolve' => function () {
-                             return
-                         }
-                     ]*/
                 ];
             },
         ];

@@ -11,6 +11,7 @@ namespace Obvu\Modules\Api\Admin\submodules\userControl\graphql\types\user;
 
 use app\models\work\user\object\UserObject;
 use Obvu\Modules\Api\Admin\submodules\userControl\graphql\types\user\mainInfo\UserMainInfoType;
+use Obvu\Modules\Api\Admin\submodules\userControl\UserControlModule;
 use Zvinger\BaseClasses\app\graphql\base\BaseGraphQLObjectType;
 
 class UserInfoType extends BaseGraphQLObjectType
@@ -19,14 +20,19 @@ class UserInfoType extends BaseGraphQLObjectType
     {
         $config = [
             'fields' => function () {
-                return [
+                $fields = [
                     'mainInfo' => [
                         'type' => UserMainInfoType::initType(),
-                        'resolve' => function (UserObject $userObject, $args) {
+                        'resolve' => function (UserObject $userObject) {
                             return $userObject->getAttributes();
                         }
                     ],
                 ];
+
+                if ($UserAdditionalInfoType = UserControlModule::getGraphQLObjectType('UserAdditionalInfoType')) {
+                    $fields['additionalInfo'] = $UserAdditionalInfoType;
+                }
+                return $fields;
             },
         ];
 

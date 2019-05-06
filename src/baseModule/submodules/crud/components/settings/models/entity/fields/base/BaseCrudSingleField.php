@@ -22,7 +22,7 @@ abstract class BaseCrudSingleField extends BaseObject
     const TYPE_TEXT_EDITOR = 'textarea';
     const TYPE_SELECT = 'select';
     const TYPE_BOOLEAN_SELECT = 'boolean_select';
-    const TYPE_DATE = 'input_text';
+    const TYPE_DATE = 'input_date';
     const TYPE_FILE_PHOTO = 'file_photo';
     const TYPE_FILE_PHOTO_LARGE = 'file_photo_large';
     const TYPE_FILE_SIMPLE = 'file_photo';

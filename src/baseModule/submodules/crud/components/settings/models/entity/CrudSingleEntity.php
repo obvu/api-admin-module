@@ -7,7 +7,6 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\enti
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\fields\CrudSingleField;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\rawData\CrudRawData;
 use yii\base\BaseObject;
-use yii\helpers\ArrayHelper;
 
 /**
  * Class CrudSingleEntity
@@ -39,6 +38,18 @@ class CrudSingleEntity extends BaseObject
      * @SWG\Property()
      */
     public $rawData;
+
+    /**
+     * @var callable
+     * @SWG\Property()
+     */
+    public $searchCallBack;
+
+    /**
+     * @var CrudSingleField[]
+     * @SWG\Property()
+     */
+    public $filterFields;
 
     public function findField($fieldKey)
     {

@@ -5,7 +5,6 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\components\element;
 
 
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\base\BaseFullCrudElementHandler;
-use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementSingleResult;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\simple\SimpleFullCrudElementHandler;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\FullCrudSettings;
 use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
@@ -39,7 +38,14 @@ class FullCrudElementComponent
         if ($request->sortBy) {
             $request->filter->orderBy = $request->sortBy;
         }
-        $result = $this->defineHandler($request->type)->getList($request->page, $request->perPage, $request->filter);
+        if ($request->searchQuery) {
+            $module = \Yii::$app->getModule($this->module);
+            $crudSettings = $module->getCrudSettings();
+            $entity = $crudSettings->findEntity($request->type);
+            $request->filter->entityFilterCallback = $entity->searchCallBack;
+            $request->filter->searchQuery = $request->searchQuery;
+        }
+        $result = $this->defineHandler($request->type)->getList($request->page, $request->perPage, $request->filter, $request);
         $context = $this;
         if ($this->format) {
             $result->elements = array_map(
@@ -110,7 +116,7 @@ class FullCrudElementComponent
                 }
             }
         }
-        foreach ((array) $entity->rawData as $rawDatum) {
+        foreach ((array)$entity->rawData as $rawDatum) {
             $singleCrudElementModel->rawData[] = $rawDatum
                 ->setEntity($singleCrudElementModel)
                 ->getData();

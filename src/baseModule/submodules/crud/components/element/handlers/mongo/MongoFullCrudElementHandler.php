@@ -33,6 +33,9 @@ class MongoFullCrudElementHandler extends BaseFullCrudElementHandler
     public function getList($page = 1, $perPage = 20, $filter = []): FullCrudElementListResult
     {
         $query = $this->getBaseQuery();
+        if (is_callable($filter->entityFilterCallback)) {
+            call_user_func($filter->entityFilterCallback, [$query, $filter->searchQuery]);
+        }
         if ($filter->conditions) {
             $resultConditions = [];
             foreach ($filter->conditions as $condition) {

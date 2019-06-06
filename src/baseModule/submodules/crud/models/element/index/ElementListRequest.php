@@ -34,4 +34,6 @@ class ElementListRequest extends BaseElementRequest
      * @SWG\Property()
      */
     public $sortBy = null;
+    
+    public $searchQuery;
 }

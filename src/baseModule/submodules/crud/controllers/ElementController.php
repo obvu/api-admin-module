@@ -29,10 +29,10 @@ class ElementController extends BaseFullCrudController
     public function actionIndex()
     {
         $request = ElementListRequest::createRequest();
-
         $fullCrudElementComponent = $this->module->getElementComponent();
         $elementListResponse = $fullCrudElementComponent->setFormat(false)->listElement($request);
         $elementListResponse->headers = $fullCrudElementComponent->getHeaders($request);
+
         return $fullCrudElementComponent->prepareListData($elementListResponse, $request);
     }
 
@@ -55,7 +55,12 @@ class ElementController extends BaseFullCrudController
     public function actionSingle()
     {
         $request = ElementSingleRequest::createRequest();
-        return $this->module->getElementComponent()->setFormat(true)->singleElement($request);
+        $singleCrudElementModel = $this->module->getElementComponent()->setFormat(true)->singleElement($request);
+        if ($singleCrudElementModel->element) {
+            $singleCrudElementModel->element->prepareSubEntity(true);
+        }
+
+        return $singleCrudElementModel;
     }
 
     /**

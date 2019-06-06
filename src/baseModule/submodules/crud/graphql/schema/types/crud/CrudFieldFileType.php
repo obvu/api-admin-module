@@ -17,6 +17,7 @@ class CrudFieldFileType extends ObjectType
     public function __construct()
     {
         $config = [
+//            'name' => 'file_1',
             'fields' => function () {
                 return [
                     'fileId' => [

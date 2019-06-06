@@ -10,7 +10,9 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\controllers;
 
 
 use GraphQL\GraphQL;
+use Obvu\Modules\Api\Admin\submodules\crud\graphql\exceptions\GraphQLSchemaException;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\Types;
+use yii\base\InvalidArgumentException;
 use yii\helpers\Json;
 use Zvinger\BaseClasses\api\controllers\BaseApiController;
 
@@ -63,21 +65,38 @@ class GraphqlController extends BaseApiController
 
         // создаем схему и подключаем к ней наши корневые типы
 
-        $schema = new \GraphQL\Type\Schema([
-            'query' => Types::query(),
-        ]);
-
+        $schema = new \GraphQL\Type\Schema(
+            [
+                'query' => Types::query($this->module),
+            ]
+        );
+        $myErrorHandler = function (array $errors, callable $formatter) {
+            throw new GraphQLSchemaException($errors);
+        };
         // огонь!
-
-        $result = GraphQL::executeQuery(
-            $schema,
-            $query,
-            null,
-            null,
-            empty($variables) ? null : $variables,
-            empty($operation) ? null : $operation
-        )->toArray(YII_DEBUG);
-
+        $cache = \Yii::$app->cache;
+        try {
+            $result = GraphQL::executeQuery(
+                $schema,
+                $query,
+                null,
+                null,
+                empty($variables) ? null : $variables,
+                empty($operation) ? null : $operation
+            )
+                ->setErrorsHandler($myErrorHandler)
+                ->toArray(YII_DEBUG);
+        } catch (GraphQLSchemaException $e) {
+            \Yii::error('query executed - '.$query);
+            \Yii::error($e->getMessage());
+            if (YII_ENV_DEV) {
+                throw $e;
+            } else {
+                \Yii::$app->telegram->message('admin', $e->getMessage());
+                return $cache->get('cached.result.gql.'.md5($query));
+            }
+        }
+        $cache->set('cached.result.gql.'.md5($query), $result, 0);
         return $result;
     }
 }

@@ -142,7 +142,7 @@ class ActiveRecordFullCrudElementHandler extends BaseFullCrudElementHandler
         }
     }
 
-    public function update($id, $data)
+    public function update($id, $data, SingleCrudElementModel $fullCrudModel = null)
     {
         $object = $this->getObject($id);
         $miscInfoData = $this->extractMiscInfo($data);

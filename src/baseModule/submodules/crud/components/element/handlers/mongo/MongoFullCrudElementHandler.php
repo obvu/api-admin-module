@@ -38,14 +38,14 @@ class MongoFullCrudElementHandler extends BaseFullCrudElementHandler
         }
         if ($filter->conditions) {
             $resultConditions = [];
-            foreach ($filter->conditions as $condition) {
+            foreach ($filter->conditions as $key => $condition) {
                 $resultCondition = [];
                 if (!empty($condition['id'])) {
                     $resultCondition['_id'] = $condition['id'];
                 } else {
                     $resultCondition = $condition;
                 }
-                $resultConditions[] = $resultCondition;
+                $resultConditions[$key] = $resultCondition;
             }
             $query->andWhere($resultConditions);
         }
@@ -79,7 +79,7 @@ class MongoFullCrudElementHandler extends BaseFullCrudElementHandler
     {
         $query = $this->getBaseQuery();
         if ($id !== 0) {
-            $object = $query->where(['_id' => $id]);
+            $query->where(['_id' => $id]);
         }
         $object = $query->one();
         if (empty($object)) {
@@ -96,7 +96,7 @@ class MongoFullCrudElementHandler extends BaseFullCrudElementHandler
         return $this->getSingle($id);
     }
 
-    public function update($id, $data)
+    public function update($id, $data, SingleCrudElementModel $fullCrudModel = null)
     {
         $this->getCollection()->update(['_id' => $id], $data);
 
@@ -112,6 +112,7 @@ class MongoFullCrudElementHandler extends BaseFullCrudElementHandler
     private function convertToData($mongoObject)
     {
         $result = $mongoObject;
+        $result['__entityId'] = $mongoObject['__entityId'] ?? $mongoObject['id'];
         $result['id'] = (string)$mongoObject['_id'];
         unset($result['_id']);
 

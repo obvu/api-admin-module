@@ -9,6 +9,7 @@
 namespace Obvu\Modules\Api\AdminSubmodules\Content\models\page\object;
 
 use yii\helpers\ArrayHelper;
+use Zvinger\BaseClasses\app\components\data\miscInfo\VendorUserMiscInfoService;
 
 /**
  * Class PageObject
@@ -24,6 +25,11 @@ class PageObject extends DBPageObject
     public static function find()
     {
         return new PageQuery(static::class);
+    }
+
+    public function getMiscInfo()
+    {
+        return new VendorUserMiscInfoService($this->id, 'page');
     }
 
     public function setPageData($pageData)

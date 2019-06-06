@@ -34,6 +34,9 @@ class FileController extends BaseAdminController
     {
         /** @var VendorFileStorageModule $fileStorageModule */
         $fileStorageModule = \Yii::$app->getModule(FILE_STORAGE_MODULE);
+        if ($saveFileName === 'true') {
+            $saveFileName = null;
+        }
         $savedFileModels = $fileStorageModule->storage->uploadPostFiles('files', $component, $saveFileName);
         $responses = [];
         foreach ($savedFileModels as $savedFileModel) {

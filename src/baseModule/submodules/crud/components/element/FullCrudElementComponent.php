@@ -4,8 +4,10 @@
 namespace Obvu\Modules\Api\Admin\submodules\crud\components\element;
 
 
+use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\aggregate\AggregateFullCrudElementHandler;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\base\BaseFullCrudElementHandler;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\simple\SimpleFullCrudElementHandler;
+use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\fields\base\BaseCrudSingleField;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\FullCrudSettings;
 use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListFilter;
@@ -14,6 +16,7 @@ use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListRespo
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\single\ElementSingleRequest;
 use Obvu\Modules\Api\Admin\submodules\crud\models\element\single\ElementSingleResponse;
 use Obvu\Modules\Api\Admin\submodules\crud\models\SingleCrudElementModel;
+use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
 
 class FullCrudElementComponent
@@ -22,9 +25,18 @@ class FullCrudElementComponent
 
     public $defaultHandlerClass = SimpleFullCrudElementHandler::class;
 
+    /**
+     * @var FullCrudModule
+     */
     public $module;
 
     private $format = false;
+
+    private $deepLoad = true;
+
+    private $holders = [];
+
+    private $_list_cache = [];
 
     /**
      * @var FullCrudSettings
@@ -32,6 +44,10 @@ class FullCrudElementComponent
 
     public function listElement(ElementListRequest $request)
     {
+        $key = md5('list'.Json::encode($request));
+        if ($this->_list_cache[$key]) {
+            return $this->_list_cache[$key];
+        }
         if (!$request->filter) {
             $request->filter = new ElementListFilter();
         }
@@ -46,8 +62,9 @@ class FullCrudElementComponent
             $request->filter->searchQuery = $request->searchQuery;
         }
         $result = $this->defineHandler($request->type)->getList($request->page, $request->perPage, $request->filter, $request);
-        $context = $this;
+
         if ($this->format) {
+            $context = $this;
             $result->elements = array_map(
                 function (SingleCrudElementModel $el) use ($context) {
                     $el = $this->prepareFullData($el);
@@ -58,7 +75,7 @@ class FullCrudElementComponent
             );
         }
 
-        return \Yii::createObject(
+        $this->_list_cache[$key] = \Yii::createObject(
             [
                 'class' => ElementListResponse::class,
                 'elements' => $result->elements,
@@ -66,12 +83,14 @@ class FullCrudElementComponent
                 'headers' => $result->headers,
             ]
         );
+
+        return $this->_list_cache[$key];
     }
 
     public function getHeaders(ElementListRequest $request)
     {
         /** @var FullCrudModule $module */
-        $module = \Yii::$app->getModule($this->module);
+        $module = $this->getCurrentModule();
         $crudSettings = $module->getCrudSettings();
         $block = $crudSettings->findBlock($request->type);
         $entity = $crudSettings->findEntity($request->type);
@@ -97,10 +116,13 @@ class FullCrudElementComponent
         if (!$singleCrudElementModel) {
             return $singleCrudElementModel;
         }
-        $module = \Yii::$app->getModule($this->module);
+        $module = $this->getCurrentModule();
         $crudSettings = $module->getCrudSettings();
         $entity = $crudSettings->findEntity($singleCrudElementModel->type);
         foreach ($entity->fields as $field) {
+            if (!($field instanceof BaseCrudSingleField)) {
+                continue;
+            }
             if (strpos($field->name, '.') !== false) {
                 $array = explode('.', $field->name);
                 $object = $singleCrudElementModel->getObject();
@@ -108,11 +130,13 @@ class FullCrudElementComponent
                 $singleCrudElementModel->fullData[$field->name] = $var->{$array[1]};
                 unset($singleCrudElementModel->fullData[$array[0]][$array[1]]);
             }
-            if ($field->defaultValue) {
-                $singleCrudElementModel->fullData[$field->name] = $field->defaultValue;
-            } elseif ($field->type === $field::TYPE_SELECT) {
-                if (!$singleCrudElementModel->fullData[$field->name]) {
-                    $singleCrudElementModel->fullData[$field->name] = $field->variants[0]->key;
+            if (empty($singleCrudElementModel->fullData[$field->name])) {
+                if ($field->defaultValue) {
+                    $singleCrudElementModel->fullData[$field->name] = $field->defaultValue;
+                } elseif ($field->type === $field::TYPE_SELECT) {
+                    if (!$singleCrudElementModel->fullData[$field->name] && $field->defaultValue !== false) {
+                        $singleCrudElementModel->fullData[$field->name] = $field->variants[0]->key;
+                    }
                 }
             }
         }
@@ -121,6 +145,9 @@ class FullCrudElementComponent
                 ->setEntity($singleCrudElementModel)
                 ->getData();
         }
+        if ($entity->afterFullCallback) {
+            $singleCrudElementModel = ($entity->afterFullCallback)($singleCrudElementModel);
+        }
 
         return $singleCrudElementModel;
     }
@@ -128,9 +155,12 @@ class FullCrudElementComponent
     public function prepareListData(ElementListResponse $response, ElementListRequest $request)
     {
         /** @var FullCrudModule $module */
-        $module = \Yii::$app->getModule($this->module);
+        $module = $this->getCurrentModule();
         $crudSettings = $module->getCrudSettings();
         $entity = $crudSettings->findEntity($request->type);
+        if ($entity->aggregateEntity) {
+            $entity = $crudSettings->findEntity($entity->aggregateEntity);
+        }
         foreach ($response->elements as $element) {
             $resultListData = [];
             foreach ($entity->fields as $field) {
@@ -148,6 +178,7 @@ class FullCrudElementComponent
                 }
             }
             $element->listData = $resultListData;
+//            $element->prepareSubEntity();
         }
 
         return $response;
@@ -155,15 +186,16 @@ class FullCrudElementComponent
 
     public function singleElement(ElementSingleRequest $request)
     {
+        $baseFullCrudElementHandler = $this->defineHandler($request->type);
         try {
-            $data = $this->defineHandler($request->type)->getSingle($request->id);
+            $data = $baseFullCrudElementHandler->getSingle($request->id);
         } catch (NotFoundHttpException $e) {
             if ($request->id == 0) {
-                $id = $this->defineHandler($request->type)->getList()->elements[0]->id;
+                $id = $baseFullCrudElementHandler->getList()->elements[0]->id;
                 if (empty($id)) {
-                    $data = $this->defineHandler($request->type)->create([])->element;
+                    $data = $baseFullCrudElementHandler->create([]);
                 } else {
-                    $data = $this->defineHandler($request->type)->getSingle($id);
+                    $data = $baseFullCrudElementHandler->getSingle($id);
                 }
             } else {
                 throw $e;
@@ -181,7 +213,8 @@ class FullCrudElementComponent
     {
         $fullCrudElementSingleResult = $this->defineHandler($request->element->type)->update(
             $request->element->id,
-            $request->element->fullData
+            $request->element->fullData,
+            $request->element
         );
 
         if ($this->format) {
@@ -198,12 +231,14 @@ class FullCrudElementComponent
         $fullCrudElementSingleResult = $this->defineHandler($request->element->type)->create(
             $request->element->fullData
         );
+        $request->element = $fullCrudElementSingleResult->element;
 
         if ($this->format) {
             $request->element = $this->prepareFullData(
                 $fullCrudElementSingleResult->element
             );
         }
+
 
         return $request;
     }
@@ -215,17 +250,25 @@ class FullCrudElementComponent
 
     public function buildFilterFromGraphQLArgs($type, $args = [])
     {
-        return $this->defineHandler($type)->buildFilterFromGraphQLArgs($args);
+        return $this->defineHandler($type)->buildFilterFromGraphQLArgs($args, $type);
     }
 
-    private function defineHandler($type)
+    public function defineHandler($type)
     {
-        $handlerClass = !empty($this->handlers[$type]) ? $this->handlers[$type] : $this->defaultHandlerClass;
+        $settings = $this->getCurrentModule()->getCrudSettings();
+        $entity = $settings->findEntity($type);
+        if ($entity->aggregateEntity) {
+            $handlerClass = AggregateFullCrudElementHandler::class;
+        } else {
+            $handlerClass = !empty($this->handlers[$type]) ? $this->handlers[$type] : $this->defaultHandlerClass;
+        }
 
         /** @var BaseFullCrudElementHandler $handler */
         $handler = \Yii::createObject($handlerClass);
         $handler->setType($type);
         $handler->setModule($this->module);
+        $handler->setEntity($entity);
+        $handler->setFullCrudComponent($this);
 
         return $handler;
     }
@@ -239,5 +282,52 @@ class FullCrudElementComponent
         $this->format = $format;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFormat(): bool
+    {
+        return $this->format;
+    }
+
+    /**
+     * @param bool $deepLoad
+     */
+    public function setDeepLoad(bool $deepLoad): void
+    {
+        $this->deepLoad = $deepLoad;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeepLoad(): bool
+    {
+        return $this->deepLoad;
+    }
+
+    /**
+     * @return FullCrudModule
+     */
+    private function getCurrentModule()
+    {
+        return \Yii::$app->getModule($this->module);
+    }
+
+    public function holdBlock($name)
+    {
+        $this->holders[$name] = true;
+    }
+
+    public function releaseBlock($name)
+    {
+        $this->holders[$name] = false;
+    }
+
+    public function isBlocked($name)
+    {
+        return isset($this->holders[$name]) ? $this->holders[$name] : false;
     }
 }

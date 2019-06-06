@@ -3,32 +3,16 @@
 
 namespace Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\fields;
 
-
 use GraphQL\Type\Definition\Type;
+use Obvu\Modules\Api\Admin\AdminModule;
+use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\fields\base\BaseCrudSingleField;
+use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\Types;
-use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\crud\CrudFieldFileType;
-use yii\base\BaseObject;
+use Yii;
 use yii\helpers\ArrayHelper;
 
-class CrudSingleField extends BaseObject
+class CrudSingleField extends BaseCrudSingleField
 {
-    const TYPE_INPUT_TEXT = 'input_text';
-    const TYPE_TEXTAREA = 'textarea';
-    const TYPE_TEXT_EDITOR = 'textarea';
-    const TYPE_SELECT = 'select';
-    const TYPE_BOOLEAN_SELECT = 'boolean_select';
-    const TYPE_DATE = 'input_text';
-    const TYPE_FILE_PHOTO = 'file_photo';
-    const TYPE_FILE_SIMPLE = 'file_photo';
-
-    public $type;
-
-    public $name;
-
-    public $label;
-
-    public $defaultValue = null;
-
     /**
      * @var CrudSingleSelectVariant[]
      */
@@ -45,38 +29,7 @@ class CrudSingleField extends BaseObject
      */
     public $variantsCallBack = null;
 
-    public function getGraphQLFieldType()
-    {
-        $map = [
-            self::TYPE_INPUT_TEXT => Type::string(),
-            self::TYPE_TEXT_EDITOR => Type::string(),
-            self::TYPE_TEXTAREA => Type::string(),
-            self::TYPE_SELECT => 'select',
-            self::TYPE_DATE => Type::string(),
-            self::TYPE_FILE_PHOTO => new CrudFieldFileType(),
-            self::TYPE_FILE_SIMPLE => new CrudFieldFileType(),
-        ];
-
-        return ArrayHelper::getValue($map, $this->type);
-    }
-
-    public function resolveField($a)
-    {
-//        switch ($this->type) {
-//            case self::TYPE_INPUT_TEXT:
-//            case self::TYPE_TEXTAREA:
-//            case self::TYPE_SELECT:
-//            case self::TYPE_DATE:
-//                return $a[$this->name];
-//                break;
-//            case self::TYPE_FILE_SIMPLE:
-//            case self::TYPE_FILE_PHOTO:
-//                return $a[$this->name];
-//                break;
-//        }
-
-        return true;
-    }
+    public $options;
 
     public function init()
     {
@@ -84,10 +37,84 @@ class CrudSingleField extends BaseObject
         if (empty($this->variants)) {
             if (!empty($this->variantsCallBack)) {
                 $variantsCallBack = $this->variantsCallBack;
-                $this->variants = $variantsCallBack($this, \Yii::$app->controller->module);
+                /** @var FullCrudModule $module */
+                $module = Yii::createObject(FullCrudModule::class);
+                if ($module->getElementComponent()->isDeepLoad()) {
+                    $module->getElementComponent()->setDeepLoad(false);
+                    $this->variants = $variantsCallBack($this, $module);
+                    $module->getElementComponent()->setDeepLoad(true);
+                } else {
+                    $this->variants = [];
+                }
             } elseif ($this->type === $this::TYPE_BOOLEAN_SELECT) {
-
+                $boolVariants = [
+                    Yii::createObject(
+                        [
+                            'class' => CrudSingleSelectVariant::class,
+                            'key' => 0,
+                            'value' => 'Нет',
+                        ]
+                    ),
+                    Yii::createObject(
+                        [
+                            'class' => CrudSingleSelectVariant::class,
+                            'key' => 1,
+                            'value' => 'Да',
+                        ]
+                    ),
+                ];
+                $this->variants = $boolVariants;
+                $this->defaultValue = 0;
+                $this->type = $this::TYPE_SELECT;
             }
         }
+    }
+
+    public function getGraphQLFieldType()
+    {
+        $map = [
+            self::TYPE_INPUT_TEXT => Type::string(),
+            self::TYPE_TEXT_EDITOR => Type::string(),
+            self::TYPE_TEXTAREA => Type::string(),
+            self::TYPE_SELECT => $this->multiple ? Type::listOf(Type::string()) : Type::string(),
+            self::TYPE_DATE => Type::string(),
+            self::TYPE_FILE_PHOTO => $this->multiple ? Type::listOf(Types::file()) : Types::file(),
+            self::TYPE_FILE_PHOTO_LARGE => $this->multiple ? Type::listOf(Types::file()) : Types::file(),
+            self::TYPE_FILE_SIMPLE => $this->multiple ? Type::listOf(Types::file()) : Types::file(),
+        ];
+
+        return ArrayHelper::getValue($map, $this->type);
+    }
+
+    /**
+     * @return callable|null
+     */
+    public function getResolveFn()
+    {
+        $result = null;
+        if (in_array($this->type, [self::TYPE_FILE_PHOTO, self::TYPE_FILE_SIMPLE])) {
+            return function ($root) {
+                $handle = function ($el) {
+                    $result = $el;
+                    if (is_numeric($el)) {
+                        $result = AdminModule::getFileModel($el);
+                    }
+
+                    return $result;
+                };
+                $var = $root[$this->name];
+                if ($var) {
+                    if ($this->multiple) {
+                        return array_map($handle, $var);
+                    } else {
+                        return $handle($var);
+                    }
+                }
+
+                return null;
+            };
+        }
+
+        return $result;
     }
 }

@@ -1,8 +1,5 @@
 <?php
-
-
 namespace Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\simple;
-
 
 use Obvu\Modules\Api\Admin\submodules\crud\components\database\models\crud\element\FullCrudElementObject;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\base\BaseFullCrudElementHandler;
@@ -65,7 +62,7 @@ class SimpleFullCrudElementHandler extends BaseFullCrudElementHandler
         return $this->prepareModel($object);
     }
 
-    final public function update($id, $data)
+    final public function update($id, $data, SingleCrudElementModel $fullCrudModel = null)
     {
         $object = $this->getObjectById($id);
         $object->data = $data;

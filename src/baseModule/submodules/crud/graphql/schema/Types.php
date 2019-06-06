@@ -9,9 +9,14 @@
 namespace Obvu\Modules\Api\Admin\submodules\crud\graphql\schema;
 
 
+use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
+use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\crud\CrudFieldFileType;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudBlockType;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudElementType;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudFullDataType;
+use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudSubEntityDataType;
+use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\input\CrudFullDataInputData;
+use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\input\CrudSortInputData;
 
 class Types
 {
@@ -22,14 +27,16 @@ class Types
     private static $crudBlock;
     private static $crudFullData;
 
-    public static function query()
+    private static $fields  = [];
+
+    public static function query(FullCrudModule $module)
     {
-        return self::$query ?: (self::$query = new QueryType());
+        return self::$query ?: (self::$query = new QueryType($module));
     }
 
-    public static function crudElement()
+    public static function crudElement(FullCrudModule $module)
     {
-        return self::$crudElement ?: (self::$crudElement = new CrudElementType());
+        return self::$crudElement[$module->getUniqueId()] ?: (self::$crudElement[$module->getUniqueId()] = new CrudElementType($module));
     }
 
     public static function crudBlock($type)
@@ -40,5 +47,30 @@ class Types
     public static function crudFullData($type)
     {
         return self::$crudFullData[$type] ?: (self::$crudFullData[$type] = new CrudFullDataType($type));
+    }
+
+    public static function crudSubEntityData($type)
+    {
+        return static::getField('subEntity'.$type, CrudSubEntityDataType::class, $type);
+    }
+
+    public static function inputFullData($type)
+    {
+        return static::getField('inputFullData'.$type, CrudFullDataInputData::class, $type);
+    }
+
+    public static function sortData($type)
+    {
+        return static::getField('sortData'.$type, CrudSortInputData::class, $type);
+    }
+
+    public static function file()
+    {
+        return static::getField('file', CrudFieldFileType::class);
+    }
+
+    private static function getField($type, $class, $constructVar = null)
+    {
+        return self::$fields[$type] ?: (self::$fields[$type] = new $class($constructVar));
     }
 }

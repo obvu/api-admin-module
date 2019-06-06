@@ -4,8 +4,11 @@
 namespace Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity;
 
 
+use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\blocks\base\BaseEditDataBlock;
+use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\blocks\multipleBlock\MultipleEditDataBlock;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\fields\CrudSingleField;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\rawData\CrudRawData;
+use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
 use yii\base\BaseObject;
 
 /**
@@ -28,7 +31,7 @@ class CrudSingleEntity extends BaseObject
     public $key;
 
     /**
-     * @var CrudSingleField[]
+     * @var CrudSingleField[]|BaseEditDataBlock[]
      * @SWG\Property()
      */
     public $fields;
@@ -39,6 +42,33 @@ class CrudSingleEntity extends BaseObject
      */
     public $rawData;
 
+    /**
+     * @var callable|null
+     */
+    public $afterFullCallback = null;
+
+    /**
+     * @var bool
+     * @SWG\Property()
+     */
+    public $aggregateEntity = false;
+
+    public $specialFilterClass = null;
+
+    public function init()
+    {
+        parent::init();
+        FullCrudModule::getCurrentFullCrudHandlingModule()->getFieldHelper()->handleFields(
+            $this->aggregateEntity,
+            $this->fields
+        );
+    }
+
+
+    /**
+     * @param $fieldKey
+     * @return CrudSingleField
+     */
     /**
      * @var callable
      * @SWG\Property()
@@ -54,9 +84,36 @@ class CrudSingleEntity extends BaseObject
     public function findField($fieldKey)
     {
         foreach ($this->fields as $field) {
-            if ($field->name === $fieldKey) {
+            if ($field instanceof CrudSingleField && $field->name === $fieldKey) {
                 return $field;
             }
         }
+    }
+
+    /**
+     * @param $blockKey
+     * @return MultipleEditDataBlock
+     */
+    public function findMultipleBlock($blockKey)
+    {
+        foreach ($this->fields as $field) {
+            if ($field instanceof BaseEditDataBlock && ($field->entityKey === $blockKey || $field->name === $blockKey)) {
+                return $field;
+            }
+        }
+    }
+
+    public function hasSubEntity(): bool
+    {
+        $result = false;
+
+        foreach ($this->fields as $field) {
+            if ($field instanceof BaseEditDataBlock) {
+                $result = true;
+                break;
+            }
+        }
+
+        return $result;
     }
 }

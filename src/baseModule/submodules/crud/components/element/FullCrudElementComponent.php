@@ -61,6 +61,7 @@ class FullCrudElementComponent
             $request->filter->entityFilterCallback = $entity->searchCallBack;
             $request->filter->searchQuery = $request->searchQuery;
         }
+
         $result = $this->defineHandler($request->type)->getList($request->page, $request->perPage, $request->filter, $request);
 
         if ($this->format) {

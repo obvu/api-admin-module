@@ -55,20 +55,6 @@ class CrudSingleEntity extends BaseObject
 
     public $specialFilterClass = null;
 
-    public function init()
-    {
-        parent::init();
-        FullCrudModule::getCurrentFullCrudHandlingModule()->getFieldHelper()->handleFields(
-            $this->aggregateEntity,
-            $this->fields
-        );
-    }
-
-
-    /**
-     * @param $fieldKey
-     * @return CrudSingleField
-     */
     /**
      * @var callable
      * @SWG\Property()
@@ -80,6 +66,15 @@ class CrudSingleEntity extends BaseObject
      * @SWG\Property()
      */
     public $filterFields;
+
+    public function init()
+    {
+        parent::init();
+        FullCrudModule::getCurrentFullCrudHandlingModule()->getFieldHelper()->handleFields(
+            $this->aggregateEntity,
+            $this->fields
+        );
+    }
 
     public function findField($fieldKey)
     {

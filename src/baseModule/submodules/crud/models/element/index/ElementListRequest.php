@@ -41,5 +41,4 @@ class ElementListRequest extends BaseElementRequest
      */
     public $filterData;
 
-    public $searchQuery;
 }

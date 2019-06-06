@@ -38,8 +38,8 @@ class ActiveRecordFullCrudElementHandler extends BaseFullCrudElementHandler
     public function getList($page = 1, $perPage = 20, $filter = [], $request = null): FullCrudElementListResult
     {
         $query = $this->activeRecordClassName::find();
-        if (is_callable($filter->entityFilterCallback)) {
-            call_user_func_array($filter->entityFilterCallback, [&$query, $request]);
+        if (is_callable($request->filter->entityFilterCallback)) {
+            call_user_func_array($request->filter->entityFilterCallback, [&$query, $request]);
         }
         $provider = new ActiveDataProvider(
             [

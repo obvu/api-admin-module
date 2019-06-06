@@ -24,8 +24,6 @@ class ElementListFilter
     public $conditions = [];
 
     public $orderBy = null;
-    
+
     public $entityFilterCallback;
-    
-    public $searchQuery;
 }

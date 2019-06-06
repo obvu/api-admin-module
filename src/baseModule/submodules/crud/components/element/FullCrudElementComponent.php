@@ -54,12 +54,11 @@ class FullCrudElementComponent
         if ($request->sortBy) {
             $request->filter->orderBy = $request->sortBy;
         }
-        if ($request->searchQuery) {
+        if ($request->filterData) {
             $module = \Yii::$app->getModule($this->module);
             $crudSettings = $module->getCrudSettings();
             $entity = $crudSettings->findEntity($request->type);
             $request->filter->entityFilterCallback = $entity->searchCallBack;
-            $request->filter->searchQuery = $request->searchQuery;
         }
 
         $result = $this->defineHandler($request->type)->getList($request->page, $request->perPage, $request->filter, $request);

@@ -62,7 +62,6 @@ class FullCrudElementComponent
         }
 
         $result = $this->defineHandler($request->type)->getList($request->page, $request->perPage, $request->filter, $request);
-
         if ($this->format) {
             $context = $this;
             $result->elements = array_map(
@@ -164,7 +163,7 @@ class FullCrudElementComponent
         foreach ($response->elements as $element) {
             $resultListData = [];
             foreach ($entity->fields as $field) {
-                if ($field->type === $field::TYPE_INPUT_TEXT) {
+                if ($field->type === $field::TYPE_INPUT_TEXT || $field->type === $field::TYPE_DATE) {
                     if ($element->fullData[$field->name]) {
                         $resultListData[$field->name] = $element->fullData[$field->name];
                     }

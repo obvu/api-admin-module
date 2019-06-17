@@ -19,8 +19,15 @@ class CrudSingleBlock extends BaseObject
 
     public $tableFields;
 
+    public $tableNoSortableFields = [];
+
     public function init()
     {
         $this->key = (!$this->key && $this->entityKey) ? $this->entityKey : $this->key;
+    }
+
+    public function isSortable($tableField)
+    {
+        return !in_array($tableField, $this->tableNoSortableFields);
     }
 }

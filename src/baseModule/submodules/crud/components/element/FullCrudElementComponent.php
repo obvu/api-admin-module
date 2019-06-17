@@ -99,6 +99,7 @@ class FullCrudElementComponent
             $fieldNames[] = [
                 'text' => $fieldSettings->label,
                 'value' => $tableField,
+                'sortable' => $block->isSortable($tableField),
             ];
         }
 

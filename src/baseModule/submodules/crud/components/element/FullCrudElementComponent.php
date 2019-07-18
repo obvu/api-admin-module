@@ -6,7 +6,6 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\components\element;
 
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\aggregate\AggregateFullCrudElementHandler;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\base\BaseFullCrudElementHandler;
-use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementSingleResult;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\simple\SimpleFullCrudElementHandler;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\fields\base\BaseCrudSingleField;
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\FullCrudSettings;
@@ -55,8 +54,14 @@ class FullCrudElementComponent
         if ($request->sortBy) {
             $request->filter->orderBy = $request->sortBy;
         }
-        $result = $this->defineHandler($request->type)->getList($request->page, $request->perPage, $request->filter);
+        if ($request->filterData) {
+            $module = \Yii::$app->getModule($this->module);
+            $crudSettings = $module->getCrudSettings();
+            $entity = $crudSettings->findEntity($request->type);
+            $request->filter->entityFilterCallback = $entity->searchCallBack;
+        }
 
+        $result = $this->defineHandler($request->type)->getList($request->page, $request->perPage, $request->filter, $request);
         if ($this->format) {
             $context = $this;
             $result->elements = array_map(
@@ -94,6 +99,7 @@ class FullCrudElementComponent
             $fieldNames[] = [
                 'text' => $fieldSettings->label,
                 'value' => $tableField,
+                'sortable' => $block->isSortable($tableField),
             ];
         }
 
@@ -158,7 +164,7 @@ class FullCrudElementComponent
         foreach ($response->elements as $element) {
             $resultListData = [];
             foreach ($entity->fields as $field) {
-                if ($field->type === $field::TYPE_INPUT_TEXT) {
+                if ($field->type === $field::TYPE_INPUT_TEXT || $field->type === $field::TYPE_DATE) {
                     if ($element->fullData[$field->name]) {
                         $resultListData[$field->name] = $element->fullData[$field->name];
                     }

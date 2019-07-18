@@ -10,7 +10,6 @@ use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\fie
 use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\rawData\CrudRawData;
 use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
 use yii\base\BaseObject;
-use yii\helpers\ArrayHelper;
 
 /**
  * Class CrudSingleEntity
@@ -56,6 +55,18 @@ class CrudSingleEntity extends BaseObject
 
     public $specialFilterClass = null;
 
+    /**
+     * @var callable
+     * @SWG\Property()
+     */
+    public $searchCallBack;
+
+    /**
+     * @var CrudSingleField[]
+     * @SWG\Property()
+     */
+    public $filterFields;
+
     public function init()
     {
         parent::init();
@@ -65,11 +76,6 @@ class CrudSingleEntity extends BaseObject
         );
     }
 
-
-    /**
-     * @param $fieldKey
-     * @return CrudSingleField
-     */
     public function findField($fieldKey)
     {
         foreach ($this->fields as $field) {

@@ -35,9 +35,12 @@ class ActiveRecordFullCrudElementHandler extends BaseFullCrudElementHandler
     }
 
 
-    public function getList($page = 1, $perPage = 20, $filter = []): FullCrudElementListResult
+    public function getList($page = 1, $perPage = 20, $filter = [], $request = null): FullCrudElementListResult
     {
         $query = $this->activeRecordClassName::find();
+        if (is_callable($request->filter->entityFilterCallback)) {
+            call_user_func_array($request->filter->entityFilterCallback, [&$query, $request]);
+        }
         $provider = new ActiveDataProvider(
             [
                 'query' => $query,
@@ -141,7 +144,7 @@ class ActiveRecordFullCrudElementHandler extends BaseFullCrudElementHandler
 
     public function update($id, $data, SingleCrudElementModel $fullCrudModel = null)
     {
-        $object= $this->getObject($id);
+        $object = $this->getObject($id);
         $miscInfoData = $this->extractMiscInfo($data);
         \Yii::configure($object, $data);
         if (!$object->save()) {

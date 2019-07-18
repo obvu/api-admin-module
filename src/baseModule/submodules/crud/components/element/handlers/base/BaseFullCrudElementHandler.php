@@ -31,7 +31,7 @@ abstract class BaseFullCrudElementHandler extends BaseObject
      */
     private $fullCrudComponent;
 
-    abstract public function getList($page = 1, $perPage = 20, $filter = []): FullCrudElementListResult;
+    abstract public function getList($page = 1, $perPage = 20, $filter = [], $request = null): FullCrudElementListResult;
 
     /**
      * @param $id

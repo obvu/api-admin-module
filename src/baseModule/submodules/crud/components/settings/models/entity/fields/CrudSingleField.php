@@ -79,6 +79,7 @@ class CrudSingleField extends BaseCrudSingleField
             self::TYPE_SELECT => $this->multiple ? Type::listOf(Type::string()) : Type::string(),
             self::TYPE_DATE => Type::string(),
             self::TYPE_FILE_PHOTO => $this->multiple ? Type::listOf(Types::file()) : Types::file(),
+            self::TYPE_FILE_PHOTO_LARGE => $this->multiple ? Type::listOf(Types::file()) : Types::file(),
             self::TYPE_FILE_SIMPLE => $this->multiple ? Type::listOf(Types::file()) : Types::file(),
         ];
 

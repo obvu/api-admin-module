@@ -48,6 +48,12 @@ class AdminPostInfoRequest extends BaseApiRequest
      * @SWG\Property()
      */
     public $createdAt;
+    
+    /**
+     * @var int
+     * @SWG\Property()
+     */
+    public $image;
 
     public function validate()
     {

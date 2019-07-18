@@ -14,7 +14,8 @@
   "minimum-stability": "dev",
   "require" : {
     "php": ">=7.1.3",
-    "zvinger/yii2-base-classes": "^0.0.1",
+    "zvinger/yii2-base-classes": "dev-master",
+    "webonyx/graphql-php": "^v0.13.1",
     "ext-json": "*"
   },
   "autoload" : {

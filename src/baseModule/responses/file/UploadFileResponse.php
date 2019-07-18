@@ -26,4 +26,10 @@ class UploadFileResponse
      * URL опубликованного файла
      */
     public $fullUrl;
+
+    /**
+     * @var mixed
+     * @SWG\Property()
+     */
+    public $fileInfo;
 }

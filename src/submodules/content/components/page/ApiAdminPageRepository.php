@@ -37,6 +37,9 @@ class ApiAdminPageRepository extends BaseApiRepository
         $model->slug = $object->slug;
         $model->text = $object->text;
         $model->title = $object->title;
+        $model->misc = [
+            'metaDescription' => $object->getMiscInfo()->getNoCheck('metaDescription')
+        ];
         $templateModel = new TemplateModel();
         $templateModel->id = $object->template_id;
         $templateModel->title = "Template #" . $object->template_id;
@@ -56,6 +59,10 @@ class ApiAdminPageRepository extends BaseApiRepository
         $object->text = $model->text;
         $object->template_id = $model->templateId;
         $object->slug = $model->slug;
+        $vendorUserMiscInfoService = $object->getMiscInfo();
+        foreach ($model->misc as $key => $item) {
+            $vendorUserMiscInfoService->{$key} = $item;
+        }
 
         return $object;
     }

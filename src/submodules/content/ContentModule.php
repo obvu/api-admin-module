@@ -19,6 +19,9 @@ use Obvu\Modules\Api\Admin\AdminModule;
  */
 class ContentModule extends AdminModule
 {
+    const EVENT_FILL_POST_MODEL = 'event_fill_post_model';
+    const EVENT_FILL_POST_OBJECT = 'event_fill_post_object';
+
     public function bootstrap($app)
     {
         $app->urlManager->addRules([

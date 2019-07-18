@@ -9,6 +9,7 @@
 namespace Obvu\Modules\Api\AdminSubmodules\Crud\controllers;
 
 
+use Obvu\Modules\Api\AdminSubmodules\Crud\components\element\ApiCrudElementComponent;
 use yii\rest\OptionsAction;
 
 class ElementController extends BaseCrudController
@@ -174,7 +175,7 @@ Type, например, locations. ID = 1. В таком случае верне
 
 
     /**
-     * @return \ObvuCrudModule\components\element\ApiCrudElementComponent
+     * @return ApiCrudElementComponent
      */
     private function getElementComponent()
     {

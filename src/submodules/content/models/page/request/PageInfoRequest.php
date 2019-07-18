@@ -41,4 +41,10 @@ class PageInfoRequest extends BaseApiRequest
      * @SWG\Property()
      */
     public $slug;
+
+    /**
+     * @var object
+     * @SWG\Property()
+     */
+    public $misc = [];
 }

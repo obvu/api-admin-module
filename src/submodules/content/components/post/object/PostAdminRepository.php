@@ -111,4 +111,12 @@ class PostAdminRepository extends BaseApiRepository
     {
         return new AdminPostModel();
     }
+    
+    /**
+     * @return boolean
+     */
+    public function deleteElement($postId)
+    {
+        return $this->repository->getObject($postId)->delete();
+    }
 }

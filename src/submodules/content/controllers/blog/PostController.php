@@ -132,10 +132,31 @@ class PostController extends BaseAdminController
     public function actionIndex()
     {
         $response = \Yii::createObject([
-            'class'    => PostIndexResponse::class,
+            'class' => PostIndexResponse::class,
             'elements' => $this->postAdminRepository->getModelsList(),
         ]);
 
         return $response;
+    }
+
+
+    /**
+     * @SWG\DELETE(path="/content/blog/posts/{postId}",
+     *     tags={"blog"},
+     *     summary="Создание фонда",
+     *     @SWG\Parameter(
+     *          in="path",
+     *          name="postId",
+     *          type="integer",
+     *          required=true
+     *     )
+     * )
+     * @param $id
+     * @return boolean
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function actionDelete($id)
+    {
+        return $this->postAdminRepository->deleteElement($id);
     }
 }

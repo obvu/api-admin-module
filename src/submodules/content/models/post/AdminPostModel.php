@@ -49,6 +49,12 @@ class AdminPostModel implements FakeFilledInterface
      */
     public $category;
 
+    /**
+     * @var PostCategoryModel
+     * @SWG\Property()
+     */
+    public $createdAt;
+
     public function fillFakeData()
     {
         $faker = DataFakerGenerator::go();

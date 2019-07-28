@@ -49,7 +49,8 @@ class PostAdminRepository extends BaseApiRepository
     {
         $model = $this->createElement();
         $model->category = $this->postCategoryAdminRepository->getModel($postObject->category_id);
-        $skipKeys = ['category'];
+        $model->createdAt = $postObject->created_at;
+        $skipKeys = ['category', 'createdAt'];
         foreach ($model as $key => $value) {
             if (in_array($key, $skipKeys)) {
                 continue;
@@ -71,7 +72,8 @@ class PostAdminRepository extends BaseApiRepository
     public function fillObjectFromApiModel($postObject, $postModel)
     {
         $postObject->category_id = $postModel->categoryId;
-        $skipKeys = ['categoryId'];
+        $postObject->created_at = $postModel->createdAt;
+        $skipKeys = ['categoryId', 'createdAt'];
 
         foreach ($postModel as $key => $value) {
             if (in_array($key, $skipKeys)) {
@@ -108,5 +110,13 @@ class PostAdminRepository extends BaseApiRepository
     private function createElement()
     {
         return new AdminPostModel();
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function deleteElement($postId)
+    {
+        return $this->repository->getObject($postId)->delete();
     }
 }

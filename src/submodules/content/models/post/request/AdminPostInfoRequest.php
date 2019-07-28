@@ -43,6 +43,12 @@ class AdminPostInfoRequest extends BaseApiRequest
      */
     public $categoryId;
 
+    /**
+     * @var int
+     * @SWG\Property()
+     */
+    public $createdAt;
+
     public function validate()
     {
         $result = TRUE;

@@ -12,6 +12,7 @@ namespace Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\act
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\base\BaseFullCrudElementHandler;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementListResult;
 use Obvu\Modules\Api\Admin\submodules\crud\components\element\handlers\models\FullCrudElementSingleResult;
+use Obvu\Modules\Api\Admin\submodules\crud\models\element\index\ElementListFilter;
 use Obvu\Modules\Api\Admin\submodules\crud\models\SingleCrudElementModel;
 use yii\base\UnknownPropertyException;
 use yii\data\ActiveDataProvider;
@@ -34,12 +35,21 @@ class ActiveRecordFullCrudElementHandler extends BaseFullCrudElementHandler
         }
     }
 
-
+    /**
+     * @param int $page
+     * @param int $perPage
+     * @param ElementListFilter|array $filter
+     * @return FullCrudElementListResult
+     * @throws \yii\base\InvalidConfigException
+     */
     public function getList($page = 1, $perPage = 20, $filter = [], $request = null): FullCrudElementListResult
     {
         $query = $this->activeRecordClassName::find();
         if (is_callable($request->filter->entityFilterCallback)) {
             call_user_func_array($request->filter->entityFilterCallback, [&$query, $request]);
+        }
+        if ($filter->orderBy) {
+            $query->orderBy($filter->orderBy);
         }
         $provider = new ActiveDataProvider(
             [

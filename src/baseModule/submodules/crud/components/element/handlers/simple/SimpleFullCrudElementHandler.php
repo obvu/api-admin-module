@@ -13,7 +13,7 @@ use Zvinger\BaseClasses\app\exceptions\model\ModelValidateException;
 
 class SimpleFullCrudElementHandler extends BaseFullCrudElementHandler
 {
-    final public function getList($page = 1, $perPage = 20, $filter = []): FullCrudElementListResult
+    final public function getList($page = 1, $perPage = 20, $filter = [], $request = null): FullCrudElementListResult
     {
         $query = $this->getBaseQuery();
         $provider = $this->getDataProvider($query, $page, $perPage);

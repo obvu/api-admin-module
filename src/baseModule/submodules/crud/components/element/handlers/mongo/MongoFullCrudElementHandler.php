@@ -30,7 +30,7 @@ class MongoFullCrudElementHandler extends BaseFullCrudElementHandler
      * @return FullCrudElementListResult
      * @throws \yii\base\InvalidConfigException
      */
-    public function getList($page = 1, $perPage = 20, $filter = []): FullCrudElementListResult
+    public function getList($page = 1, $perPage = 20, $filter = [], $request = null): FullCrudElementListResult
     {
         $query = $this->getBaseQuery();
         if (is_callable($request->filter->entityFilterCallback)) {

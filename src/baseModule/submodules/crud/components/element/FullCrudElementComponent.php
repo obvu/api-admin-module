@@ -44,7 +44,7 @@ class FullCrudElementComponent
 
     public function listElement(ElementListRequest $request)
     {
-        $key = md5('list'.Json::encode($request));
+        $key = md5('list' . Json::encode($request));
         if ($this->_list_cache[$key]) {
             return $this->_list_cache[$key];
         }
@@ -164,19 +164,24 @@ class FullCrudElementComponent
         foreach ($response->elements as $element) {
             $resultListData = [];
             foreach ($entity->fields as $field) {
+
                 if ($field->type === $field::TYPE_INPUT_TEXT || $field->type === $field::TYPE_DATE) {
                     if ($element->fullData[$field->name]) {
                         $resultListData[$field->name] = $element->fullData[$field->name];
                     }
                 } elseif ($field->type === $field::TYPE_SELECT) {
-                    $variants = $field->variants;
-                    foreach ($variants as $variant) {
+                    foreach ($field->variants as $variant) {
                         if ($variant->key === $element->fullData[$field->name]) {
                             $resultListData[$field->name] = $variant->value;
                         }
                     }
                 }
+
+                if (is_callable($field->beforeSendCallback) && $resultListData[$field->name]) {
+                    call_user_func_array($field->beforeSendCallback, [$field, &$resultListData[$field->name]]);
+                }
             }
+
             $element->listData = $resultListData;
 //            $element->prepareSubEntity();
         }

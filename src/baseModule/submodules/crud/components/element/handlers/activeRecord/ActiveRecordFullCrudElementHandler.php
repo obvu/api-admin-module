@@ -54,6 +54,9 @@ class ActiveRecordFullCrudElementHandler extends BaseFullCrudElementHandler
         $provider = new ActiveDataProvider(
             [
                 'query' => $query,
+                'pagination' => [
+                    'pageSize' => $perPage,
+                ],
             ]
         );
         $provider->pagination->page = $page - 1;

@@ -190,7 +190,10 @@ class FullCrudElementComponent
                 }
             }
 
-            foreach ((array) $entity->rawData as $crudRawData) {
+            if (!$entity->rawData) {
+                $entity->rawData = [];
+            }
+            foreach ($entity->rawData as $crudRawData) {
                 $crudRawData->setEntity($element);
                 $resultListData[$crudRawData->name] = call_user_func_array($crudRawData->resolve, [$crudRawData]);
             }

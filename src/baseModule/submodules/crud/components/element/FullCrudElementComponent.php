@@ -96,11 +96,20 @@ class FullCrudElementComponent
         $fieldNames = [];
         foreach ((array)$block->tableFields as $tableField) {
             $fieldSettings = $entity->findField($tableField);
-            $fieldNames[] = [
-                'text' => $fieldSettings->label,
-                'value' => $tableField,
-                'sortable' => $block->isSortable($tableField),
-            ];
+            if ($fieldSettings) {
+                $fieldNames[] = [
+                    'text' => $fieldSettings->label,
+                    'value' => $tableField,
+                    'sortable' => $block->isSortable($tableField),
+                ];
+            } else {
+                $fieldSettings = $entity->findRowData($tableField);
+                $fieldNames[] = [
+                    'text' => $fieldSettings->label,
+                    'value' => $tableField,
+                    'sortable' => false,
+                ];
+            }
         }
 
         return $fieldNames;
@@ -164,7 +173,6 @@ class FullCrudElementComponent
         foreach ($response->elements as $element) {
             $resultListData = [];
             foreach ($entity->fields as $field) {
-
                 if ($field->type === $field::TYPE_INPUT_TEXT || $field->type === $field::TYPE_DATE) {
                     if ($element->fullData[$field->name]) {
                         $resultListData[$field->name] = $element->fullData[$field->name];
@@ -177,9 +185,14 @@ class FullCrudElementComponent
                     }
                 }
 
-                if (is_callable($field->beforeSendCallback) && $resultListData[$field->name]) {
+                if (is_callable($field->beforeSendCallback)) {
                     call_user_func_array($field->beforeSendCallback, [$field, &$resultListData[$field->name]]);
                 }
+            }
+
+            foreach ($entity->rawData as $crudRawData) {
+                $crudRawData->setEntity($element);
+                $resultListData[$crudRawData->name] = call_user_func_array($crudRawData->resolve, [$crudRawData]);
             }
 
             $element->listData = $resultListData;

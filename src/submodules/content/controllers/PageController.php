@@ -140,4 +140,24 @@ class PageController extends BaseAdminContentController
 
         return $response;
     }
+
+    /**
+     * @SWG\DELETE(path="/content/page/{postId}",
+     *     tags={"blog"},
+     *     summary="Создание страницы",
+     *     @SWG\Parameter(
+     *          in="path",
+     *          name="pageId",
+     *          type="integer",
+     *          required=true
+     *     )
+     * )
+     * @param $id
+     * @return boolean
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function actionDelete($id)
+    {
+        return $this->repository->deleteElement($id);
+    }
 }

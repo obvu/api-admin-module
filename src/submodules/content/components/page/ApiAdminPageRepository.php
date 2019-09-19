@@ -66,4 +66,12 @@ class ApiAdminPageRepository extends BaseApiRepository
 
         return $object;
     }
+
+    /**
+     * @return boolean
+     */
+    public function deleteElement($pageId)
+    {
+        return $this->repository->getObject($pageId)->delete();
+    }
 }

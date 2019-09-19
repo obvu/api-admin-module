@@ -85,6 +85,15 @@ class CrudSingleEntity extends BaseObject
         }
     }
 
+    public function findRowData($crudRawDataKey)
+    {
+        foreach ($this->rawData as $crudRawData) {
+            if ($crudRawData instanceof CrudRawData && $crudRawData->name === $crudRawDataKey) {
+                return $crudRawData;
+            }
+        }
+    }
+
     /**
      * @param $blockKey
      * @return MultipleEditDataBlock

@@ -44,7 +44,7 @@ class FullCrudElementComponent
 
     public function listElement(ElementListRequest $request)
     {
-        $key = md5('list'.Json::encode($request));
+        $key = md5('list' . Json::encode($request));
         if ($this->_list_cache[$key]) {
             return $this->_list_cache[$key];
         }
@@ -96,11 +96,20 @@ class FullCrudElementComponent
         $fieldNames = [];
         foreach ((array)$block->tableFields as $tableField) {
             $fieldSettings = $entity->findField($tableField);
-            $fieldNames[] = [
-                'text' => $fieldSettings->label,
-                'value' => $tableField,
-                'sortable' => $block->isSortable($tableField),
-            ];
+            if ($fieldSettings) {
+                $fieldNames[] = [
+                    'text' => $fieldSettings->label,
+                    'value' => $tableField,
+                    'sortable' => $block->isSortable($tableField),
+                ];
+            } else {
+                $fieldSettings = $entity->findRowData($tableField);
+                $fieldNames[] = [
+                    'text' => $fieldSettings->label,
+                    'value' => $tableField,
+                    'sortable' => false,
+                ];
+            }
         }
 
         return $fieldNames;
@@ -169,14 +178,26 @@ class FullCrudElementComponent
                         $resultListData[$field->name] = $element->fullData[$field->name];
                     }
                 } elseif ($field->type === $field::TYPE_SELECT) {
-                    $variants = $field->variants;
-                    foreach ($variants as $variant) {
+                    foreach ($field->variants as $variant) {
                         if ($variant->key === $element->fullData[$field->name]) {
                             $resultListData[$field->name] = $variant->value;
                         }
                     }
                 }
+
+                if (is_callable($field->beforeSendCallback)) {
+                    call_user_func_array($field->beforeSendCallback, [$field, &$resultListData[$field->name]]);
+                }
             }
+
+            if (!$entity->rawData) {
+                $entity->rawData = [];
+            }
+            foreach ($entity->rawData as $crudRawData) {
+                $crudRawData->setEntity($element);
+                $resultListData[$crudRawData->name] = call_user_func_array($crudRawData->resolve, [$crudRawData]);
+            }
+
             $element->listData = $resultListData;
 //            $element->prepareSubEntity();
         }

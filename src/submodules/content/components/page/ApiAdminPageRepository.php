@@ -38,7 +38,8 @@ class ApiAdminPageRepository extends BaseApiRepository
         $model->text = $object->text;
         $model->title = $object->title;
         $model->misc = [
-            'metaDescription' => $object->getMiscInfo()->getNoCheck('metaDescription')
+            'metaDescription' => $object->getMiscInfo()->getNoCheck('metaDescription'),
+            'metaTitle' => $object->getMiscInfo()->getNoCheck('metaTitle')
         ];
         $templateModel = new TemplateModel();
         $templateModel->id = $object->template_id;

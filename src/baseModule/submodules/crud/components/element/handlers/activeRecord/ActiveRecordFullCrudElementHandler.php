@@ -120,7 +120,7 @@ class ActiveRecordFullCrudElementHandler extends BaseFullCrudElementHandler
         /** @var ActiveRecord $object */
         $object = new  $this->activeRecordClassName;
         $miscInfoData = $this->extractMiscInfo($data);
-        \Yii::configure($object, $data);
+        $object->setAttributes($data);
         if (!$object->save()) {
             throw new ModelValidateException($object);
         }
@@ -159,7 +159,7 @@ class ActiveRecordFullCrudElementHandler extends BaseFullCrudElementHandler
     {
         $object = $this->getObject($id);
         $miscInfoData = $this->extractMiscInfo($data);
-        \Yii::configure($object, $data);
+        $object->setAttributes($data);
         if (!$object->save()) {
             throw new ModelValidateException($object);
         }

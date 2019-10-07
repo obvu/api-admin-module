@@ -166,6 +166,12 @@ class ActiveRecordFullCrudElementHandler extends BaseFullCrudElementHandler
     {
         $object = $this->getObject($id);
         $miscInfoData = $this->extractMiscInfo($data);
+
+        foreach (get_object_vars($object) as $key => $var) {
+            if ($data[$key]) {
+                $object->{$key} = $data[$key];
+            }
+        }
         $object->setAttributes($data);
         if (!$object->save()) {
             throw new ModelValidateException($object);

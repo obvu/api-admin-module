@@ -38,11 +38,6 @@ abstract class BaseCrudSingleField extends BaseObject
     /**
      * @var callable
      */
-    public $beforeSaveCallback;
-
-    /**
-     * @var callable
-     */
     public $beforeSendCallback;
 
     public function init()

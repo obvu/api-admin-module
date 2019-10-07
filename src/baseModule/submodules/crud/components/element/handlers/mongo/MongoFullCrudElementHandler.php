@@ -89,14 +89,14 @@ class MongoFullCrudElementHandler extends BaseFullCrudElementHandler
         return $this->convertToData($object);
     }
 
-    public function create($data)
+    public function concreteCreate($data)
     {
         $id = (string)$this->getCollection()->insert($data);
 
         return $this->getSingle($id);
     }
 
-    public function update($id, $data, SingleCrudElementModel $fullCrudModel = null)
+    public function concreteUpdate($id, $data, SingleCrudElementModel $fullCrudModel = null)
     {
         $this->getCollection()->update(['_id' => $id], $data);
 

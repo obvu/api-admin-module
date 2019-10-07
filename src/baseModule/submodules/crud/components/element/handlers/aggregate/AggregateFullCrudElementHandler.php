@@ -79,7 +79,7 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
      * @param $data
      * @return FullCrudElementSingleResult
      */
-    public function create($data)
+    public function concreteCreate($data)
     {
         $result = $this->getConnectedHandler()->create($data);
 
@@ -92,7 +92,7 @@ class AggregateFullCrudElementHandler extends BaseFullCrudElementHandler
      * @param SingleCrudElementModel|null $fullCrudModel
      * @return void
      */
-    public function update($id, $data, SingleCrudElementModel $fullCrudModel = null)
+    public function concreteUpdate($id, $data, SingleCrudElementModel $fullCrudModel = null)
     {
         $baseFullCrudElementHandler = $this->getConnectedHandler();
         $baseFullCrudElementHandler->update($id, $data, $fullCrudModel);

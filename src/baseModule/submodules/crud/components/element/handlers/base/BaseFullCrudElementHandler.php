@@ -43,7 +43,12 @@ abstract class BaseFullCrudElementHandler extends BaseObject
      * @param $data
      * @return FullCrudElementSingleResult
      */
-    abstract public function create($data);
+    public function create($data)
+    {
+        $data = $this->executeBeforeSaveCallback($data);
+
+        return $this->concreteCreate($data);
+    }
 
     /**
      * @param $id
@@ -51,7 +56,35 @@ abstract class BaseFullCrudElementHandler extends BaseObject
      * @param SingleCrudElementModel|null $fullCrudModel
      * @return FullCrudElementSingleResult
      */
-    abstract public function update($id, $data, SingleCrudElementModel $fullCrudModel = null);
+    public function update($id, $data, SingleCrudElementModel $fullCrudModel = null)
+    {
+        $data = $this->executeBeforeSaveCallback($data, $id, $fullCrudModel);
+
+        return $this->concreteUpdate($id, $data, $fullCrudModel);
+    }
+
+    private function executeBeforeSaveCallback($data, $id = null, $fullCrudModel = null)
+    {
+        if (is_callable($this->getEntity()->beforeSaveCallback)) {
+            $data = call_user_func($this->getEntity()->beforeSaveCallback, $data, $id, $fullCrudModel);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param $data
+     * @return FullCrudElementSingleResult
+     */
+    abstract protected function concreteCreate($data);
+
+    /**
+     * @param $id
+     * @param $data
+     * @param SingleCrudElementModel|null $fullCrudModel
+     * @return FullCrudElementSingleResult
+     */
+    abstract protected function concreteUpdate($id, $data, SingleCrudElementModel $fullCrudModel = null);
 
     abstract public function delete($id);
 

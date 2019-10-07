@@ -45,7 +45,7 @@ class SimpleFullCrudElementHandler extends BaseFullCrudElementHandler
         );
     }
 
-    final public function create($data)
+    final public function concreteCreate($data)
     {
         // TODO: Implement create() method.
         $object = new FullCrudElementObject(
@@ -62,7 +62,7 @@ class SimpleFullCrudElementHandler extends BaseFullCrudElementHandler
         return $this->prepareModel($object);
     }
 
-    final public function update($id, $data, SingleCrudElementModel $fullCrudModel = null)
+    final public function concreteUpdate($id, $data, SingleCrudElementModel $fullCrudModel = null)
     {
         $object = $this->getObjectById($id);
         $object->data = $data;

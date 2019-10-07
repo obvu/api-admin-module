@@ -115,12 +115,19 @@ class ActiveRecordFullCrudElementHandler extends BaseFullCrudElementHandler
         return $object;
     }
 
-    public function create($data)
+    public function concreteCreate($data)
     {
         /** @var ActiveRecord $object */
         $object = new  $this->activeRecordClassName;
         $miscInfoData = $this->extractMiscInfo($data);
+
+        foreach (get_object_vars($object) as $key => $var) {
+            if ($data[$key]) {
+                $object->{$key} = $data[$key];
+            }
+        }
         $object->setAttributes($data);
+
         if (!$object->save()) {
             throw new ModelValidateException($object);
         }
@@ -155,7 +162,7 @@ class ActiveRecordFullCrudElementHandler extends BaseFullCrudElementHandler
         }
     }
 
-    public function update($id, $data, SingleCrudElementModel $fullCrudModel = null)
+    public function concreteUpdate($id, $data, SingleCrudElementModel $fullCrudModel = null)
     {
         $object = $this->getObject($id);
         $miscInfoData = $this->extractMiscInfo($data);

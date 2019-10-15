@@ -51,6 +51,10 @@ class ActiveRecordFullCrudElementHandler extends BaseFullCrudElementHandler
         if ($filter->orderBy) {
             $query->orderBy($filter->orderBy);
         }
+        if ($filter->conditions) {
+            $query->andWhere($filter->conditions);
+        }
+
         $provider = new ActiveDataProvider(
             [
                 'query' => $query,
@@ -118,7 +122,7 @@ class ActiveRecordFullCrudElementHandler extends BaseFullCrudElementHandler
     public function concreteCreate($data)
     {
         /** @var ActiveRecord $object */
-        $object = new  $this->activeRecordClassName;
+        $object = new $this->activeRecordClassName;
         $miscInfoData = $this->extractMiscInfo($data);
 
         foreach (get_object_vars($object) as $key => $var) {

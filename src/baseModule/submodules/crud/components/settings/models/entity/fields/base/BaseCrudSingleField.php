@@ -26,6 +26,8 @@ abstract class BaseCrudSingleField extends BaseObject
     const TYPE_FILE_PHOTO = 'file_photo';
     const TYPE_FILE_PHOTO_LARGE = 'file_photo_large';
     const TYPE_FILE_SIMPLE = 'file_photo';
+    const TYPE_COLOR_PICKER = 'input_text';
+//    const TYPE_COLOR_PICKER = 'input_colorpicker';
 
     public $type;
 

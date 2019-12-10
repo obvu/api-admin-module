@@ -81,6 +81,7 @@ class CrudSingleField extends BaseCrudSingleField
             self::TYPE_FILE_PHOTO => $this->multiple ? Type::listOf(Types::file()) : Types::file(),
             self::TYPE_FILE_PHOTO_LARGE => $this->multiple ? Type::listOf(Types::file()) : Types::file(),
             self::TYPE_FILE_SIMPLE => $this->multiple ? Type::listOf(Types::file()) : Types::file(),
+            self::TYPE_BANNER_CONTROL => Types::banner(),
         ];
 
         return ArrayHelper::getValue($map, $this->type);

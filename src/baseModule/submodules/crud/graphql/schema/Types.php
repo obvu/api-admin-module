@@ -9,7 +9,9 @@
 namespace Obvu\Modules\Api\Admin\submodules\crud\graphql\schema;
 
 
+use Obvu\Modules\Api\Admin\submodules\crud\components\settings\models\entity\fields\banner\CrudBannerField;
 use Obvu\Modules\Api\Admin\submodules\crud\FullCrudModule;
+use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\crud\CrudBannerType;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\crud\CrudFieldFileType;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudBlockType;
 use Obvu\Modules\Api\Admin\submodules\crud\graphql\schema\types\CrudElementType;
@@ -67,6 +69,12 @@ class Types
     public static function file()
     {
         return static::getField('file', CrudFieldFileType::class);
+    }
+
+    public static function banner()
+    {
+        return static::getField('banner', CrudBannerType::class);
+
     }
 
     private static function getField($type, $class, $constructVar = null)

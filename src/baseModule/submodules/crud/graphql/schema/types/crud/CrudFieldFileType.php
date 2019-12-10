@@ -22,9 +22,39 @@ class CrudFieldFileType extends ObjectType
                 return [
                     'fileId' => [
                         'type' => Type::string(),
+
                     ],
                     'fullUrl' => [
                         'type' => Type::string(),
+                    ],
+                    'cropData' => [
+                        'resolve' => function ($root) {
+                            $result = [];
+                            foreach ((array)$root['cropData'] as $type => $data) {
+                                $element = $data;
+                                $element['type'] = $type;
+                                $result[] = $element;
+                            }
+
+                            return $result;
+                        },
+                        'type' => Type::listOf(
+                            new ObjectType(
+                                [
+                                    'name' => 'file_crop_data',
+                                    'fields' => [
+                                        'type' => Type::string(),
+                                        'height' => Type::float(),
+                                        'rotate' => Type::float(),
+                                        'scaleX' => Type::float(),
+                                        'scaleY' => Type::float(),
+                                        'width' => Type::float(),
+                                        'x' => Type::float(),
+                                        'y' => Type::float(),
+                                    ],
+                                ]
+                            )
+                        ),
                     ],
                 ];
             },

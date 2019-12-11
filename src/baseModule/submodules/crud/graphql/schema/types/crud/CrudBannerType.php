@@ -26,8 +26,12 @@ class CrudBannerType extends ObjectType
                             'name' => 'banner_settings',
                             'fields' => [
                                 'fullScreen' => Type::boolean(),
+                                'showGradient' => Type::boolean(),
                                 'gradientDown' => Type::boolean(),
+                                'gradientColor' => Type::string(),
                                 'isVideo' => Type::boolean(),
+                                'showLeftSticker' => Type::boolean(),
+                                'topLeftSticker' => Types::file(),
                             ],
                         ]
                     ),
@@ -38,15 +42,17 @@ class CrudBannerType extends ObjectType
                         'type' => Type::string(),
                     ],
                     'video' => [
-                        'type' => new ObjectType([
-                            'name' => 'banner_video',
-                            'fields' => [
-                                'poster' => Types::file(),
-                                'video_mp4' => Types::file(),
-                                'video_webm' => Types::file(),
+                        'type' => new ObjectType(
+                            [
+                                'name' => 'banner_video',
+                                'fields' => [
+                                    'poster' => Types::file(),
+                                    'video_mp4' => Types::file(),
+                                    'video_webm' => Types::file(),
+                                ],
                             ]
-                        ])
-                    ]
+                        ),
+                    ],
                 ];
             },
         ];

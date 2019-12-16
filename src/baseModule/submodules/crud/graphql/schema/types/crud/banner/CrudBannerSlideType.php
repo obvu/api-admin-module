@@ -26,6 +26,7 @@ class CrudBannerSlideType extends BaseGraphQLObjectType
                     'title2' => Type::string(),
                     'showButton' => Type::string(),
                     'buttonText' => Type::string(),
+                    'buttonLink' => Type::string(),
                     'type' => Type::int(),
                     'fixedSize' => Type::boolean(),
                     'bigFont' => Type::boolean(),

@@ -35,6 +35,8 @@ class CrudBannerSlideType extends BaseGraphQLObjectType
                     'type' => Type::int(),
                     'fixedSize' => Type::boolean(),
                     'bigFont' => Type::boolean(),
+                    'mobileActive' => Type::boolean(),
+                    'desktopActive' => Type::boolean(),
                     'typeData' => CrudBannerTypeDataElement::initType(),
                 ];
             },

@@ -25,6 +25,8 @@ abstract class BaseEditDataBlock extends BaseObject
 
     public $notGroup = false;
 
+    public $hide = true;
+
     protected static $inGettingData = false;
 
     public function init()
